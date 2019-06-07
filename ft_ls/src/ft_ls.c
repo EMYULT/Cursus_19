@@ -53,7 +53,7 @@ int	check_arg(char *str, b_arg *arg, int i, int j)
 			i++;
 		}
 	}
-	return (i == j) ? (1) : (check_path(str, arg));
+	return (i == j) ? (1) : (-1);
 }
 
 int		check_path(char *str, b_arg *arg)
@@ -92,7 +92,7 @@ int		check_path(char *str, b_arg *arg)
 void	handle_arg(b_arg *arg, t_list_ls *mylist)
 {
 
-	DIR				*d;
+	DIR						*d;
 	struct dirent	*dir;
 
 	mylist = params(dir, d, mylist, arg);
@@ -104,21 +104,57 @@ void	handle_arg(b_arg *arg, t_list_ls *mylist)
 
 // Cree une structure, initialise, check si args valide puis les gere
 
+/*
+**	if (nb_path != 1) condition à revoir pour l'affichage
+**  faire un sort_list_dates (comme le sort_list dans list.c) qui sort en fonction des dates
+**  utiliser les fonctions de retour d'Erreur
+**  regarder pq le -l est gogol
+*/
+
 int		main(int argc, char **argv)
 {
-	b_arg		arg[1];
-	int 		i;
+	b_arg			arg[1];
+	int				i;
 	t_list_ls	*mylist;
+	int				nb_path;
+	int				flag;
 
-	i = 0;
+	i = 1;
 	mylist = NULL;
+	nb_path = 0;
 	initialize_arg(arg);
-	while (++i < argc)
+
+	while (i < argc && argv[i][0] == '-')
+	{
 		if (check_arg(argv[i], arg, 0, 0) == -1)
 		{
 			ft_printf("Erreur dans les arguments");
 			return (1);
 		}
-	handle_arg(arg, mylist);
+		i++;
+	}
+
+	if (argv[i])
+		nb_path = argc - i;
+	else
+		nb_path = 1;
+
+				// ft_printf("Mon i = %i\n", i);
+				// ft_printf("Mon nb_path = %i\n", nb_path);
+
+	while (nb_path--)
+	{
+		if (check_path(argv[i], arg) == -1)
+		{
+			ft_printf("Erreur dans les paths");
+			return (1);
+		}
+		if (nb_path != 1)
+			ft_printf("%s:\n", arg->path);
+		handle_arg(arg, mylist);
+		if (nb_path != 1)
+			ft_printf("\n");
+		i++;
+	}
 	return (-1);
 }

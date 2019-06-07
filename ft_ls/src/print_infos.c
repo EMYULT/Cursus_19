@@ -4,20 +4,14 @@
 
 void	print_hardlinks(char *file, struct stat fs)
 {
-	if (lstat(file,&fs) < 0)
-		ft_printf("error petit con ");
-	else
-		ft_printf("%4d", fs.st_nlink);
+	ft_printf("%4d", fs.st_nlink);
 }
 
 // Fonction qui m'affiche la taille en bytes de mon fichier
 
 void print_size(char *file, struct stat fs)
 {
-	if (lstat(file, &fs) == -1)
-		ft_printf("error gros pd ");
-	else
-    	ft_printf(" %6lld", (long long) fs.st_size);
+	ft_printf(" %6lld", (long long) fs.st_size);
 }
 
 // Fonction qui affiche le proprietaire/grp pour chaque fichiers
@@ -26,11 +20,9 @@ void	print_owner(char *file, struct stat fs)
 {
 	struct passwd *pwd;
 
-	lstat(file, &fs);
 	pwd = getpwuid(fs.st_uid);
 	ft_printf(" %s ", pwd->pw_name);
 	ft_printf(" %s", ((getgrgid(pwd->pw_gid)->gr_name)));
-
 }
 
 // Fonction qui affiche les permissions de chaque fichiers
@@ -38,11 +30,6 @@ void	print_owner(char *file, struct stat fs)
 
 void	print_permissions(char *file, struct stat fs)
 {
-	if (lstat(file,&fs) < 0)
-	{
-		ft_printf("Erreur frero ");
-		return ;
-	}
 	ft_printf((S_ISDIR(fs.st_mode)) ? "d" : "-");
 	ft_printf((fs.st_mode & S_IRUSR) ? "r" : "-");
 	ft_printf((fs.st_mode & S_IWUSR) ? "w" : "-");
@@ -61,14 +48,8 @@ void	print_date(char *file, struct stat fs)
 {
 	char *date;
 
-	if (lstat(file, &fs) < 0)
-		ft_printf("erreur gogol ");
-	else
-	{
-		date = (ctime(&fs.st_mtime));
-	 	ft_printf(" %s", ft_strsub(date, 4, 3));
-		ft_printf(" %s", ft_strsub(date, 8, 2));
-		ft_printf(" %s ", ft_strsub(date, 11, 5));
-	}
-
+	date = (ctime(&fs.st_mtime));
+ 	ft_printf(" %s", ft_strsub(date, 4, 3));
+	ft_printf(" %s", ft_strsub(date, 8, 2));
+	ft_printf(" %s ", ft_strsub(date, 11, 5));
 }

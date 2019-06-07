@@ -73,7 +73,7 @@ int		check_arg(char *str, b_arg *arg, int i, int j);
 
 /* Prototypes arg specifiques */
 
-void	param_l(struct dirent *dir, DIR *d, struct stat fs, t_list_ls *mylist, b_arg *arg);
+void	param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
 void	param_R(struct dirent *dir, DIR *d, struct stat fs, t_list_ls *mylist, b_arg *arg);
 void	param_a(struct dirent *dir, DIR *d, struct stat fs, t_list_ls *mylist, b_arg *arg);
 void	param_r(struct dirent *dir, DIR *d, struct stat fs, t_list_ls *mylist, b_arg *arg);
