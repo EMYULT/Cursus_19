@@ -22,7 +22,7 @@ void	initialize_arg(b_arg *arg)
 	arg->is_r = 0;
 	arg->is_t = 0;
 	arg->with_arg = 0;
-	arg->path = ".";
+	arg->path = "./";
 }
 
 // Fonction qui parcour argv[1] et qui check les args
@@ -64,6 +64,8 @@ int		check_path(char *str, b_arg *arg)
 
 	j = 0;
 	i = 0;
+	if (!str)
+		return (0);
 	d = opendir(str);
 	if (d == NULL)
 		return (-1);
@@ -117,7 +119,6 @@ int		main(int argc, char **argv)
 	int				i;
 	t_list_ls	*mylist;
 	int				nb_path;
-	int				flag;
 
 	i = 1;
 	mylist = NULL;
@@ -139,6 +140,10 @@ int		main(int argc, char **argv)
 	else
 		nb_path = 1;
 
+	int flag;
+	flag = 0;
+	if (argv[i] && argv[i + 1])
+		flag = 1;
 				// ft_printf("Mon i = %i\n", i);
 				// ft_printf("Mon nb_path = %i\n", nb_path);
 
@@ -149,10 +154,10 @@ int		main(int argc, char **argv)
 			ft_printf("Erreur dans les paths");
 			return (1);
 		}
-		if (nb_path != 1)
+		if (flag == 1)
 			ft_printf("%s:\n", arg->path);
 		handle_arg(arg, mylist);
-		if (nb_path != 1)
+		if (nb_path != 0)
 			ft_printf("\n");
 		i++;
 	}
