@@ -45,6 +45,7 @@ struct s_list_ls
 {
 	char *file_name;
 	char *file_name_path;
+	char *date;
 	t_list_ls *next;
 };
 
