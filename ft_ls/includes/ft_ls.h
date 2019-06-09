@@ -35,6 +35,7 @@ typedef	struct	a_arg
 	int		is_r;
 	int		is_t;
 	char	*path;
+	char	**dir_path;
 }				b_arg;
 
 /* Définition d'une Liste */
@@ -68,7 +69,7 @@ void	print_date(char *file, struct stat fs);
 
 /* Prototypes arg generaux */
 
-void	handle_arg(b_arg *arg, t_list_ls *mylist);
+void	handle_arg(b_arg *arg);
 int		check_path(char *str, b_arg *arg);
 int		check_arg(char *str, b_arg *arg, int i, int j);
 
