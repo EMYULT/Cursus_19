@@ -23,6 +23,7 @@ void	initialize_arg(b_arg *arg)
 	arg->is_t = 0;
 	arg->with_arg = 0;
 	arg->path = "./";
+	arg->dir_path = NULL;
 }
 
 // Fonction qui parcour argv[1] et qui check les args
@@ -91,17 +92,29 @@ int		check_path(char *str, b_arg *arg)
 
 // Fonction qui applique les bons params
 
-void	handle_arg(b_arg *arg, t_list_ls *mylist)
+void	handle_arg(b_arg *arg)
 {
 
-	DIR						*d;
+	DIR				*d;
 	struct dirent	*dir;
+	t_list_ls		*mylist;
+	int				i;
 
+	i = -1;
+	mylist = NULL;
 	mylist = params(dir, d, mylist, arg);
+
 	if (arg->is_r == 1)
 		mylist = reverse_list(mylist);
 	if (arg->is_l != 1)
 		print_list(mylist);
+
+	while (dir_path[++i] != \0)
+	{
+		arg->path = dir_path[i];
+		handle_arg(arg);
+	}
+
 }
 
 // Cree une structure, initialise, check si args valide puis les gere
@@ -117,11 +130,9 @@ int		main(int argc, char **argv)
 {
 	b_arg			arg[1];
 	int				i;
-	t_list_ls	*mylist;
 	int				nb_path;
 
 	i = 1;
-	mylist = NULL;
 	nb_path = 0;
 	initialize_arg(arg);
 
@@ -156,7 +167,7 @@ int		main(int argc, char **argv)
 		}
 		if (flag == 1)
 			ft_printf("%s:\n", arg->path);
-		handle_arg(arg, mylist);
+		handle_arg(arg);
 		if (nb_path != 0)
 			ft_printf("\n");
 		i++;
