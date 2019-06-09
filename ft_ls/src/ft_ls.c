@@ -90,6 +90,32 @@ int		check_path(char *str, b_arg *arg)
 	return (1);
 }
 
+void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
+{
+	struct stat	fs;
+
+	while (mylist != NULL)
+	{
+		// ft_printf("Mon file_name = %s\n", mylist->file_name);
+		mylist->file_name_path = ft_strjoin(arg->path, mylist->file_name);
+		// ft_printf("Mon file_name_path = %s\n", mylist->file_name_path);
+		if (lstat(mylist->file_name_path, &fs) < 0)
+		{
+			ft_printf("error\n");
+			return ;
+		}
+		if (S_ISDIR(fs.st_mode))
+		{
+
+			arg->path = ft_strjoin(arg->path, mylist->file_name);
+			arg->path = ft_strjoin(arg->path, "/");
+			// ft_printf("Mon arg->path = %s\n", arg->path);
+			ft_printf("\n");
+			handle_arg(arg);
+		}
+		mylist = mylist->next;
+	}
+}
 // Fonction qui applique les bons params
 
 void	handle_arg(b_arg *arg)
@@ -98,9 +124,6 @@ void	handle_arg(b_arg *arg)
 	DIR				*d;
 	struct dirent	*dir;
 	t_list_ls		*mylist;
-	int				i;
-
-	i = -1;
 	mylist = NULL;
 	mylist = params(dir, d, mylist, arg);
 
@@ -108,13 +131,11 @@ void	handle_arg(b_arg *arg)
 		mylist = reverse_list(mylist);
 	if (arg->is_l != 1)
 		print_list(mylist);
-
-	while (dir_path[++i] != \0)
+	if (arg->is_R)
 	{
-		arg->path = dir_path[i];
-		handle_arg(arg);
+		ft_printf("%s:\n", arg->path);
+		recursive_dir(arg, mylist);
 	}
-
 }
 
 // Cree une structure, initialise, check si args valide puis les gere
