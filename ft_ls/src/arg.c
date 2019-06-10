@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 15:16:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/02/18 15:16:02 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/06/10 15:10:26 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,6 @@ void	param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 		mylist = mylist->next;
 	}
 	closedir(d);
-}
-
-void	param_R(struct dirent *dir, DIR *d, struct stat fs, t_list_ls *mylist, b_arg *arg)
-{
-	mylist = push_list(dir, d, mylist, arg);
-	mylist = sort_list(mylist, arg);
 }
 
 t_list_ls	*params(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)

@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/10 11:51:45 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/10 18:43:30 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 		//ft_printf("Mon file_name_path = %s\n", mylist->file_name_path);
 		if (lstat(mylist->file_name_path, &fs) < 0)
 		{
-			ft_printf("error\n");
+			ft_printf("eeeerror\n");
 			return ;
 		}
 		if (S_ISDIR(fs.st_mode))
@@ -113,7 +113,9 @@ void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 			ft_printf("\n%s:\n", mylist->file_name_path);
 			handle_arg(arg);
 		}
+		//printf("\033[0;31m" "\n%s:\n""\033[0m", mylist->file_name_path);
 		mylist = mylist->next;
+		
 	}
 }
 // Fonction qui applique les bons params
