@@ -35,7 +35,7 @@ typedef	struct	a_arg
 	int		is_r;
 	int		is_t;
 	char	*path;
-	char	**dir_path;
+	char	*dir_path;
 }				b_arg;
 
 /* Définition d'une Liste */
