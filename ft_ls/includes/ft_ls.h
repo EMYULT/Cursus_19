@@ -60,26 +60,22 @@ t_list_ls	*sort_list(t_list_ls *mylist, b_arg *arg);
 
 /* Prototypes infos fichiers */
 
-void	print_permissions(char *file, struct stat fs);
-void	print_hardlinks(char *file, struct stat fs);
-void	print_owner(char *file, struct stat fs);
-void 	print_size(char *file, struct stat fs);
-void	print_date(char *file, struct stat fs);
+void		print_permissions(char *file, struct stat fs);
+void		print_hardlinks(char *file, struct stat fs);
+void		print_owner(char *file, struct stat fs);
+void 		print_size(char *file, struct stat fs);
+void		print_date(char *file, struct stat fs);
 
 
 /* Prototypes arg generaux */
 
-void	handle_arg(b_arg *arg);
-int		check_path(char *str, b_arg *arg);
-int		check_arg(char *str, b_arg *arg, int i, int j);
+void		handle_arg(b_arg *arg);
+int			check_path(char *str, b_arg *arg);
+int			check_arg(char *str, b_arg *arg, int i, int j);
 
 /* Prototypes arg specifiques */
 
-void	param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
-void	param_R(struct dirent *dir, DIR *d, struct stat fs, t_list_ls *mylist, b_arg *arg);
-void	param_a(struct dirent *dir, DIR *d, struct stat fs, t_list_ls *mylist, b_arg *arg);
-void	param_r(struct dirent *dir, DIR *d, struct stat fs, t_list_ls *mylist, b_arg *arg);
-void	param_t(struct dirent *dir, DIR *d, struct stat fs, t_list_ls *mylist, b_arg *arg);
+void		param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
 t_list_ls	*params(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
 
 #endif

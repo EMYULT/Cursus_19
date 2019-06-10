@@ -86,6 +86,7 @@ int		check_path(char *str, b_arg *arg)
 	}
 	else
 		arg->path = str;
+	ft_printf("ici ici ici %s\n", arg->path);
 	closedir(d);
 	return (1);
 }
@@ -93,40 +94,37 @@ int		check_path(char *str, b_arg *arg)
 void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 {
 	struct stat	fs;
-	char	*tmp;
+	char		*tmp;
 
 	tmp = arg->path;
 	while (mylist != NULL)
 	{
-		// ft_printf("Mon file_name = %s\n", mylist->file_name);
 		mylist->file_name_path = ft_strjoin(tmp, mylist->file_name);
-		//ft_printf("Mon file_name_path = %s\n", mylist->file_name_path);
+		if (!mylist->file_name_path)
+			return ;
 		if (lstat(mylist->file_name_path, &fs) < 0)
 		{
+			ft_printf("Mon file_name_path = %s\n", mylist->file_name_path);
 			ft_printf("error\n");
 			return ;
 		}
 		if (S_ISDIR(fs.st_mode))
 		{
 			arg->path = ft_strjoin(mylist->file_name_path, "/");
-			//ft_printf("Mon arg->path = %s\n", arg->path);
 			ft_printf("\n%s:\n", mylist->file_name_path);
 			handle_arg(arg);
 		}
 		mylist = mylist->next;
 	}
 }
-// Fonction qui applique les bons params
 
 void	handle_arg(b_arg *arg)
 {
-
 	DIR				*d;
 	struct dirent	*dir;
 	t_list_ls		*mylist;
-	mylist = NULL;
-	mylist = params(dir, d, mylist, arg);
 
+	mylist = params(dir, d, mylist, arg);
 	if (arg->is_r == 1)
 		mylist = reverse_list(mylist);
 	if (arg->is_l != 1)
@@ -135,25 +133,16 @@ void	handle_arg(b_arg *arg)
 		recursive_dir(arg, mylist);
 }
 
-// Cree une structure, initialise, check si args valide puis les gere
-
-/*
-**	if (nb_path != 1) condition à revoir pour l'affichage
-**  faire un sort_list_dates (comme le sort_list dans list.c) qui sort en fonction des dates
-**  utiliser les fonctions de retour d'Erreur
-**  regarder pq le -l est gogol
-*/
-
 int		main(int argc, char **argv)
 {
-	b_arg			arg[1];
-	int				i;
-	int				nb_path;
+	b_arg	arg[1];
+	int		i;
+	int		nb_path;
+	int		flag;
 
 	i = 1;
-	nb_path = 0;
+	flag = 0;
 	initialize_arg(arg);
-
 	while (i < argc && argv[i][0] == '-')
 	{
 		if (check_arg(argv[i], arg, 0, 0) == -1)
@@ -163,18 +152,8 @@ int		main(int argc, char **argv)
 		}
 		i++;
 	}
-	if (argv[i])
-		nb_path = argc - i;
-	else
-		nb_path = 1;
-
-	int flag;
-	flag = 0;
-	if (argv[i] && argv[i + 1])
-		flag = 1;
-	// ft_printf("Mon i = %i\n", i);
-	// ft_printf("Mon nb_path = %i\n", nb_path);
-
+	nb_path = (argv[i]) ? argc - i : 1;
+	flag = (argv[i] && argv[i + 1]) ? 1 : 0;
 	while (nb_path--)
 	{
 		if (check_path(argv[i], arg) == -1)
