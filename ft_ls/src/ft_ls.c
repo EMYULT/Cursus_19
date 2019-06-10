@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/02/15 12:02:02 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/06/10 11:51:45 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,14 @@ int		check_path(char *str, b_arg *arg)
 void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 {
 	struct stat	fs;
+	char	*tmp;
 
+	tmp = arg->path;
 	while (mylist != NULL)
 	{
 		// ft_printf("Mon file_name = %s\n", mylist->file_name);
-		mylist->file_name_path = ft_strjoin(arg->path, mylist->file_name);
-		// ft_printf("Mon file_name_path = %s\n", mylist->file_name_path);
+		mylist->file_name_path = ft_strjoin(tmp, mylist->file_name);
+		//ft_printf("Mon file_name_path = %s\n", mylist->file_name_path);
 		if (lstat(mylist->file_name_path, &fs) < 0)
 		{
 			ft_printf("error\n");
@@ -106,11 +108,9 @@ void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 		}
 		if (S_ISDIR(fs.st_mode))
 		{
-
-			arg->path = ft_strjoin(arg->path, mylist->file_name);
-			arg->path = ft_strjoin(arg->path, "/");
-			// ft_printf("Mon arg->path = %s\n", arg->path);
-			ft_printf("\n");
+			arg->path = ft_strjoin(mylist->file_name_path, "/");
+			//ft_printf("Mon arg->path = %s\n", arg->path);
+			ft_printf("\n%s:\n", mylist->file_name_path);
 			handle_arg(arg);
 		}
 		mylist = mylist->next;
@@ -132,10 +132,7 @@ void	handle_arg(b_arg *arg)
 	if (arg->is_l != 1)
 		print_list(mylist);
 	if (arg->is_R)
-	{
-		ft_printf("%s:\n", arg->path);
 		recursive_dir(arg, mylist);
-	}
 }
 
 // Cree une structure, initialise, check si args valide puis les gere
@@ -166,7 +163,6 @@ int		main(int argc, char **argv)
 		}
 		i++;
 	}
-
 	if (argv[i])
 		nb_path = argc - i;
 	else
@@ -176,8 +172,8 @@ int		main(int argc, char **argv)
 	flag = 0;
 	if (argv[i] && argv[i + 1])
 		flag = 1;
-				// ft_printf("Mon i = %i\n", i);
-				// ft_printf("Mon nb_path = %i\n", nb_path);
+	// ft_printf("Mon i = %i\n", i);
+	// ft_printf("Mon nb_path = %i\n", nb_path);
 
 	while (nb_path--)
 	{
