@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/10 18:51:33 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/12 13:22:00 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int		check_path(char *str, b_arg *arg)
 	}
 	else
 		arg->path = str;
-	ft_printf("ici ici ici %s\n", arg->path);
+	//ft_printf("ici ici ici %s\n", arg->path);
 	closedir(d);
 	return (1);
 }
@@ -96,6 +96,8 @@ void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 	struct stat	fs;
 	char		*tmp;
 
+	//ft_putstr("NEW TURN :\n");
+	//print_list(mylist);
 	tmp = arg->path;
 	while (mylist != NULL)
 	{
@@ -105,6 +107,7 @@ void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 		if (lstat(mylist->file_name_path, &fs) < 0)
 		{
 			ft_printf("eeeerror\n");
+			ft_printf("\n%s:\n", mylist->file_name_path);
 			return ;
 		}
 		if (S_ISDIR(fs.st_mode))
@@ -113,9 +116,7 @@ void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 			ft_printf("\n%s:\n", mylist->file_name_path);
 			handle_arg(arg);
 		}
-		//printf("\033[0;31m" "\n%s:\n""\033[0m", mylist->file_name_path);
 		mylist = mylist->next;
-		
 	}
 }
 

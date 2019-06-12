@@ -6,13 +6,13 @@
 #    By: hde-ghel <hde-ghel@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/17 16:02:33 by hde-ghel          #+#    #+#              #
-#    Updated: 2019/05/28 15:36:07 by tjuzen           ###   ########.fr        #
+#    Updated: 2019/06/11 17:57:36 by hde-ghel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 CC = gcc
-FLAGS = #-Wall -Werror -Wextra
+FLAGS = -fsanitize=address #-Wall -Werror -Wextra
 LIBFT = $(LIBDIR)libftprintf.a
 SRCDIR = ./src/
 OBJDIR = ./obj/
