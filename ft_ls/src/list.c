@@ -79,18 +79,29 @@ mylist->file_name_path = ft_strjoin(arg->path, mylist->file_name);
 */
 t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 {
+	char *tmp;
 	if (arg->is_a == 1)
 	{
 		d = opendir(arg->path);
 		while ((dir = readdir(d)) != NULL)
+		{
 			if (dir->d_name[0] == '.')
-				mylist = add_link_front(mylist, dir->d_name);
+			{
+				tmp = strdup(dir->d_name);
+				mylist = add_link_front(mylist, tmp);
+			}
+		}
 		closedir(d);
 	}
 	d = opendir(arg->path);
 	while ((dir = readdir(d)) != NULL)
+	{
 		if (dir->d_name[0] != '.')
-			mylist = add_link_front(mylist, dir->d_name);
+		{
+			tmp = strdup(dir->d_name);
+			mylist = add_link_front(mylist, tmp);
+		}
+	}
 	closedir(d);
 	return (mylist);
 }
