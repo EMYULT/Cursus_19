@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/12 13:22:00 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/13 17:14:28 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	initialize_arg(b_arg *arg)
 
 // Fonction qui parcour argv[1] et qui check les args
 
-int	check_arg(char *str, b_arg *arg, int i, int j)
+int		check_arg(char *str, b_arg *arg, int i, int j)
 {
 	while (str[j])
 		j++;
@@ -91,7 +91,7 @@ int		check_path(char *str, b_arg *arg)
 	return (1);
 }
 
-void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
+void		recursive_dir(b_arg *arg, t_list_ls *mylist)
 {
 	struct stat	fs;
 	char		*tmp;
@@ -107,7 +107,6 @@ void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 		if (lstat(mylist->file_name_path, &fs) < 0)
 		{
 			ft_printf("eeeerror\n");
-			ft_printf("\n%s:\n", mylist->file_name_path);
 			return ;
 		}
 		if (S_ISDIR(fs.st_mode))
@@ -120,22 +119,22 @@ void 	recursive_dir(b_arg *arg, t_list_ls *mylist)
 	}
 }
 
-void	handle_arg(b_arg *arg)
+void		handle_arg(b_arg *arg)
 {
-	DIR				*d;
-	struct dirent	*dir;
 	t_list_ls		*mylist;
 
-	mylist = params(dir, d, mylist, arg);
-	if (arg->is_r == 1)
-		mylist = reverse_list(mylist);
-	if (arg->is_l != 1)
+	mylist = params(mylist, arg);
+	if (arg->is_l != 1 && mylist != NULL)
+	{
+		if (arg->is_r == 1)
+			mylist = reverse_list(mylist);
 		print_list(mylist);
+	}
 	if (arg->is_R)
 		recursive_dir(arg, mylist);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	b_arg	arg[1];
 	int		i;
@@ -170,5 +169,6 @@ int		main(int argc, char **argv)
 			ft_printf("\n");
 		i++;
 	}
-	return (-1);
+	ft_printf("\nThe end");
+	return (0);
 }

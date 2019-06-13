@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 15:16:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/11 17:59:00 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/13 17:13:02 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,28 @@
 // Je mets sous forme de string mes fichiers non cachés (!(.)) dans ma liste
 // Je parcours ma liste en affichant les str et permissions
 
-void	param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
+t_list_ls	*param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 {
-	struct stat 	fs;
+	struct stat		fs;
+	t_list_ls		*tmp;
 
 	mylist = push_list(dir, d, mylist, arg);
+	if (mylist != NULL)
+	{
 	mylist = sort_list(mylist, arg);
 	if (arg->is_r == 1)
 		mylist = reverse_list(mylist);
+	tmp = mylist;
 	d = opendir(arg->path);
 	while(mylist != NULL && (dir = readdir(d)) != NULL)
 	{
 		mylist->file_name_path = ft_strjoin(arg->path, mylist->file_name);
 		if (!mylist->file_name_path)
-			return ;
-		if (lstat(mylist->file_name_path,&fs) < 0)
+			return(NULL);
+		if (lstat(mylist->file_name_path, &fs) < 0)
 		{
-			ft_printf("error petit con ");
-			return ;
+			ft_printf("error file doesn not exit recursive ");
+			return(NULL);
 		}
 		print_permissions(mylist->file_name, fs);
 		print_hardlinks(mylist->file_name, fs);
@@ -42,20 +46,30 @@ void	param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 		print_size(mylist->file_name, fs);
 		print_date(mylist->file_name, fs);
 		ft_printf("%s\n", mylist->file_name);
-		//mylist = mylist->next;
+		mylist = mylist->next;
 	}
 	closedir(d);
+	return(tmp);
+	}
+	else
+		return(NULL);
 }
 
-t_list_ls	*params(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
+t_list_ls	*params(t_list_ls *mylist, b_arg *arg)
 {
+	DIR				*d;
+	struct dirent	*dir;
+
 	mylist = NULL;
 	if (arg->is_l == 1)
-		param_l(dir, d, mylist, arg);
+		mylist = param_l(dir, d, mylist, arg);
 	else
 	{
 		mylist = push_list(dir, d, mylist, arg);
-		mylist = sort_list(mylist, arg);
+		if (mylist != NULL)
+			mylist = sort_list(mylist, arg);
+		else
+			return (NULL);
 	}
 	return (mylist);
 }
