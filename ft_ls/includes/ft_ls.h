@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/02/15 12:02:05 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/06/13 14:50:52 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int			check_arg(char *str, b_arg *arg, int i, int j);
 
 /* Prototypes arg specifiques */
 
-void		param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
-t_list_ls	*params(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
+t_list_ls	*param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
+t_list_ls	*params(t_list_ls *mylist, b_arg *arg);
 
 #endif
