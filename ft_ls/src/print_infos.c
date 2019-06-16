@@ -46,10 +46,10 @@ void	print_permissions(char *file, struct stat fs)
 
 void	print_date(char *file, struct stat fs)
 {
-	char *date;
+	char *coucoudate;
 
-	date = (ctime(&fs.st_mtime));
- 	ft_printf(" %s", ft_strsub(date, 4, 3));
-	ft_printf(" %s", ft_strsub(date, 8, 2));
-	ft_printf(" %s ", ft_strsub(date, 11, 5));
+	coucoudate = (ctime(&fs.st_mtime));
+ 	ft_printf(" %s", ft_strsub(coucoudate, 4, 3));
+	ft_printf(" %s", ft_strsub(coucoudate, 8, 2));
+	ft_printf(" %s ", ft_strsub(coucoudate, 11, 5));
 }

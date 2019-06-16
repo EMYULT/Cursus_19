@@ -13,13 +13,20 @@
 
 #include "../includes/ft_ls.h"
 
+t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2)
+{
+	p1->next = p2->next;
+	p2->next = p1;
+	return (p2);
+}
+
 void print_list(t_list_ls *mylist)
 {
 	if (mylist == NULL)
 		return;
 	while(mylist != NULL)
 	{
-		ft_printf("%s\n", mylist->file_name);
+		ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 		mylist = mylist->next;
 	}
 }
@@ -44,14 +51,37 @@ t_list_ls *reverse_list(t_list_ls *mylist)
 	return (mylist);
 }
 
-t_list_ls *add_link_front(t_list_ls *mylist, char *str)
+t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 {
-	t_list_ls *tmp;
+	t_list_ls	*tmp;
+	struct stat fs;
+	char		*tmp2;
+
 
 	tmp = malloc(sizeof(t_list_ls));
 	if (tmp)
 	{
 		tmp->file_name = str;
+		if (arg->is_l == 1)
+		{
+			tmp2= ft_strjoin(arg->path, tmp->file_name);
+			if (lstat(tmp2, &fs) < 0)
+			{
+				ft_printf("error file doesn not exit recursive ");
+				return(NULL);
+			}
+			tmp->date = fs.st_mtime;
+		}
+		if (arg->is_t == 1 && arg->is_l != 1)
+		{
+			tmp2= ft_strjoin(arg->path, tmp->file_name);
+			if (lstat(tmp2, &fs) < 0)
+			{
+				ft_printf("error file doesn not exit recursive ");
+				return(NULL);
+			}
+			tmp->date = fs.st_mtime;
+		}
 		tmp->next = mylist;
 	}
 	else
@@ -59,37 +89,58 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str)
 	return (tmp);
 }
 
-t_list_ls	*sort_list(t_list_ls *mylist, b_arg *arg)
+t_list_ls	*sort_ascii(t_list_ls *mylist)
 {
-	t_list_ls	*curseur1;
-	t_list_ls	*curseur2;
-	char		*tmp;
-
-	curseur1 = mylist;
-	curseur2 = mylist->next;
-	while (curseur2 != NULL)
+	if (!mylist)
+		return (NULL);
+	if (mylist->next && ft_strcmp(mylist->file_name, mylist->next->file_name) > 0)
+		mylist = lst_swap(mylist, mylist->next);
+	mylist->next = sort_ascii(mylist->next);
+	if (mylist->next && ft_strcmp(mylist->file_name, mylist->next->file_name) > 0)
 	{
-		if (ft_strcmp(curseur1->file_name, curseur2->file_name) > 0)
-		{
-			tmp = curseur1->file_name;
-			curseur1->file_name = curseur2->file_name;
-			curseur2->file_name = tmp;
-			curseur1 = mylist;
-			curseur2 = mylist->next;
-		}
-		else
-		{
-			curseur1 = curseur1->next;
-			curseur2 = curseur2->next;
-		}
+		mylist = lst_swap(mylist, mylist->next);
+		mylist->next = sort_ascii(mylist->next);
 	}
 	return (mylist);
 }
-/*
 
-mylist->file_name_path = ft_strjoin(arg->path, mylist->file_name);
+t_list_ls	*sort_time(t_list_ls *mylist)
+{
+	if (!mylist)
+		return (NULL);
+	if (mylist->next && (mylist->date < mylist->next->date))
+		mylist = lst_swap(mylist, mylist->next);
+	mylist->next = sort_time(mylist->next);
+	if (mylist->next && (mylist->date < mylist->next->date))
+	{
+		mylist = lst_swap(mylist, mylist->next);
+		mylist->next = sort_time(mylist->next);
+	}
+	return (mylist);
+}
 
-*/
+t_list_ls *add_link_front_dir(t_list_ls *mylistdir, char *str, b_arg *arg)
+{
+	t_list_ls	*tmp;
+	struct stat 	fs;
+
+	tmp = malloc(sizeof(t_list_ls));
+	if (tmp)
+	{
+		tmp->file_name = str;
+		if (lstat(str, &fs) < 0)
+		{
+			ft_printf("error file doesn not exit recursive ");
+			return(NULL);
+		}
+		tmp->date = fs.st_mtime;
+		tmp->next = mylistdir;
+	}
+	else
+		return (NULL);
+	return (tmp);
+}
+
 t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 {
 	char *tmp;
@@ -104,7 +155,7 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 			{
 				if (!(tmp = strdup(dir->d_name)))
 					return (NULL);
-				mylist = add_link_front(mylist, tmp);
+				mylist = add_link_front(mylist, tmp, arg);
 			}
 		}
 		closedir(d);
@@ -117,7 +168,7 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 		{
 			if (!(tmp = strdup(dir->d_name)))
 				return (NULL);
-			mylist = add_link_front(mylist, tmp);
+			mylist = add_link_front(mylist, tmp, arg);
 		}
 	}
 	closedir(d);
