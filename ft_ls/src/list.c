@@ -28,6 +28,8 @@ void print_list(t_list_ls *mylist)
 	{
 		if (mylist->is_dir == 1)
 			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
+		else if (mylist->is_dir == 666)
+			ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 		else
 			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
 		mylist = mylist->next;
@@ -81,12 +83,14 @@ void print_full_list(t_list_ls *mylist)
 	}
 	while(mylist != NULL)
 	{
-		ft_printf("%s  %*d %*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
+		ft_printf("%s  %*d %-*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
 		ft_printf(" %s", ft_strsub(mylist->date_string, 4, 3));
 		ft_printf(" %s", ft_strsub(mylist->date_string, 8, 2));
 		ft_printf(" %s ", ft_strsub(mylist->date_string, 11, 5));
 		if (mylist->is_dir == 1)
 			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
+		else if (mylist->is_dir == 666)
+			ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 		else
 			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
 		mylist = mylist->next;
@@ -141,7 +145,13 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 			tmp->perm[0] = '-';
 		tmp->perm[1] = ((fs.st_mode & S_IRUSR) ? 'r' : '-');
 		tmp->perm[2] = ((fs.st_mode & S_IWUSR) ? 'w' : '-');
-		tmp->perm[3] = ((fs.st_mode & S_IXUSR) ? 'x' : '-');
+		if (fs.st_mode & S_IXUSR && tmp->is_dir != 1)
+		{
+			tmp->perm[3] = 'x';
+			tmp->is_dir = 666;
+		}
+		else
+			tmp->perm[3] = '-';
 		tmp->perm[4] = ((fs.st_mode & S_IRGRP) ? 'r' : '-');
 		tmp->perm[5] = ((fs.st_mode & S_IWGRP) ? 'w' : '-');
 		tmp->perm[6] = ((fs.st_mode & S_IXGRP) ? 'x' : '-');

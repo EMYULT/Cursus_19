@@ -28,8 +28,6 @@ t_list_ls	*params(t_list_ls *mylist, b_arg *arg)
 	return (mylist);
 }
 
-// Fonction qui initialise chaque arg de ma struct
-
 void	initialize_arg(b_arg *arg)
 {
 	arg->is_l = 0;
@@ -39,8 +37,6 @@ void	initialize_arg(b_arg *arg)
 	arg->is_t = 0;
 	arg->path = "./";
 }
-
-// Fonction qui parcour argv[1] et qui check les args
 
 int		check_arg(char *str, b_arg *arg, int i, int j)
 {
