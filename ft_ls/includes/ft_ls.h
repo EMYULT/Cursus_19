@@ -38,14 +38,12 @@
 
 typedef	struct	a_arg
 {
-	int		with_arg;
 	int		is_l;
 	int		is_R;
 	int		is_a;
 	int		is_r;
 	int		is_t;
 	char	*path;
-	char	*dir_path;
 }				b_arg;
 
 /* Définition d'une Liste */
@@ -54,20 +52,27 @@ typedef struct s_list_ls t_list_ls;
 
 struct s_list_ls
 {
-	char		*file_name;
-	char		*file_name_path;
-	long int	date;
-	t_list_ls	*next;
+	char			*file_name;
+	char			*file_name_path;
+	long int		date;
+	int				is_dir;
+	int				hardlinks;
+	long long int	size;
+	char			*pwname;
+	char			*grname;
+	char			*date_string;
+	char			perm[11];
+	t_list_ls		*next;
 };
 
 /* Prototypes liste */
 t_list_ls	*sort_ascii(t_list_ls *mylist);
 t_list_ls	*sort_time(t_list_ls *mylist);
-
+void 		print_full_list(t_list_ls *mylist);
 t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2);
 t_list_ls 	*reverse_list(t_list_ls *mylist);
 t_list_ls 	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg);
-t_list_ls *add_link_front_dir(t_list_ls *mylistdir, char *str, b_arg *arg);
+t_list_ls 	*add_link_front_dir(t_list_ls *mylistdir, char *str, b_arg *arg);
 void 		print_list(t_list_ls *mylist);
 t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
 t_list_ls	*sort_list(t_list_ls *mylist, b_arg *arg);

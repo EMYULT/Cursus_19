@@ -26,7 +26,69 @@ void print_list(t_list_ls *mylist)
 		return;
 	while(mylist != NULL)
 	{
-		ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
+		if (mylist->is_dir == 1)
+			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
+		else
+			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
+		mylist = mylist->next;
+	}
+}
+
+int		length_int_easy(int x)
+{
+    if (x >= 1000000000)
+		return 10;
+    if (x >= 100000000)
+		return 9;
+    if (x >= 10000000)
+		return 8;
+    if (x >= 1000000)
+		return 7;
+    if (x >= 100000)
+		return 6;
+    if (x >= 10000)
+		return 5;
+    if (x >= 1000)
+		return 4;
+    if (x >= 100)
+		return 3;
+    if (x >= 10)
+		return 2;
+    return 1;
+}
+
+void print_full_list(t_list_ls *mylist)
+{
+	int 		big_hard = 0;
+	int 		big_pw = 0;
+	int 		big_gr = 0;
+	int 		big_size = 0;
+	t_list_ls	*tmp = mylist;
+
+	if (mylist == NULL)
+		return;
+	while (tmp != NULL)
+	{
+		if (length_int_easy(tmp->hardlinks) > big_hard)
+			big_hard = length_int_easy(tmp->hardlinks);
+		if (ft_strlen(tmp->pwname) > big_pw)
+			big_pw = (int)ft_strlen(tmp->pwname);
+		if (ft_strlen(tmp->grname) > big_gr)
+			big_gr = (int)ft_strlen(tmp->grname);
+		if (length_int_easy(tmp->size) > big_size)
+			big_size = length_int_easy(tmp->size);
+		tmp = tmp->next;
+	}
+	while(mylist != NULL)
+	{
+		ft_printf("%s  %*d %*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
+		ft_printf(" %s", ft_strsub(mylist->date_string, 4, 3));
+		ft_printf(" %s", ft_strsub(mylist->date_string, 8, 2));
+		ft_printf(" %s ", ft_strsub(mylist->date_string, 11, 5));
+		if (mylist->is_dir == 1)
+			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
+		else
+			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
 		mylist = mylist->next;
 	}
 }
@@ -42,10 +104,10 @@ t_list_ls *reverse_list(t_list_ls *mylist)
 	current = mylist;
 	while (current != NULL)
 	{
-			next  = current->next;
-			current->next = prev;
-			prev = current;
-			current = next;
+		next = current->next;
+		current->next = prev;
+		prev = current;
+		current = next;
 	}
 	mylist = prev;
 	return (mylist);
@@ -54,34 +116,44 @@ t_list_ls *reverse_list(t_list_ls *mylist)
 t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 {
 	t_list_ls	*tmp;
-	struct stat fs;
+	struct stat	fs;
 	char		*tmp2;
-
+	struct passwd *pwd;
 
 	tmp = malloc(sizeof(t_list_ls));
 	if (tmp)
 	{
 		tmp->file_name = str;
-		if (arg->is_l == 1)
+		tmp2= ft_strjoin(arg->path, tmp->file_name);
+		if (lstat(tmp2, &fs) < 0)
 		{
-			tmp2= ft_strjoin(arg->path, tmp->file_name);
-			if (lstat(tmp2, &fs) < 0)
-			{
-				ft_printf("error file doesn not exit recursive ");
-				return(NULL);
-			}
-			tmp->date = fs.st_mtime;
+			ft_printf("error file doesn not exit recursive ");
+			return(NULL);
 		}
-		if (arg->is_t == 1 && arg->is_l != 1)
+		pwd = getpwuid(fs.st_uid);
+		tmp->date = fs.st_mtime;
+		if (S_ISDIR(fs.st_mode))
 		{
-			tmp2= ft_strjoin(arg->path, tmp->file_name);
-			if (lstat(tmp2, &fs) < 0)
-			{
-				ft_printf("error file doesn not exit recursive ");
-				return(NULL);
-			}
-			tmp->date = fs.st_mtime;
+			tmp->perm[0] = 'd';
+			tmp->is_dir = 1;
 		}
+		else
+			tmp->perm[0] = '-';
+		tmp->perm[1] = ((fs.st_mode & S_IRUSR) ? 'r' : '-');
+		tmp->perm[2] = ((fs.st_mode & S_IWUSR) ? 'w' : '-');
+		tmp->perm[3] = ((fs.st_mode & S_IXUSR) ? 'x' : '-');
+		tmp->perm[4] = ((fs.st_mode & S_IRGRP) ? 'r' : '-');
+		tmp->perm[5] = ((fs.st_mode & S_IWGRP) ? 'w' : '-');
+		tmp->perm[6] = ((fs.st_mode & S_IXGRP) ? 'x' : '-');
+		tmp->perm[7] = ((fs.st_mode & S_IROTH) ? 'r' : '-');
+		tmp->perm[8] = ((fs.st_mode & S_IWOTH) ? 'w' : '-');
+		tmp->perm[9] = ((fs.st_mode & S_IXOTH) ? 'x' : '-');
+		tmp->perm[10] = '\0';
+		tmp->hardlinks = fs.st_nlink;
+		tmp->size = (long long)fs.st_size;
+		tmp->pwname = pwd->pw_name;
+		tmp->grname = (getgrgid(pwd->pw_gid)->gr_name);
+		tmp->date_string = (ctime(&fs.st_mtime));
 		tmp->next = mylist;
 	}
 	else
@@ -121,7 +193,7 @@ t_list_ls	*sort_time(t_list_ls *mylist)
 
 t_list_ls *add_link_front_dir(t_list_ls *mylistdir, char *str, b_arg *arg)
 {
-	t_list_ls	*tmp;
+	t_list_ls		*tmp;
 	struct stat 	fs;
 
 	tmp = malloc(sizeof(t_list_ls));
