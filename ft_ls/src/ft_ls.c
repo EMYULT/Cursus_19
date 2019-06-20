@@ -12,6 +12,22 @@
 
 #include "../includes/ft_ls.h"
 
+t_list_ls	*params(t_list_ls *mylist, b_arg *arg)
+{
+	DIR				*d;
+	struct dirent	*dir;
+
+	mylist = NULL;
+	dir = NULL;
+	d = NULL;
+	mylist = push_list(dir, d, mylist, arg);
+	if (mylist != NULL)
+		mylist = sort_ascii(mylist);
+	else
+		return (NULL);
+	return (mylist);
+}
+
 // Fonction qui initialise chaque arg de ma struct
 
 void	initialize_arg(b_arg *arg)
@@ -21,9 +37,7 @@ void	initialize_arg(b_arg *arg)
 	arg->is_a = 0;
 	arg->is_r = 0;
 	arg->is_t = 0;
-	arg->with_arg = 0;
 	arg->path = "./";
-	arg->dir_path = NULL;
 }
 
 // Fonction qui parcour argv[1] et qui check les args
@@ -37,7 +51,6 @@ int		check_arg(char *str, b_arg *arg, int i, int j)
 		i++;
 		if (str[i] == '-')
 			return (str[i + 1]) ? (-1) : (1);
-		arg->with_arg = 1;
 		while (str[i] == 'l' || str[i] == 'R' || str[i] == 'a' ||
 		str[i] == 'r' || str[i] == 't')
 		{
@@ -86,7 +99,6 @@ int		check_path(char *str, b_arg *arg)
 	}
 	else
 		arg->path = str;
-	//ft_printf("ici ici ici %s\n", arg->path);
 	closedir(d);
 	return (1);
 }
@@ -96,8 +108,6 @@ void		recursive_dir(b_arg *arg, t_list_ls *mylist)
 	struct stat	fs;
 	char		*tmp;
 
-	//ft_putstr("NEW TURN :\n");
-	//print_list(mylist);
 	tmp = arg->path;
 	while (mylist != NULL)
 	{
@@ -123,12 +133,18 @@ void		handle_arg(b_arg *arg)
 {
 	t_list_ls		*mylist;
 
+	mylist = NULL;
 	mylist = params(mylist, arg);
-	if (arg->is_l != 1 && mylist != NULL)
+	if (mylist != NULL)
 	{
+		if (arg->is_t == 1)
+			mylist = sort_time(mylist);
 		if (arg->is_r == 1)
 			mylist = reverse_list(mylist);
-		print_list(mylist);
+		if (arg->is_l != 1)
+			print_list(mylist);
+		else
+			print_full_list(mylist);
 	}
 	if (arg->is_R)
 		recursive_dir(arg, mylist);
@@ -136,11 +152,16 @@ void		handle_arg(b_arg *arg)
 
 int			main(int argc, char **argv)
 {
-	b_arg	arg[1];
-	int		i;
-	int		nb_path;
-	int		flag;
+	b_arg			arg[1];
+	int				i;
+	int				flag;
+	t_list_ls		*mylistdir;
+	struct dirent	*dir;
+	DIR				*d;
+	char 			*tmp;
 
+	dir = NULL;
+	mylistdir = NULL;
 	i = 1;
 	flag = 0;
 	initialize_arg(arg);
@@ -153,22 +174,39 @@ int			main(int argc, char **argv)
 		}
 		i++;
 	}
-	nb_path = (argv[i]) ? argc - i : 1;
 	flag = (argv[i] && argv[i + 1]) ? 1 : 0;
-	while (nb_path--)
+	if (i == argc)
+		handle_arg(arg);
+	while (i < argc)
 	{
-		if (check_path(argv[i], arg) == -1)
+		if (!(d = opendir(argv[i])))
 		{
-			ft_printf("Erreur dans les paths");
+			ft_printf("Erreur ggegregrents");
 			return (1);
 		}
+		if (!(tmp = strdup(argv[i])))
+		{
+			ft_printf("Erddddments");
+			return (1);
+		}
+		mylistdir = add_link_front_dir(mylistdir, tmp);
+		closedir(d);
+		i++;
+	}
+	mylistdir = sort_ascii(mylistdir);
+	if (arg->is_t == 1)
+		mylistdir = sort_time(mylistdir);
+	if (arg->is_r == 1)
+		mylistdir = reverse_list(mylistdir);
+	while (mylistdir != NULL)
+	{
+		check_path(mylistdir->file_name, arg);
 		if (flag == 1)
 			ft_printf("%s:\n", arg->path);
 		handle_arg(arg);
-		if (nb_path != 0)
+		if (mylistdir->next)
 			ft_printf("\n");
-		i++;
+		mylistdir = mylistdir->next;
 	}
-	ft_printf("\nThe end");
 	return (0);
 }
