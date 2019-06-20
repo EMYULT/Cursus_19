@@ -71,9 +71,9 @@ void print_full_list(t_list_ls *mylist)
 	{
 		if (length_int_easy(tmp->hardlinks) > big_hard)
 			big_hard = length_int_easy(tmp->hardlinks);
-		if (ft_strlen(tmp->pwname) > big_pw)
+		if ((int)ft_strlen(tmp->pwname) > big_pw)
 			big_pw = (int)ft_strlen(tmp->pwname);
-		if (ft_strlen(tmp->grname) > big_gr)
+		if ((int)ft_strlen(tmp->grname) > big_gr)
 			big_gr = (int)ft_strlen(tmp->grname);
 		if (length_int_easy(tmp->size) > big_size)
 			big_size = length_int_easy(tmp->size);
@@ -153,7 +153,7 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 		tmp->size = (long long)fs.st_size;
 		tmp->pwname = pwd->pw_name;
 		tmp->grname = (getgrgid(pwd->pw_gid)->gr_name);
-		tmp->date_string = (ctime(&fs.st_mtime));
+		tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
 		tmp->next = mylist;
 	}
 	else
@@ -191,7 +191,7 @@ t_list_ls	*sort_time(t_list_ls *mylist)
 	return (mylist);
 }
 
-t_list_ls *add_link_front_dir(t_list_ls *mylistdir, char *str, b_arg *arg)
+t_list_ls *add_link_front_dir(t_list_ls *mylistdir, char *str)
 {
 	t_list_ls		*tmp;
 	struct stat 	fs;

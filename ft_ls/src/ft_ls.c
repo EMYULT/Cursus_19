@@ -18,6 +18,8 @@ t_list_ls	*params(t_list_ls *mylist, b_arg *arg)
 	struct dirent	*dir;
 
 	mylist = NULL;
+	dir = NULL;
+	d = NULL;
 	mylist = push_list(dir, d, mylist, arg);
 	if (mylist != NULL)
 		mylist = sort_ascii(mylist);
@@ -25,7 +27,6 @@ t_list_ls	*params(t_list_ls *mylist, b_arg *arg)
 		return (NULL);
 	return (mylist);
 }
-
 
 // Fonction qui initialise chaque arg de ma struct
 
@@ -132,6 +133,7 @@ void		handle_arg(b_arg *arg)
 {
 	t_list_ls		*mylist;
 
+	mylist = NULL;
 	mylist = params(mylist, arg);
 	if (mylist != NULL)
 	{
@@ -152,18 +154,17 @@ int			main(int argc, char **argv)
 {
 	b_arg			arg[1];
 	int				i;
-	int				nb_path;
 	int				flag;
 	t_list_ls		*mylistdir;
 	struct dirent	*dir;
 	DIR				*d;
-	char *tmp;
+	char 			*tmp;
 
+	dir = NULL;
 	mylistdir = NULL;
 	i = 1;
 	flag = 0;
 	initialize_arg(arg);
-
 	while (i < argc && argv[i][0] == '-')
 	{
 		if (check_arg(argv[i], arg, 0, 0) == -1)
@@ -173,13 +174,9 @@ int			main(int argc, char **argv)
 		}
 		i++;
 	}
-
-	nb_path = (argv[i]) ? argc - i : 1;
 	flag = (argv[i] && argv[i + 1]) ? 1 : 0;
-
 	if (i == argc)
 		handle_arg(arg);
-
 	while (i < argc)
 	{
 		if (!(d = opendir(argv[i])))
@@ -192,11 +189,10 @@ int			main(int argc, char **argv)
 			ft_printf("Erddddments");
 			return (1);
 		}
-		mylistdir = add_link_front_dir(mylistdir, tmp, arg);
+		mylistdir = add_link_front_dir(mylistdir, tmp);
 		closedir(d);
 		i++;
 	}
-
 	mylistdir = sort_ascii(mylistdir);
 	if (arg->is_t == 1)
 		mylistdir = sort_time(mylistdir);

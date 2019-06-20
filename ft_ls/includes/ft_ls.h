@@ -34,7 +34,9 @@
 #define GREY     "\033[1;37m"
 #define DEFAULT_COLOR "\033[0;m"
 
-/* Définition de ma structure */
+/*
+** Définition de ma structure
+*/
 
 typedef	struct	a_arg
 {
@@ -46,7 +48,9 @@ typedef	struct	a_arg
 	char	*path;
 }				b_arg;
 
-/* Définition d'une Liste */
+/*
+** Définition d'une liste
+*/
 
 typedef struct s_list_ls t_list_ls;
 
@@ -65,25 +69,20 @@ struct s_list_ls
 	t_list_ls		*next;
 };
 
-/* Prototypes liste */
+/*
+** Prototypes listes
+*/
+
 t_list_ls	*sort_ascii(t_list_ls *mylist);
 t_list_ls	*sort_time(t_list_ls *mylist);
 void 		print_full_list(t_list_ls *mylist);
 t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2);
 t_list_ls 	*reverse_list(t_list_ls *mylist);
 t_list_ls 	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg);
-t_list_ls 	*add_link_front_dir(t_list_ls *mylistdir, char *str, b_arg *arg);
+t_list_ls 	*add_link_front_dir(t_list_ls *mylistdir, char *str);
 void 		print_list(t_list_ls *mylist);
 t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
 t_list_ls	*sort_list(t_list_ls *mylist, b_arg *arg);
-
-/* Prototypes infos fichiers */
-
-void		print_permissions(char *file, struct stat fs);
-void		print_hardlinks(char *file, struct stat fs);
-void		print_owner(char *file, struct stat fs);
-void 		print_size(char *file, struct stat fs);
-void		print_date(char *file, struct stat fs);
 
 
 /* Prototypes arg generaux */
@@ -91,10 +90,5 @@ void		print_date(char *file, struct stat fs);
 void		handle_arg(b_arg *arg);
 int			check_path(char *str, b_arg *arg);
 int			check_arg(char *str, b_arg *arg, int i, int j);
-
-/* Prototypes arg specifiques */
-
-t_list_ls	*param_l(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
-t_list_ls	*params(t_list_ls *mylist, b_arg *arg);
 
 #endif

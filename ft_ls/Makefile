@@ -12,7 +12,7 @@
 
 NAME = ft_ls
 CC = gcc
-FLAGS = #-fsanitize=address #-Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra
 LIBFT = $(LIBDIR)libftprintf.a
 SRCDIR = ./src/
 OBJDIR = ./obj/
