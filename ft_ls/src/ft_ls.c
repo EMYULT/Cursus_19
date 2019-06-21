@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/13 17:14:28 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/20 15:10:57 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		check_arg(char *str, b_arg *arg, int i, int j)
 		if (str[i] == '-')
 			return (str[i + 1]) ? (-1) : (1);
 		while (str[i] == 'l' || str[i] == 'R' || str[i] == 'a' ||
-		str[i] == 'r' || str[i] == 't')
+				str[i] == 'r' || str[i] == 't')
 		{
 			if (str[i] == 'l')
 				arg->is_l = 1;
@@ -103,6 +103,30 @@ int		check_path(char *str, b_arg *arg)
 	return (1);
 }
 
+
+int	ft_check_point(char *s)
+{
+	int		i;
+	size_t	len;
+
+	i = 0;
+	len = ft_strlen(s);
+	len--;
+	while (s[len] != '/' && s[len] != '.')
+		len--;
+	while (s[len] != '/' && s[len] == '.')
+	{
+		i++;
+		len--;
+	}
+	if (i == 1 || i == 2)
+	{
+		if ((ft_strlen(s)) - 3 <= len)
+			return (1);
+	}
+	return (0);
+}
+
 void		recursive_dir(b_arg *arg, t_list_ls *mylist)
 {
 	struct stat	fs;
@@ -121,9 +145,12 @@ void		recursive_dir(b_arg *arg, t_list_ls *mylist)
 		}
 		if (S_ISDIR(fs.st_mode))
 		{
-			arg->path = ft_strjoin(mylist->file_name_path, "/");
-			ft_printf("\n%s:\n", mylist->file_name_path);
-			handle_arg(arg);
+			if (ft_check_point(mylist->file_name_path) == 0)
+			{
+				arg->path = ft_strjoin(mylist->file_name_path, "/");
+				ft_printf("\n%s:\n", mylist->file_name_path);
+				handle_arg(arg);
+			}
 		}
 		mylist = mylist->next;
 	}
