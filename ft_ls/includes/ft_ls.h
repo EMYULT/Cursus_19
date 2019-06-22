@@ -64,7 +64,7 @@ struct s_list_ls
 {
 	char			*file_name;
 	char			*file_name_path;
-	long int		date;
+	time_t			date;
 	int				is_dir;
 	int				hardlinks;
 	long long int	size;

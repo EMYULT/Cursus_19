@@ -58,6 +58,9 @@ void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 	int 		big_gr = 0;
 	int 		big_size = 0;
 	t_list_ls	*tmp = mylist;
+	time_t		actualtime;
+
+	actualtime = time(0);
 
 	if (mylist == NULL)
 		return;
@@ -83,7 +86,10 @@ void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 		ft_printf("%s  %*d %-*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
 		ft_printf(" %s", ft_strsub(mylist->date_string, 4, 3));
 		ft_printf(" %s", ft_strsub(mylist->date_string, 8, 2));
-		ft_printf(" %s ", ft_strsub(mylist->date_string, 11, 5));
+		if (actualtime - mylist->date < 15778800)
+			ft_printf(" %s ", ft_strsub(mylist->date_string, 11, 5));
+		else
+			ft_printf("  %s ", ft_strsub(mylist->date_string, 20, 4));
 		if (mylist->is_dir == 1)
 			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
 		else if (mylist->is_dir == 666)
