@@ -133,10 +133,7 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
 		tmp->file_name = str;
 		tmp2= ft_strjoin(arg->path, tmp->file_name);
 		if (lstat(tmp2, &fs) < 0)
-		{
-			ft_printf("error file doesn not exit recursive ");
 			return(NULL);
-		}
 		pwd = getpwuid(fs.st_uid);
 		tmp->date = fs.st_mtime;
 		if (S_ISDIR(fs.st_mode))

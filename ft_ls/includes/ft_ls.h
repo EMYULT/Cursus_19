@@ -111,6 +111,11 @@ int			check_path(char *str, b_arg *arg);
 int			check_arg(char *str, b_arg *arg, int i, int j);
 void		initialize_arg(b_arg *arg);
 t_list_ls	*check_sort(t_list_ls *mylist, b_arg *arg);
+void 		display_my_files(t_list_ls *mylist, b_arg *arg);
+void 		display_my_dir(t_list_ls *mylist, b_arg *arg);
+int 		check_my_options(int i, int argc, char **argv, b_arg *arg);
+t_list_ls	 *fill_dir(int i, int argc, char **argv);
+t_list_ls 	*fill_file(int i, int argc, char **argv, b_arg *arg);
 
 /*
 ** ft_ls.c

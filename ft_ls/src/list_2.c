@@ -52,10 +52,7 @@ t_list_ls *add_link_front_dir(t_list_ls *mylistdir, char *str)
 	{
 		tmp->file_name = str;
 		if (lstat(str, &fs) < 0)
-		{
-			ft_printf("error file doesn not exit recursive ");
 			return(NULL);
-		}
 		tmp->date = fs.st_mtime;
 		tmp->next = mylistdir;
 	}

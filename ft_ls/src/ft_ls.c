@@ -80,81 +80,18 @@ int			main(int argc, char **argv)
 {
 	b_arg			arg[1];
 	int				i;
-	int				flag;
 	t_list_ls		*mylistdir;
-	struct dirent	*dir;
-	DIR				*d;
-	char 			*tmp;
-	struct stat		fs;
+	t_list_ls 		*mylistfile;
 
-	dir = NULL;
 	mylistdir = NULL;
-	i = 1;
-	flag = 0;
+	mylistfile = NULL;
 	initialize_arg(arg);
-
-	while (i < argc && argv[i][0] == '-')
-	{
-		if (check_arg(argv[i], arg, 0, 0) != -1)
-		{
-			ft_printf("ls: illegal option -- %c\nusage: ls [-lraRt] [file ...]\n", argv[i][check_arg(argv[i], arg, 0, 0)]);
-			return (1);
-		}
-		i++;
-	}
-
-	flag = (argv[i] && argv[i + 1]) ? 1 : 0;
-	if (i == argc)
-		handle_arg(arg);
-
-	t_list_ls *display_files;
-	display_files = NULL;
-
-	while (i < argc)
-	{
-		if ((d = opendir(argv[i])))
-		{
-			if (!(tmp = strdup(argv[i])))
-				return (1);
-			mylistdir = add_link_front_dir(mylistdir, tmp);
-			closedir(d);
-		}
-		else if (lstat(argv[i], &fs) < 0)
-		{
-			ft_printf("ls: %s: No such file or directory\n", argv[i]);
-			return (1);
-		}
-		else
-		{
-			if (!(tmp = strdup(argv[i])))
-				return (1);
-			display_files = add_link_front(display_files, tmp, arg, 0);
-		}
-		i++;
-	}
-
-	mylistdir = check_sort(mylistdir, arg);
-	display_files = check_sort(display_files, arg);
-
-	if (display_files != NULL)
-	{
-		if (arg->is_l != 1)
-			print_list(display_files);
-		else
-			print_full_list(display_files, arg, 1);
-		if (mylistdir != NULL)
-			ft_printf("\n");
-	}
-
-	while (mylistdir != NULL)
-	{
-		check_path(mylistdir->file_name, arg);
-		if (flag == 1 && mylistdir->is_dir != -50)
-			ft_printf("%s:\n", arg->path);
-		handle_arg(arg);
-		if (mylistdir->next)
-			ft_printf("\n");
-		mylistdir = mylistdir->next;
-	}
+	i = check_my_options(1, argc, argv, arg);
+	if (i == -1)
+		return (1);
+	mylistdir = fill_dir(i, argc, argv);
+	mylistfile = fill_file(i, argc, argv, arg);
+	display_my_files(mylistfile, arg);
+	display_my_dir(mylistdir, arg);
 	return (0);
 }
