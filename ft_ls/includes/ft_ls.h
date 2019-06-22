@@ -85,9 +85,9 @@ struct s_list_ls
 
 void 		print_list(t_list_ls *mylist);
 int			length_int_easy(int x);
-void 		print_full_list(t_list_ls *mylist, b_arg *arg);
+void 		print_full_list(t_list_ls *mylist, b_arg *arg, int flag);
 t_list_ls	*reverse_list(t_list_ls *mylist);
-t_list_ls	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg);
+t_list_ls 	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag);
 
 /*
 ** list_2.c

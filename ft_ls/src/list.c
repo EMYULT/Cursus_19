@@ -51,7 +51,7 @@ int		length_int_easy(int x)
     return 1;
 }
 
-void print_full_list(t_list_ls *mylist, b_arg *arg)
+void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 {
 	int 		big_hard = 0;
 	int 		big_pw = 0;
@@ -61,7 +61,11 @@ void print_full_list(t_list_ls *mylist, b_arg *arg)
 
 	if (mylist == NULL)
 		return;
-	ft_printf("total %lld\n", arg->totalsize);
+	if (flag == 0)
+	{
+		ft_printf("total %lld\n", arg->totalsize);
+		arg->totalsize = 0;
+	}
 	while (tmp != NULL)
 	{
 		if (length_int_easy(tmp->hardlinks) > big_hard)
@@ -110,7 +114,7 @@ t_list_ls *reverse_list(t_list_ls *mylist)
 	return (mylist);
 }
 
-t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
+t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
 {
 	t_list_ls	*tmp;
 	struct stat	fs;
@@ -155,7 +159,8 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 		tmp->perm[10] = '\0';
 		tmp->hardlinks = fs.st_nlink;
 		tmp->size = (long long)fs.st_size;
-		arg->totalsize += fs.st_blocks;
+		if (flag != 0)
+			arg->totalsize += fs.st_blocks;
 		tmp->pwname = pwd->pw_name;
 		tmp->grname = (getgrgid(pwd->pw_gid)->gr_name);
 		tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));

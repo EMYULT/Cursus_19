@@ -78,7 +78,7 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 			{
 				if (!(tmp = strdup(dir->d_name)))
 					return (NULL);
-				mylist = add_link_front(mylist, tmp, arg);
+				mylist = add_link_front(mylist, tmp, arg, 1);
 			}
 		}
 		closedir(d);
@@ -91,7 +91,7 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 		{
 			if (!(tmp = strdup(dir->d_name)))
 				return (NULL);
-			mylist = add_link_front(mylist, tmp, arg);
+			mylist = add_link_front(mylist, tmp, arg, 1);
 		}
 	}
 	closedir(d);

@@ -70,7 +70,7 @@ void		handle_arg(b_arg *arg)
 		if (arg->is_l != 1)
 			print_list(mylist);
 		else
-			print_full_list(mylist, arg);
+			print_full_list(mylist, arg, 0);
 	}
 	if (arg->is_R)
 		recursive_dir(arg, mylist);
@@ -128,7 +128,7 @@ int			main(int argc, char **argv)
 		{
 			if (!(tmp = strdup(argv[i])))
 				return (1);
-			display_files = add_link_front_dir(display_files, tmp);
+			display_files = add_link_front(display_files, tmp, arg, 0);
 		}
 		i++;
 	}
@@ -138,8 +138,12 @@ int			main(int argc, char **argv)
 
 	if (display_files != NULL)
 	{
-		print_list(display_files);
-		ft_printf("\n");
+		if (arg->is_l != 1)
+			print_list(display_files);
+		else
+			print_full_list(display_files, arg, 1);
+		if (mylistdir != NULL)
+			ft_printf("\n");
 	}
 
 	while (mylistdir != NULL)
