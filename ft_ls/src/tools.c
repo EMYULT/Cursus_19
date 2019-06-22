@@ -12,6 +12,16 @@
 
 #include "../includes/ft_ls.h"
 
+t_list_ls	*check_sort(t_list_ls *mylist, b_arg *arg)
+{
+	mylist = sort_ascii(mylist);
+	if (arg->is_t == 1)
+		mylist = sort_time(mylist);
+	if (arg->is_r == 1)
+		mylist = reverse_list(mylist);
+	return (mylist);
+}
+
 void	initialize_arg(b_arg *arg)
 {
 	arg->is_l = 0;
@@ -49,12 +59,11 @@ int		check_arg(char *str, b_arg *arg, int i, int j)
 			i++;
 		}
 	}
-	return (i == j) ? (1) : (-1);
+	return (i == j) ? (-1) : (i);
 }
 
 int		check_path(char *str, b_arg *arg)
 {
-	DIR *d;
 	int i;
 	int j;
 
@@ -62,9 +71,6 @@ int		check_path(char *str, b_arg *arg)
 	i = 0;
 	if (!str)
 		return (0);
-	d = opendir(str);
-	if (d == NULL)
-		return (-1);
 	while (str[i])
 		i++;
 	if (str[i - 1] != '/')
@@ -82,6 +88,5 @@ int		check_path(char *str, b_arg *arg)
 	}
 	else
 		arg->path = str;
-	closedir(d);
 	return (1);
 }

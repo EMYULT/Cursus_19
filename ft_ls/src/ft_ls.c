@@ -40,10 +40,7 @@ void		recursive_dir(b_arg *arg, t_list_ls *mylist)
 		if (!mylist->file_name_path)
 			return ;
 		if (lstat(mylist->file_name_path, &fs) < 0)
-		{
-			ft_printf("eeeerror\n");
 			return ;
-		}
 		if (S_ISDIR(fs.st_mode))
 		{
 			ft_printf("\n%s", tmp);
@@ -88,49 +85,67 @@ int			main(int argc, char **argv)
 	struct dirent	*dir;
 	DIR				*d;
 	char 			*tmp;
+	struct stat		fs;
 
 	dir = NULL;
 	mylistdir = NULL;
 	i = 1;
 	flag = 0;
 	initialize_arg(arg);
+
 	while (i < argc && argv[i][0] == '-')
 	{
-		if (check_arg(argv[i], arg, 0, 0) == -1)
+		if (check_arg(argv[i], arg, 0, 0) != -1)
 		{
-			ft_printf("Erreur dans les arguments");
+			ft_printf("ls: illegal option -- %c\nusage: ls [-lraRt] [file ...]\n", argv[i][check_arg(argv[i], arg, 0, 0)]);
 			return (1);
 		}
 		i++;
 	}
+
 	flag = (argv[i] && argv[i + 1]) ? 1 : 0;
 	if (i == argc)
 		handle_arg(arg);
+
+	t_list_ls *display_files;
+	display_files = NULL;
+
 	while (i < argc)
 	{
-		if (!(d = opendir(argv[i])))
+		if ((d = opendir(argv[i])))
 		{
-			ft_printf("Erreur ggegregrents");
+			if (!(tmp = strdup(argv[i])))
+				return (1);
+			mylistdir = add_link_front_dir(mylistdir, tmp);
+			closedir(d);
+		}
+		else if (lstat(argv[i], &fs) < 0)
+		{
+			ft_printf("ls: %s: No such file or directory\n", argv[i]);
 			return (1);
 		}
-		if (!(tmp = strdup(argv[i])))
+		else
 		{
-			ft_printf("Erddddments");
-			return (1);
+			if (!(tmp = strdup(argv[i])))
+				return (1);
+			display_files = add_link_front_dir(display_files, tmp);
 		}
-		mylistdir = add_link_front_dir(mylistdir, tmp);
-		closedir(d);
 		i++;
 	}
-	mylistdir = sort_ascii(mylistdir);
-	if (arg->is_t == 1)
-		mylistdir = sort_time(mylistdir);
-	if (arg->is_r == 1)
-		mylistdir = reverse_list(mylistdir);
+
+	mylistdir = check_sort(mylistdir, arg);
+	display_files = check_sort(display_files, arg);
+
+	if (display_files != NULL)
+	{
+		print_list(display_files);
+		ft_printf("\n");
+	}
+
 	while (mylistdir != NULL)
 	{
 		check_path(mylistdir->file_name, arg);
-		if (flag == 1)
+		if (flag == 1 && mylistdir->is_dir != -50)
 			ft_printf("%s:\n", arg->path);
 		handle_arg(arg);
 		if (mylistdir->next)

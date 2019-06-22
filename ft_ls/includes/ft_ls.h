@@ -95,7 +95,7 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg);
 
 t_list_ls	*sort_ascii(t_list_ls *mylist);
 t_list_ls	*sort_time(t_list_ls *mylist);
-t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str);
+t_list_ls 	*add_link_front_dir(t_list_ls *mylistdir, char *str);
 t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg);
 t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2);
 
@@ -110,6 +110,7 @@ t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2);
 int			check_path(char *str, b_arg *arg);
 int			check_arg(char *str, b_arg *arg, int i, int j);
 void		initialize_arg(b_arg *arg);
+t_list_ls	*check_sort(t_list_ls *mylist, b_arg *arg);
 
 /*
 ** ft_ls.c
