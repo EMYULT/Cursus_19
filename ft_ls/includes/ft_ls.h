@@ -40,12 +40,15 @@
 
 typedef	struct	a_arg
 {
-	int		is_l;
-	int		is_R;
-	int		is_a;
-	int		is_r;
-	int		is_t;
-	char	*path;
+	int				is_l;
+	int				is_R;
+	int				is_a;
+	int				is_r;
+	int				is_t;
+	char			*path;
+	int				totalsize;
+	int 			coucou;
+	int 			first;
 }				b_arg;
 
 /*
@@ -75,7 +78,7 @@ struct s_list_ls
 
 t_list_ls	*sort_ascii(t_list_ls *mylist);
 t_list_ls	*sort_time(t_list_ls *mylist);
-void 		print_full_list(t_list_ls *mylist);
+void print_full_list(t_list_ls *mylist, b_arg *arg);
 t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2);
 t_list_ls 	*reverse_list(t_list_ls *mylist);
 t_list_ls 	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg);

@@ -36,6 +36,9 @@ void	initialize_arg(b_arg *arg)
 	arg->is_r = 0;
 	arg->is_t = 0;
 	arg->path = "./";
+	arg->totalsize = 0;
+	arg->coucou = 0;
+	arg->first = 0;
 }
 
 int		check_arg(char *str, b_arg *arg, int i, int j)
@@ -92,6 +95,7 @@ int		check_path(char *str, b_arg *arg)
 		}
 		arg->path[j] = '/';
 		arg->path[j + 1] = '\0';
+		arg->coucou = 1;
 	}
 	else
 		arg->path = str;
@@ -117,8 +121,13 @@ void		recursive_dir(b_arg *arg, t_list_ls *mylist)
 		}
 		if (S_ISDIR(fs.st_mode))
 		{
+			ft_printf("\n%s", tmp);
+			if (arg->coucou != 1 && arg->first == 0)
+				ft_printf("/");
+			ft_printf("%s:\n", mylist->file_name);
 			arg->path = ft_strjoin(mylist->file_name_path, "/");
-			ft_printf("\n%s:\n", mylist->file_name_path);
+			arg->first = 1;
+			arg->totalsize = 0;
 			handle_arg(arg);
 		}
 		mylist = mylist->next;
@@ -140,7 +149,7 @@ void		handle_arg(b_arg *arg)
 		if (arg->is_l != 1)
 			print_list(mylist);
 		else
-			print_full_list(mylist);
+			print_full_list(mylist, arg);
 	}
 	if (arg->is_R)
 		recursive_dir(arg, mylist);

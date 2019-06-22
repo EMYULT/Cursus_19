@@ -59,7 +59,7 @@ int		length_int_easy(int x)
     return 1;
 }
 
-void print_full_list(t_list_ls *mylist)
+void print_full_list(t_list_ls *mylist, b_arg *arg)
 {
 	int 		big_hard = 0;
 	int 		big_pw = 0;
@@ -69,6 +69,7 @@ void print_full_list(t_list_ls *mylist)
 
 	if (mylist == NULL)
 		return;
+	ft_printf("total %lld\n", arg->totalsize);
 	while (tmp != NULL)
 	{
 		if (length_int_easy(tmp->hardlinks) > big_hard)
@@ -145,10 +146,11 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 			tmp->perm[0] = '-';
 		tmp->perm[1] = ((fs.st_mode & S_IRUSR) ? 'r' : '-');
 		tmp->perm[2] = ((fs.st_mode & S_IWUSR) ? 'w' : '-');
-		if (fs.st_mode & S_IXUSR && tmp->is_dir != 1)
+		if (fs.st_mode & S_IXUSR)
 		{
 			tmp->perm[3] = 'x';
-			tmp->is_dir = 666;
+			if (tmp->is_dir != 1)
+				tmp->is_dir = 666;
 		}
 		else
 			tmp->perm[3] = '-';
@@ -161,6 +163,7 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 		tmp->perm[10] = '\0';
 		tmp->hardlinks = fs.st_nlink;
 		tmp->size = (long long)fs.st_size;
+		arg->totalsize += fs.st_blocks;
 		tmp->pwname = pwd->pw_name;
 		tmp->grname = (getgrgid(pwd->pw_gid)->gr_name);
 		tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
