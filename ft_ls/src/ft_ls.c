@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/20 15:10:57 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/23 17:23:14 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,14 @@ t_list_ls	*params(t_list_ls *mylist, b_arg *arg)
 
 void	initialize_arg(b_arg *arg)
 {
+	ft_bzero(arg, sizeof(b_arg));
+	/*
 	arg->is_l = 0;
 	arg->is_R = 0;
 	arg->is_a = 0;
 	arg->is_r = 0;
 	arg->is_t = 0;
+	*/
 	arg->path = "./";
 }
 
@@ -104,7 +107,7 @@ int		check_path(char *str, b_arg *arg)
 }
 
 
-int	ft_check_point(char *s)
+int		ft_check_point(char *s)
 {
 	int		i;
 	size_t	len;
@@ -201,6 +204,8 @@ int			main(int argc, char **argv)
 		}
 		i++;
 	}
+	//Condition incorrecte (ex ls ./ ../ ./ft_ls)
+	////faire une fonction checkflag avec un while ? (arg != a, l, R, etc print usage)
 	flag = (argv[i] && argv[i + 1]) ? 1 : 0;
 	if (i == argc)
 		handle_arg(arg);
