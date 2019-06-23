@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/13 17:14:28 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/23 18:02:37 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ void		recursive_dir(b_arg *arg, t_list_ls *mylist)
 			return ;
 		if (S_ISDIR(fs.st_mode))
 		{
-			ft_printf("\n%s", tmp);
-			if (arg->coucou != 1)
-				ft_printf("/");
-			ft_printf("%s:\n", mylist->file_name);
-			arg->path = ft_strjoin(mylist->file_name_path, "/");
-			arg->totalsize = 0;
-			handle_arg(arg);
+			if (check_point(mylist->file_name_path) == 0)
+			{
+				arg->path = ft_strjoin(mylist->file_name_path, "/");
+				ft_printf("\n%s:\n", mylist->file_name_path);
+				arg->totalsize = 0;
+				handle_arg(arg);
+			}
 		}
 		mylist = mylist->next;
 	}

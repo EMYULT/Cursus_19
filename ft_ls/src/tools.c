@@ -6,13 +6,13 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/22 12:55:15 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/06/23 17:47:51 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void 		display_my_files(t_list_ls *mylist, b_arg *arg)
+void		display_my_files(t_list_ls *mylist, b_arg *arg)
 {
 	mylist = check_sort(mylist, arg);
 	if (mylist != NULL)
@@ -26,7 +26,7 @@ void 		display_my_files(t_list_ls *mylist, b_arg *arg)
 	}
 }
 
-void 		display_my_dir(t_list_ls *mylist, b_arg *arg)
+void		display_my_dir(t_list_ls *mylist, b_arg *arg)
 {
 	mylist = check_sort(mylist, arg);
 	while (mylist != NULL)
@@ -41,7 +41,7 @@ void 		display_my_dir(t_list_ls *mylist, b_arg *arg)
 	}
 }
 
-int check_my_options(int i, int argc, char **argv, b_arg *arg)
+int		check_my_options(int i, int argc, char **argv, b_arg *arg)
 {
 	while (i < argc && argv[i][0] == '-')
 	{
@@ -57,7 +57,7 @@ int check_my_options(int i, int argc, char **argv, b_arg *arg)
 	return (i);
 }
 
-t_list_ls *fill_dir(int i, int argc, char **argv)
+t_list_ls	*fill_dir(int i, int argc, char **argv)
 {
 	DIR		*d;
 	char	*tmp;
@@ -78,7 +78,7 @@ t_list_ls *fill_dir(int i, int argc, char **argv)
 	return (mylistdir);
 }
 
-t_list_ls *fill_file(int i, int argc, char **argv, b_arg *arg)
+t_list_ls	*fill_file(int i, int argc, char **argv, b_arg *arg)
 {
 	struct stat	fs;
 	char		*tmp;
@@ -116,14 +116,8 @@ t_list_ls	*check_sort(t_list_ls *mylist, b_arg *arg)
 
 void	initialize_arg(b_arg *arg)
 {
-	arg->is_l = 0;
-	arg->is_R = 0;
-	arg->is_a = 0;
-	arg->is_r = 0;
-	arg->is_t = 0;
+	ft_bzero(arg, sizeof(b_arg *));
 	arg->path = "./";
-	arg->totalsize = 0;
-	arg->coucou = 0;
 }
 
 int		check_arg(char *str, b_arg *arg, int i, int j)
@@ -176,9 +170,31 @@ int		check_path(char *str, b_arg *arg)
 		}
 		arg->path[j] = '/';
 		arg->path[j + 1] = '\0';
-		arg->coucou = 1;
 	}
 	else
 		arg->path = str;
 	return (1);
+}
+
+int		check_point(char *s)
+{
+	int		i;
+	size_t	len;
+
+	i = 0;
+	len = ft_strlen(s);
+	len--;
+	while (s[len] != '/' && s[len] != '.')
+		len--;
+	while (s[len] != '/' && s[len] == '.')
+	{
+		i++;
+		len--;
+	}
+	if (i == 1 || i == 2)
+	{
+		if ((ft_strlen(s)) - 3 <= len)
+			return (1);
+	}
+	return (0);
 }

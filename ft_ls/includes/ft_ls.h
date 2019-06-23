@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/13 14:50:52 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/23 17:53:59 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef	struct	a_arg
 	int				is_t;
 	char			*path;
 	int				totalsize;
-	int 			coucou;
 }				b_arg;
 
 /*
@@ -107,6 +106,7 @@ t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2);
 ** tools.c
 */
 
+int			check_point(char *s);
 int			check_path(char *str, b_arg *arg);
 int			check_arg(char *str, b_arg *arg, int i, int j);
 void		initialize_arg(b_arg *arg);
