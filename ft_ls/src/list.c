@@ -10,15 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../includes/ft_ls.h"
-
-t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2)
-{
-	p1->next = p2->next;
-	p2->next = p1;
-	return (p2);
-}
 
 void print_list(t_list_ls *mylist)
 {
@@ -28,6 +20,8 @@ void print_list(t_list_ls *mylist)
 	{
 		if (mylist->is_dir == 1)
 			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
+		else if (mylist->is_dir == 666)
+			ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 		else
 			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
 		mylist = mylist->next;
@@ -57,16 +51,24 @@ int		length_int_easy(int x)
     return 1;
 }
 
-void print_full_list(t_list_ls *mylist)
+void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 {
 	int 		big_hard = 0;
 	int 		big_pw = 0;
 	int 		big_gr = 0;
 	int 		big_size = 0;
 	t_list_ls	*tmp = mylist;
+	time_t		actualtime;
+
+	actualtime = time(0);
 
 	if (mylist == NULL)
 		return;
+	if (flag == 0)
+	{
+		ft_printf("total %lld\n", arg->totalsize);
+		arg->totalsize = 0;
+	}
 	while (tmp != NULL)
 	{
 		if (length_int_easy(tmp->hardlinks) > big_hard)
@@ -81,12 +83,17 @@ void print_full_list(t_list_ls *mylist)
 	}
 	while(mylist != NULL)
 	{
-		ft_printf("%s  %*d %*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
+		ft_printf("%s  %*d %-*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
 		ft_printf(" %s", ft_strsub(mylist->date_string, 4, 3));
 		ft_printf(" %s", ft_strsub(mylist->date_string, 8, 2));
-		ft_printf(" %s ", ft_strsub(mylist->date_string, 11, 5));
+		if (actualtime - mylist->date < 15778800)
+			ft_printf(" %s ", ft_strsub(mylist->date_string, 11, 5));
+		else
+			ft_printf("  %s ", ft_strsub(mylist->date_string, 20, 4));
 		if (mylist->is_dir == 1)
 			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
+		else if (mylist->is_dir == 666)
+			ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 		else
 			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
 		mylist = mylist->next;
@@ -113,7 +120,7 @@ t_list_ls *reverse_list(t_list_ls *mylist)
 	return (mylist);
 }
 
-t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
+t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
 {
 	t_list_ls	*tmp;
 	struct stat	fs;
@@ -126,10 +133,7 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 		tmp->file_name = str;
 		tmp2= ft_strjoin(arg->path, tmp->file_name);
 		if (lstat(tmp2, &fs) < 0)
-		{
-			ft_printf("error file doesn not exit recursive ");
 			return(NULL);
-		}
 		pwd = getpwuid(fs.st_uid);
 		tmp->date = fs.st_mtime;
 		if (S_ISDIR(fs.st_mode))
@@ -141,7 +145,14 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 			tmp->perm[0] = '-';
 		tmp->perm[1] = ((fs.st_mode & S_IRUSR) ? 'r' : '-');
 		tmp->perm[2] = ((fs.st_mode & S_IWUSR) ? 'w' : '-');
-		tmp->perm[3] = ((fs.st_mode & S_IXUSR) ? 'x' : '-');
+		if (fs.st_mode & S_IXUSR)
+		{
+			tmp->perm[3] = 'x';
+			if (tmp->is_dir != 1)
+				tmp->is_dir = 666;
+		}
+		else
+			tmp->perm[3] = '-';
 		tmp->perm[4] = ((fs.st_mode & S_IRGRP) ? 'r' : '-');
 		tmp->perm[5] = ((fs.st_mode & S_IWGRP) ? 'w' : '-');
 		tmp->perm[6] = ((fs.st_mode & S_IXGRP) ? 'x' : '-');
@@ -151,6 +162,8 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 		tmp->perm[10] = '\0';
 		tmp->hardlinks = fs.st_nlink;
 		tmp->size = (long long)fs.st_size;
+		if (flag != 0)
+			arg->totalsize += fs.st_blocks;
 		tmp->pwname = pwd->pw_name;
 		tmp->grname = (getgrgid(pwd->pw_gid)->gr_name);
 		tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
@@ -159,90 +172,4 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 	else
 		return (NULL);
 	return (tmp);
-}
-
-t_list_ls	*sort_ascii(t_list_ls *mylist)
-{
-	if (!mylist)
-		return (NULL);
-	if (mylist->next && ft_strcmp(mylist->file_name, mylist->next->file_name) > 0)
-		mylist = lst_swap(mylist, mylist->next);
-	mylist->next = sort_ascii(mylist->next);
-	if (mylist->next && ft_strcmp(mylist->file_name, mylist->next->file_name) > 0)
-	{
-		mylist = lst_swap(mylist, mylist->next);
-		mylist->next = sort_ascii(mylist->next);
-	}
-	return (mylist);
-}
-
-t_list_ls	*sort_time(t_list_ls *mylist)
-{
-	if (!mylist)
-		return (NULL);
-	if (mylist->next && (mylist->date < mylist->next->date))
-		mylist = lst_swap(mylist, mylist->next);
-	mylist->next = sort_time(mylist->next);
-	if (mylist->next && (mylist->date < mylist->next->date))
-	{
-		mylist = lst_swap(mylist, mylist->next);
-		mylist->next = sort_time(mylist->next);
-	}
-	return (mylist);
-}
-
-t_list_ls *add_link_front_dir(t_list_ls *mylistdir, char *str)
-{
-	t_list_ls		*tmp;
-	struct stat 	fs;
-
-	tmp = malloc(sizeof(t_list_ls));
-	if (tmp)
-	{
-		tmp->file_name = str;
-		if (lstat(str, &fs) < 0)
-		{
-			ft_printf("error file doesn not exit recursive ");
-			return(NULL);
-		}
-		tmp->date = fs.st_mtime;
-		tmp->next = mylistdir;
-	}
-	else
-		return (NULL);
-	return (tmp);
-}
-
-t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
-{
-	char *tmp;
-
-	if (arg->is_a == 1)
-	{
-		if (!(d = opendir(arg->path)))
-			return (NULL);
-		while ((dir = readdir(d)) != NULL)
-		{
-			if (dir->d_name[0] == '.')
-			{
-				if (!(tmp = strdup(dir->d_name)))
-					return (NULL);
-				mylist = add_link_front(mylist, tmp, arg);
-			}
-		}
-		closedir(d);
-	}
-	if (!(d = opendir(arg->path)))
-		return (NULL);
-	while ((dir = readdir(d)) != NULL)
-	{
-		if (dir->d_name[0] != '.')
-		{
-			if (!(tmp = strdup(dir->d_name)))
-				return (NULL);
-			mylist = add_link_front(mylist, tmp, arg);
-		}
-	}
-	closedir(d);
-	return (mylist);
 }
