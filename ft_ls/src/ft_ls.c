@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/23 18:11:39 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/23 20:45:38 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void		handle_arg(b_arg *arg)
 			mylist = sort_time(mylist);
 		if (arg->is_r == 1)
 			mylist = reverse_list(mylist);
-		if (arg->is_l != 1)
+		if (arg->is_l != 1)	
 			print_list(mylist);
 		else
 			print_full_list(mylist, arg, 0);

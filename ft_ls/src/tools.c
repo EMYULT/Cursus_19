@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/23 17:47:51 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/23 20:45:36 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int		check_my_options(int i, int argc, char **argv, b_arg *arg)
 		}
 		i++;
 	}
+	//Si il n y a que des options et pas de chemin specifie
 	if (i == argc)
 		handle_arg(arg);
 	return (i);
@@ -116,7 +117,7 @@ t_list_ls	*check_sort(t_list_ls *mylist, b_arg *arg)
 
 void	initialize_arg(b_arg *arg)
 {
-	ft_bzero(arg, sizeof(b_arg *));
+	ft_bzero(arg, sizeof(b_arg));
 	arg->path = "./";
 }
 
@@ -145,7 +146,7 @@ int		check_arg(char *str, b_arg *arg, int i, int j)
 			i++;
 		}
 	}
-	return (i == j) ? (-1) : (i);
+	return ((i == j) ? (-1) : (i));
 }
 
 int		check_path(char *str, b_arg *arg)
@@ -159,8 +160,8 @@ int		check_path(char *str, b_arg *arg)
 		return (0);
 	while (str[i])
 		i++;
-	if (str[i - 1] != '/')
-	{
+	//if (str[i - 1] != '/')
+	//{
 		if (!(arg->path = (char *)malloc(sizeof(char) * i + 2)))
 			return (-1);
 		while(j < i)
@@ -170,9 +171,9 @@ int		check_path(char *str, b_arg *arg)
 		}
 		arg->path[j] = '/';
 		arg->path[j + 1] = '\0';
-	}
-	else
-		arg->path = str;
+	//}
+//	else
+//		arg->path = str;
 	return (1);
 }
 

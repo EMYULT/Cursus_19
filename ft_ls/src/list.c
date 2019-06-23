@@ -6,13 +6,13 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/13 14:50:58 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/06/20 15:31:32 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/23 20:14:19 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void print_list(t_list_ls *mylist)
+void	print_list(t_list_ls *mylist)
 {
 	if (mylist == NULL)
 		return;
@@ -51,7 +51,7 @@ int		length_int_easy(int x)
     return 1;
 }
 
-void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
+void	print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 {
 	int 		big_hard = 0;
 	int 		big_pw = 0;
@@ -84,6 +84,7 @@ void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 	while(mylist != NULL)
 	{
 		ft_printf("%s  %*d %-*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
+		//pourquoi des sub dans printf ???
 		ft_printf(" %s", ft_strsub(mylist->date_string, 4, 3));
 		ft_printf(" %s", ft_strsub(mylist->date_string, 8, 2));
 		if (actualtime - mylist->date < 15778800)
@@ -92,7 +93,7 @@ void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 			ft_printf("  %s ", ft_strsub(mylist->date_string, 20, 4));
 		if (mylist->is_dir == 1)
 			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
-		else if (mylist->is_dir == 666)
+		if (mylist->is_dir == 666)
 			ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 		else
 			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
@@ -100,7 +101,7 @@ void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 	}
 }
 
-t_list_ls *reverse_list(t_list_ls *mylist)
+t_list_ls	*reverse_list(t_list_ls *mylist)
 {
 	t_list_ls *prev;
 	t_list_ls *current;
@@ -120,12 +121,12 @@ t_list_ls *reverse_list(t_list_ls *mylist)
 	return (mylist);
 }
 
-t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
+t_list_ls	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
 {
 	t_list_ls	*tmp;
 	struct stat	fs;
 	char		*tmp2;
-	struct passwd *pwd;
+	struct passwd	*pwd;
 
 	tmp = malloc(sizeof(t_list_ls));
 	if (tmp)
