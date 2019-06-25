@@ -32,8 +32,8 @@ void		display_my_dir(t_list_ls *mylist, b_arg *arg)
 	while (mylist != NULL)
 	{
 		check_path(mylist->file_name, arg);
-		if (mylist->is_dir != -50)
-			ft_printf("%s:\n", arg->path);
+	//	if (mylist->is_dir != -50)
+	//		ft_printf("%s:n", arg->path);
 		handle_arg(arg);
 		if (mylist->next)
 			ft_printf("\n");
@@ -118,6 +118,7 @@ void	initialize_arg(b_arg *arg)
 {
 	ft_bzero(arg, sizeof(b_arg *));
 	arg->path = "./";
+	arg->totalsize = 0;
 }
 
 int		check_arg(char *str, b_arg *arg, int i, int j)

@@ -83,7 +83,7 @@ void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 	}
 	while(mylist != NULL)
 	{
-		ft_printf("%s  %*d %-*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
+	  ft_printf("%s %*d %-*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
 		ft_printf(" %s", ft_strsub(mylist->date_string, 4, 3));
 		ft_printf(" %s", ft_strsub(mylist->date_string, 8, 2));
 		if (actualtime - mylist->date < 15778800)
@@ -123,6 +123,7 @@ t_list_ls *reverse_list(t_list_ls *mylist)
 t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
 {
 	t_list_ls	*tmp;
+	acl_t tmpacl;
 	struct stat	fs;
 	char		*tmp2;
 	struct passwd *pwd;
@@ -136,13 +137,29 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
 			return(NULL);
 		pwd = getpwuid(fs.st_uid);
 		tmp->date = fs.st_mtime;
+
 		if (S_ISDIR(fs.st_mode))
 		{
 			tmp->perm[0] = 'd';
 			tmp->is_dir = 1;
 		}
+		else if (S_ISREG(fs.st_mode))
+			tmp->perm[0] = '-';
+		else if (S_ISLNK(fs.st_mode))
+			tmp->perm[0] = 'l';
+		else if (S_ISCHR(fs.st_mode))
+			tmp->perm[0] = 'c';
+		else if (S_ISSOCK(fs.st_mode))
+			tmp->perm[0] = 's';
+		else if (S_ISFIFO(fs.st_mode))
+			tmp->perm[0] = 'p';
+		else if (S_ISDIR(fs.st_mode))
+			tmp->perm[0] = 'd';
+		else if (S_ISBLK(fs.st_mode))
+			tmp->perm[0] = 'b';
 		else
 			tmp->perm[0] = '-';
+
 		tmp->perm[1] = ((fs.st_mode & S_IRUSR) ? 'r' : '-');
 		tmp->perm[2] = ((fs.st_mode & S_IWUSR) ? 'w' : '-');
 		if (fs.st_mode & S_IXUSR)
@@ -159,13 +176,28 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
 		tmp->perm[7] = ((fs.st_mode & S_IROTH) ? 'r' : '-');
 		tmp->perm[8] = ((fs.st_mode & S_IWOTH) ? 'w' : '-');
 		tmp->perm[9] = ((fs.st_mode & S_IXOTH) ? 'x' : '-');
-		tmp->perm[10] = '\0';
+		if (S_ISUID & fs.st_mode)
+			tmp->perm[3] = (tmp->perm[3] == '-') ? 'S' : 's';
+		if (S_ISGID & fs.st_mode)
+			tmp->perm[6] = (tmp->perm[6] == '-') ? 'S' : 's';
+		if (S_ISVTX & fs.st_mode)
+			tmp->perm[9] = (tmp->perm[9] == '-') ? 'T' : 't';
+		if (listxattr(tmp2, NULL, 0, XATTR_NOFOLLOW) > 0)
+			tmp->perm[10] = '@';
+		else if ((tmpacl = acl_get_link_np(tmp2, ACL_TYPE_EXTENDED)))
+		{
+			acl_free(tmpacl);
+			tmp->perm[10] = '+';
+		}
+		else
+			tmp->perm[10] = ' ';
+		tmp->perm[11] = '\0';
 		tmp->hardlinks = fs.st_nlink;
 		tmp->size = (long long)fs.st_size;
 		if (flag != 0)
 			arg->totalsize += fs.st_blocks;
-		tmp->pwname = pwd->pw_name;
-		tmp->grname = (getgrgid(pwd->pw_gid)->gr_name);
+		tmp->pwname = ft_strdup(pwd->pw_name);
+		tmp->grname = ft_strdup((getgrgid(pwd->pw_gid)->gr_name));
 		tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
 		tmp->next = mylist;
 	}

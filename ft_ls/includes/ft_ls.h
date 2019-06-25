@@ -23,6 +23,8 @@
 #include <grp.h>
 #include <pwd.h>
 #include <time.h>
+#include <sys/xattr.h>
+#include <sys/acl.h>
 
 /*
 ** Code couleur pour fichiers, dossiers et exec
@@ -70,7 +72,7 @@ struct s_list_ls
 	char			*pwname;
 	char			*grname;
 	char			*date_string;
-	char			perm[11];
+	char			perm[12];
 	t_list_ls		*next;
 };
 
