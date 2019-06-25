@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/23 20:45:36 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/25 13:17:12 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		check_my_options(int i, int argc, char **argv, b_arg *arg)
 		}
 		i++;
 	}
-	//Si il n y a que des options et pas de chemin specifie
+	//Si il n y a que des options et pas de chemin specifie !
 	if (i == argc)
 		handle_arg(arg);
 	return (i);

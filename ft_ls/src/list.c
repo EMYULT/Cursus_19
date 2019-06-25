@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/13 14:50:58 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/06/23 20:14:19 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/06/25 13:10:41 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 			ft_printf("  %s ", ft_strsub(mylist->date_string, 20, 4));
 		if (mylist->is_dir == 1)
 			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
-		if (mylist->is_dir == 666)
+		else if (mylist->is_dir == 666)
 			ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 		else
 			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
