@@ -73,7 +73,7 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 		{
 			if (dir->d_name[0] == '.')
 			{
-				if (!(tmp = strdup(dir->d_name)))
+				if (!(tmp = ft_strdup(dir->d_name)))
 					return (NULL);
 				mylist = add_link_front(mylist, tmp, arg, 1);
 			}
@@ -86,7 +86,7 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 	{
 		if (dir->d_name[0] != '.')
 		{
-			if (!(tmp = strdup(dir->d_name)))
+			if (!(tmp = ft_strdup(dir->d_name)))
 				return (NULL);
 			mylist = add_link_front(mylist, tmp, arg, 1);
 		}

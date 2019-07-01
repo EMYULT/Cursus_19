@@ -32,8 +32,6 @@ void		display_my_dir(t_list_ls *mylist, b_arg *arg)
 	while (mylist != NULL)
 	{
 		check_path(mylist->file_name, arg);
-	//	if (mylist->is_dir != -50)
-	//		ft_printf("%s:n", arg->path);
 		handle_arg(arg);
 		if (mylist->next)
 			ft_printf("\n");
@@ -68,7 +66,7 @@ t_list_ls	*fill_dir(int i, int argc, char **argv)
 	{
 		if ((d = opendir(argv[i])))
 		{
-			if (!(tmp = strdup(argv[i])))
+			if (!(tmp = ft_strdup(argv[i])))
 				return (NULL);
 			mylistdir = add_link_front_dir(mylistdir, tmp);
 			closedir(d);
@@ -95,7 +93,7 @@ t_list_ls	*fill_file(int i, int argc, char **argv, b_arg *arg)
 		}
 		else if (!(d = opendir(argv[i])))
 		{
-			if (!(tmp = strdup(argv[i])))
+			if (!(tmp = ft_strdup(argv[i])))
 				return (NULL);
 			mylistfile = add_link_front(mylistfile, tmp, arg, 0);
 		}

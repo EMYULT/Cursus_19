@@ -65,15 +65,15 @@ struct s_list_ls
 {
 	char			*file_name;
 	char			*file_name_path;
-	time_t			date;
+	time_t		date;
 	int				is_dir;
 	int				hardlinks;
-	long long int	size;
+	long long	size;
 	char			*pwname;
 	char			*grname;
 	char			*date_string;
 	char			perm[12];
-	t_list_ls		*next;
+	t_list_ls	*next;
 };
 
 /*
@@ -84,11 +84,15 @@ struct s_list_ls
 ** list.c
 */
 
-void 		print_list(t_list_ls *mylist);
-int			length_int_easy(int x);
-void 		print_full_list(t_list_ls *mylist, b_arg *arg, int flag);
+void 			print_list(t_list_ls *mylist);
+int				length_int_easy(int x);
+void 			print_full_list(t_list_ls *mylist, b_arg *arg, int flag);
 t_list_ls	*reverse_list(t_list_ls *mylist);
-t_list_ls 	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag);
+t_list_ls	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag);
+void fill_others(t_list_ls *tmp, struct stat fs, int flag, b_arg *arg);
+void fill_perm_acl(acl_t tmpacl, t_list_ls *tmp, struct stat fs, char *tmp2);
+void fill_perm_right(t_list_ls *tmp, struct stat fs);
+void fill_perm(t_list_ls *tmp, struct stat fs);
 
 /*
 ** list_2.c
