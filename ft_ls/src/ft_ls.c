@@ -80,7 +80,7 @@ void		handle_arg(t_arg_ls *arg)
 
 int			main(int argc, char **argv)
 {
-	t_arg_ls			arg[1];
+	t_arg_ls		arg[1];
 	int				i;
 	t_list_ls		*mylistdir;
 	t_list_ls		*mylistfile;

@@ -62,14 +62,13 @@ void		fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg)
 	tmp->size = (long long)fs.st_size;
 	arg->totalsize += fs.st_blocks;
 	if (pwd == NULL)
-	{
-		tmp->pwname = ft_strdup("test");
-		tmp->grname = ft_strdup("test");
-		tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
-		return ;
-	}
-	tmp->pwname = ft_strdup(pwd->pw_name);
-	tmp->grname = ft_strdup((getgrgid(pwd->pw_gid)->gr_name));
+		tmp->pwname = ft_strdup(ft_itoa(fs.st_uid));
+	else
+		tmp->pwname = ft_strdup(pwd->pw_name);
+	if ((getgrgid(pwd->pw_gid)->gr_name) == NULL)
+		tmp->grname = ft_strdup((getgrgid(fs.st_gid)->gr_name));
+	else
+		tmp->grname = ft_strdup((getgrgid(pwd->pw_gid)->gr_name));
 	tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
 }
 

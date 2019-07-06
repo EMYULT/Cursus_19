@@ -18,12 +18,7 @@ void		print_list(t_list_ls *mylist)
 		return;
 	while(mylist != NULL)
 	{
-		if (mylist->is_dir == 1)
-			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
-		else if (mylist->is_dir == 666)
-			ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
-		else
-			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
+			ft_printf("%s\n", mylist->file_name);
 		mylist = mylist->next;
 	}
 }
@@ -91,12 +86,7 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 			ft_printf(" %s ", ft_strsub(mylist->date_string, 11, 5));
 		else
 			ft_printf("  %s ", ft_strsub(mylist->date_string, 20, 4));
-		if (mylist->is_dir == 1)
-			ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
-		else if (mylist->is_dir == 666)
-			ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
-		else
-			ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
+			ft_printf("%s\n", mylist->file_name);
 		mylist = mylist->next;
 	}
 }
