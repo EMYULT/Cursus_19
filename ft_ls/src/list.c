@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/13 14:50:58 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/06/13 17:14:27 by hde-ghel         ###   ########.fr       */
+/*   Created: 2019/07/06 11:19:50 by tjuzen            #+#    #+#             */
+/*   Updated: 2019/07/06 11:19:51 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void print_list(t_list_ls *mylist)
+void		print_list(t_list_ls *mylist)
 {
 	if (mylist == NULL)
 		return;
@@ -28,7 +28,7 @@ void print_list(t_list_ls *mylist)
 	}
 }
 
-int		length_int_easy(int x)
+int			length_int_easy(int x)
 {
     if (x >= 1000000000)
 		return 10;
@@ -51,7 +51,7 @@ int		length_int_easy(int x)
     return 1;
 }
 
-void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
+void		print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 {
 	int 		big_hard = 0;
 	int 		big_pw = 0;
@@ -61,7 +61,6 @@ void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 	time_t		actualtime;
 
 	actualtime = time(0);
-
 	if (mylist == NULL)
 		return;
 	if (flag == 0)
@@ -83,7 +82,9 @@ void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 	}
 	while(mylist != NULL)
 	{
-	  ft_printf("%s %*d %-*s  %-*s  %*lld", mylist->perm, big_hard, mylist->hardlinks, big_pw, mylist->pwname, big_gr, mylist->grname, big_size, mylist->size);
+	  ft_printf("%s %*d %-*s  %-*s  %*lld", mylist->perm, big_hard,
+	  mylist->hardlinks, big_pw, mylist->pwname, big_gr,
+	  mylist->grname, big_size, mylist->size);
 		ft_printf(" %s", ft_strsub(mylist->date_string, 4, 3));
 		ft_printf(" %s", ft_strsub(mylist->date_string, 8, 2));
 		if (actualtime - mylist->date < 15778800)
@@ -100,7 +101,7 @@ void print_full_list(t_list_ls *mylist, b_arg *arg, int flag)
 	}
 }
 
-t_list_ls *reverse_list(t_list_ls *mylist)
+t_list_ls	*reverse_list(t_list_ls *mylist)
 {
 	t_list_ls *prev;
 	t_list_ls *current;
@@ -120,7 +121,7 @@ t_list_ls *reverse_list(t_list_ls *mylist)
 	return (mylist);
 }
 
-void fill_perm(t_list_ls *tmp, struct stat fs)
+void		fill_perm(t_list_ls *tmp, struct stat fs)
 {
 	if (S_ISDIR(fs.st_mode))
 	{
@@ -145,7 +146,7 @@ void fill_perm(t_list_ls *tmp, struct stat fs)
 		tmp->perm[0] = '-';
 }
 
-void fill_perm_right(t_list_ls *tmp, struct stat fs)
+void		fill_perm_right(t_list_ls *tmp, struct stat fs)
 {
 	tmp->perm[1] = ((fs.st_mode & S_IRUSR) ? 'r' : '-');
 	tmp->perm[2] = ((fs.st_mode & S_IWUSR) ? 'w' : '-');
@@ -165,7 +166,7 @@ void fill_perm_right(t_list_ls *tmp, struct stat fs)
 	tmp->perm[9] = ((fs.st_mode & S_IXOTH) ? 'x' : '-');
 }
 
-void fill_perm_acl(acl_t tmpacl, t_list_ls *tmp, struct stat fs, char *tmp2)
+void		fill_perm_acl(acl_t tmpacl, t_list_ls *tmp, struct stat fs, char *tmp2)
 {
 	if (S_ISUID & fs.st_mode)
 		tmp->perm[3] = (tmp->perm[3] == '-') ? 'S' : 's';
@@ -185,7 +186,7 @@ void fill_perm_acl(acl_t tmpacl, t_list_ls *tmp, struct stat fs, char *tmp2)
 	tmp->perm[11] = '\0';
 }
 
-void fill_others(t_list_ls *tmp, struct stat fs, int flag, b_arg *arg)
+void		fill_others(t_list_ls *tmp, struct stat fs, b_arg *arg)
 {
 	struct passwd *pwd;
 
@@ -193,17 +194,23 @@ void fill_others(t_list_ls *tmp, struct stat fs, int flag, b_arg *arg)
 	tmp->date = fs.st_mtime;
 	tmp->hardlinks = fs.st_nlink;
 	tmp->size = (long long)fs.st_size;
-	if (flag != 0)
-		arg->totalsize += fs.st_blocks;
+	arg->totalsize += fs.st_blocks;
+	if (pwd == NULL)
+	{
+		tmp->pwname = ft_strdup("test");
+		tmp->grname = ft_strdup("test");
+		tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
+		return ;
+	}
 	tmp->pwname = ft_strdup(pwd->pw_name);
 	tmp->grname = ft_strdup((getgrgid(pwd->pw_gid)->gr_name));
 	tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
 }
 
-t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
+t_list_ls	*add_link_front(t_list_ls *mylist, char *str, b_arg *arg)
 {
 	t_list_ls	*tmp;
-	acl_t tmpacl;
+	acl_t		tmpacl;
 	struct stat	fs;
 	char		*tmp2;
 
@@ -212,13 +219,13 @@ t_list_ls *add_link_front(t_list_ls *mylist, char *str, b_arg *arg, int flag)
 	if (tmp)
 	{
 		tmp->file_name = str;
-		tmp2= ft_strjoin(arg->path, tmp->file_name);
+		tmp2 = ft_strjoin(arg->path, tmp->file_name);
 		if (lstat(tmp2, &fs) < 0)
-			return(NULL);
+			return (NULL);
 		fill_perm(tmp, fs);
 		fill_perm_right(tmp, fs);
 		fill_perm_acl(tmpacl, tmp, fs, tmp2);
-		fill_others(tmp, fs, flag, arg);
+		fill_others(tmp, fs, arg);
 		tmp->next = mylist;
 	}
 	else

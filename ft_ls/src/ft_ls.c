@@ -46,6 +46,8 @@ void		recursive_dir(b_arg *arg, t_list_ls *mylist)
 			if (check_point(mylist->file_name_path) == 0)
 			{
 				arg->path = ft_strjoin(mylist->file_name_path, "/");
+				if (!arg->path)
+					return ;
 				ft_printf("\n%s:\n", mylist->file_name_path);
 				arg->totalsize = 0;
 				handle_arg(arg);
@@ -81,7 +83,7 @@ int			main(int argc, char **argv)
 	b_arg			arg[1];
 	int				i;
 	t_list_ls		*mylistdir;
-	t_list_ls 		*mylistfile;
+	t_list_ls		*mylistfile;
 
 	mylistdir = NULL;
 	mylistfile = NULL;

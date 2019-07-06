@@ -16,10 +16,12 @@ t_list_ls	*sort_ascii(t_list_ls *mylist)
 {
 	if (!mylist)
 		return (NULL);
-	if (mylist->next && ft_strcmp(mylist->file_name, mylist->next->file_name) > 0)
+	if (mylist->next &&
+		ft_strcmp(mylist->file_name, mylist->next->file_name) > 0)
 		mylist = lst_swap(mylist, mylist->next);
 	mylist->next = sort_ascii(mylist->next);
-	if (mylist->next && ft_strcmp(mylist->file_name, mylist->next->file_name) > 0)
+	if (mylist->next &&
+		ft_strcmp(mylist->file_name, mylist->next->file_name) > 0)
 	{
 		mylist = lst_swap(mylist, mylist->next);
 		mylist->next = sort_ascii(mylist->next);
@@ -42,17 +44,17 @@ t_list_ls	*sort_time(t_list_ls *mylist)
 	return (mylist);
 }
 
-t_list_ls *add_link_front_dir(t_list_ls *mylistdir, char *str)
+t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str)
 {
 	t_list_ls		*tmp;
-	struct stat 	fs;
+	struct stat		fs;
 
 	tmp = malloc(sizeof(t_list_ls));
 	if (tmp)
 	{
 		tmp->file_name = str;
 		if (lstat(str, &fs) < 0)
-			return(NULL);
+			return (NULL);
 		tmp->date = fs.st_mtime;
 		tmp->next = mylistdir;
 	}
@@ -64,7 +66,6 @@ t_list_ls *add_link_front_dir(t_list_ls *mylistdir, char *str)
 t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 {
 	char *tmp;
-
 	if (arg->is_a == 1)
 	{
 		if (!(d = opendir(arg->path)))
@@ -75,7 +76,7 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 			{
 				if (!(tmp = ft_strdup(dir->d_name)))
 					return (NULL);
-				mylist = add_link_front(mylist, tmp, arg, 1);
+				mylist = add_link_front(mylist, tmp, arg);
 			}
 		}
 		closedir(d);
@@ -87,8 +88,11 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 		if (dir->d_name[0] != '.')
 		{
 			if (!(tmp = ft_strdup(dir->d_name)))
+			{
+				closedir(d);
 				return (NULL);
-			mylist = add_link_front(mylist, tmp, arg, 1);
+			}
+			mylist = add_link_front(mylist, tmp, arg);
 		}
 	}
 	closedir(d);
@@ -97,6 +101,8 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
 
 t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2)
 {
+	if (!p1 || !p2)
+		return (NULL);
 	p1->next = p2->next;
 	p2->next = p1;
 	return (p2);

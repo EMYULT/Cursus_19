@@ -39,13 +39,15 @@ void		display_my_dir(t_list_ls *mylist, b_arg *arg)
 	}
 }
 
-int		check_my_options(int i, int argc, char **argv, b_arg *arg)
+int			check_my_options(int i, int argc, char **argv, b_arg *arg)
 {
 	while (i < argc && argv[i][0] == '-')
 	{
 		if (check_arg(argv[i], arg, 0, 0) != -1)
 		{
-			ft_printf("ls: illegal option -- %c\nusage: ls [-lraRt] [file ...]\n", argv[i][check_arg(argv[i], arg, 0, 0)]);
+			ft_printf("ls: illegal option -- %c\n",
+			argv[i][check_arg(argv[i], arg, 0, 0)]);
+			ft_printf("usage: ls [-lraRt] [file ...]\n");
 			return (-1);
 		}
 		i++;
@@ -57,9 +59,9 @@ int		check_my_options(int i, int argc, char **argv, b_arg *arg)
 
 t_list_ls	*fill_dir(int i, int argc, char **argv)
 {
-	DIR		*d;
-	char	*tmp;
-	t_list_ls *mylistdir;
+	DIR			*d;
+	char		*tmp;
+	t_list_ls	*mylistdir;
 
 	mylistdir = NULL;
 	while (i < argc)
@@ -80,7 +82,7 @@ t_list_ls	*fill_file(int i, int argc, char **argv, b_arg *arg)
 {
 	struct stat	fs;
 	char		*tmp;
-	t_list_ls 	*mylistfile;
+	t_list_ls	*mylistfile;
 	DIR			*d;
 
 	mylistfile = NULL;
@@ -95,7 +97,7 @@ t_list_ls	*fill_file(int i, int argc, char **argv, b_arg *arg)
 		{
 			if (!(tmp = ft_strdup(argv[i])))
 				return (NULL);
-			mylistfile = add_link_front(mylistfile, tmp, arg, 0);
+			mylistfile = add_link_front(mylistfile, tmp, arg);
 		}
 		i++;
 	}
@@ -112,14 +114,14 @@ t_list_ls	*check_sort(t_list_ls *mylist, b_arg *arg)
 	return (mylist);
 }
 
-void	initialize_arg(b_arg *arg)
+void		initialize_arg(b_arg *arg)
 {
 	ft_bzero(arg, sizeof(b_arg *));
 	arg->path = "./";
 	arg->totalsize = 0;
 }
 
-int		check_arg(char *str, b_arg *arg, int i, int j)
+int			check_arg(char *str, b_arg *arg, int i, int j)
 {
 	while (str[j])
 		j++;
@@ -147,7 +149,7 @@ int		check_arg(char *str, b_arg *arg, int i, int j)
 	return (i == j) ? (-1) : (i);
 }
 
-int		check_path(char *str, b_arg *arg)
+int			check_path(char *str, b_arg *arg)
 {
 	int i;
 	int j;
@@ -162,20 +164,21 @@ int		check_path(char *str, b_arg *arg)
 	{
 		if (!(arg->path = (char *)malloc(sizeof(char) * i + 2)))
 			return (-1);
-		while(j < i)
+		while (j < i)
 		{
 			arg->path[j] = str[j];
 			j++;
 		}
 		arg->path[j] = '/';
 		arg->path[j + 1] = '\0';
+		ft_printf("\nMon arg->path = %sq\n", arg->path);
 	}
 	else
 		arg->path = str;
 	return (1);
 }
 
-int		check_point(char *s)
+int			check_point(char *s)
 {
 	int		i;
 	size_t	len;
