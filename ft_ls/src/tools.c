@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-void		display_my_files(t_list_ls *mylist, b_arg *arg)
+void		display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 {
 	mylist = check_sort(mylist, arg);
 	if (mylist != NULL)
@@ -26,12 +26,14 @@ void		display_my_files(t_list_ls *mylist, b_arg *arg)
 	}
 }
 
-void		display_my_dir(t_list_ls *mylist, b_arg *arg)
+void		display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 {
 	mylist = check_sort(mylist, arg);
 	while (mylist != NULL)
 	{
 		check_path(mylist->file_name, arg);
+		if (arg->flag_mutiple_folders == 1)
+			ft_printf("%s:\n", mylist->file_name);
 		handle_arg(arg);
 		if (mylist->next)
 			ft_printf("\n");
@@ -39,7 +41,7 @@ void		display_my_dir(t_list_ls *mylist, b_arg *arg)
 	}
 }
 
-int			check_my_options(int i, int argc, char **argv, b_arg *arg)
+int			check_my_options(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	while (i < argc && argv[i][0] == '-')
 	{
@@ -78,7 +80,7 @@ t_list_ls	*fill_dir(int i, int argc, char **argv)
 	return (mylistdir);
 }
 
-t_list_ls	*fill_file(int i, int argc, char **argv, b_arg *arg)
+t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	struct stat	fs;
 	char		*tmp;
@@ -89,22 +91,22 @@ t_list_ls	*fill_file(int i, int argc, char **argv, b_arg *arg)
 	while (i < argc)
 	{
 		if (lstat(argv[i], &fs) < 0)
-		{
 			ft_printf("ls: %s: No such file or directory\n", argv[i]);
-			return (NULL);
-		}
-		else if (!(d = opendir(argv[i])))
+		else
 		{
-			if (!(tmp = ft_strdup(argv[i])))
-				return (NULL);
-			mylistfile = add_link_front(mylistfile, tmp, arg);
+			if (!(d = opendir(argv[i])))
+			{
+				if (!(tmp = ft_strdup(argv[i])))
+					return (NULL);
+				mylistfile = add_link_front(mylistfile, tmp, arg);
+			}
 		}
 		i++;
 	}
 	return (mylistfile);
 }
 
-t_list_ls	*check_sort(t_list_ls *mylist, b_arg *arg)
+t_list_ls	*check_sort(t_list_ls *mylist, t_arg_ls *arg)
 {
 	mylist = sort_ascii(mylist);
 	if (arg->is_t == 1)
@@ -114,14 +116,19 @@ t_list_ls	*check_sort(t_list_ls *mylist, b_arg *arg)
 	return (mylist);
 }
 
-void		initialize_arg(b_arg *arg)
+void		initialize_arg(t_arg_ls *arg)
 {
-	ft_bzero(arg, sizeof(b_arg *));
+	arg->is_l = 0;
+	arg->is_rr = 0;
+	arg->is_a = 0;
+	arg->is_r = 0;
+	arg->is_t = 0;
 	arg->path = "./";
 	arg->totalsize = 0;
+	arg->flag_mutiple_folders = 0;
 }
 
-int			check_arg(char *str, b_arg *arg, int i, int j)
+int			check_arg(char *str, t_arg_ls *arg, int i, int j)
 {
 	while (str[j])
 		j++;
@@ -136,7 +143,7 @@ int			check_arg(char *str, b_arg *arg, int i, int j)
 			if (str[i] == 'l')
 				arg->is_l = 1;
 			if (str[i] == 'R')
-				arg->is_R = 1;
+				arg->is_rr = 1;
 			if (str[i] == 'a')
 				arg->is_a = 1;
 			if (str[i] == 'r')
@@ -149,7 +156,7 @@ int			check_arg(char *str, b_arg *arg, int i, int j)
 	return (i == j) ? (-1) : (i);
 }
 
-int			check_path(char *str, b_arg *arg)
+int			check_path(char *str, t_arg_ls *arg)
 {
 	int i;
 	int j;
@@ -171,7 +178,6 @@ int			check_path(char *str, b_arg *arg)
 		}
 		arg->path[j] = '/';
 		arg->path[j + 1] = '\0';
-		ft_printf("\nMon arg->path = %sq\n", arg->path);
 	}
 	else
 		arg->path = str;

@@ -63,7 +63,7 @@ t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str)
 	return (tmp);
 }
 
-t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, b_arg *arg)
+t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
 {
 	char *tmp;
 	if (arg->is_a == 1)

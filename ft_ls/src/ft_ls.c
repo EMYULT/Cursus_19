@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-t_list_ls	*params(t_list_ls *mylist, b_arg *arg)
+t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 {
 	DIR				*d;
 	struct dirent	*dir;
@@ -28,7 +28,7 @@ t_list_ls	*params(t_list_ls *mylist, b_arg *arg)
 	return (mylist);
 }
 
-void		recursive_dir(b_arg *arg, t_list_ls *mylist)
+void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 {
 	struct stat	fs;
 	char		*tmp;
@@ -57,7 +57,7 @@ void		recursive_dir(b_arg *arg, t_list_ls *mylist)
 	}
 }
 
-void		handle_arg(b_arg *arg)
+void		handle_arg(t_arg_ls *arg)
 {
 	t_list_ls		*mylist;
 
@@ -74,13 +74,13 @@ void		handle_arg(b_arg *arg)
 		else
 			print_full_list(mylist, arg, 0);
 	}
-	if (arg->is_R)
+	if (arg->is_rr)
 		recursive_dir(arg, mylist);
 }
 
 int			main(int argc, char **argv)
 {
-	b_arg			arg[1];
+	t_arg_ls			arg[1];
 	int				i;
 	t_list_ls		*mylistdir;
 	t_list_ls		*mylistfile;
@@ -91,6 +91,8 @@ int			main(int argc, char **argv)
 	i = check_my_options(1, argc, argv, arg);
 	if (i == -1)
 		return (1);
+	if (argc - i > 1)
+		arg->flag_mutiple_folders = 1;
 	mylistdir = fill_dir(i, argc, argv);
 	mylistfile = fill_file(i, argc, argv, arg);
 	display_my_files(mylistfile, arg);
