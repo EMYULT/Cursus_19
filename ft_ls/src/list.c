@@ -52,24 +52,28 @@ void		fill_perm_acl(acl_t tmpacl, t_list_ls *tmp, struct stat fs, char *tmp2)
 	tmp->perm[11] = '\0';
 }
 
-void		fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg)
+void		fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg, char *tmp2)
 {
-	struct passwd *pwd;
+	char buf[NAME_MAX + 1];
 
-	pwd = getpwuid(fs.st_uid);
 	tmp->date = fs.st_mtime;
 	tmp->hardlinks = fs.st_nlink;
 	tmp->size = (long long)fs.st_size;
 	arg->totalsize += fs.st_blocks;
-	if (pwd == NULL)
-		tmp->pwname = ft_strdup(ft_itoa(fs.st_uid));
-	else
-		tmp->pwname = ft_strdup(pwd->pw_name);
-	if ((getgrgid(pwd->pw_gid)->gr_name) == NULL)
-		tmp->grname = ft_strdup((getgrgid(fs.st_gid)->gr_name));
-	else
-		tmp->grname = ft_strdup((getgrgid(pwd->pw_gid)->gr_name));
+	tmp->pwname = ft_strdup(getpwuid(fs.st_uid)->pw_name);
+	tmp->grname = ft_strdup(getgrgid(fs.st_gid)->gr_name);
 	tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
+	if (tmp->perm[0] == 'l')
+	{
+		ft_bzero(buf, NAME_MAX + 1);
+		readlink(tmp2, buf, NAME_MAX);
+		tmp->have_symlink = ft_strdup(buf);
+	}
+	else
+		tmp->have_symlink = NULL;
+	if (!tmp->date_string || !tmp->grname || !tmp->pwname)
+		return ;
+	// Attention ce check est surement mauvais ..
 }
 
 t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
@@ -85,12 +89,12 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 	{
 		tmp->file_name = str;
 		tmp2 = ft_strjoin(arg->path, tmp->file_name);
-		if (lstat(tmp2, &fs) < 0)
+		if (lstat(tmp2, &fs) < 0 || !tmp2)
 			return (NULL);
 		fill_perm(tmp, fs);
 		fill_perm_right(tmp, fs);
 		fill_perm_acl(tmpacl, tmp, fs, tmp2);
-		fill_others(tmp, fs, arg);
+		fill_others(tmp, fs, arg, tmp2);
 		tmp->next = mylist;
 	}
 	else

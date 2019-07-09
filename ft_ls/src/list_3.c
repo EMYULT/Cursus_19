@@ -86,6 +86,9 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 			ft_printf(" %s ", ft_strsub(mylist->date_string, 11, 5));
 		else
 			ft_printf("  %s ", ft_strsub(mylist->date_string, 20, 4));
+		if (mylist->have_symlink != NULL)
+			ft_printf("%s -> %s\n", mylist->file_name, mylist->have_symlink);
+		else
 			ft_printf("%s\n", mylist->file_name);
 		mylist = mylist->next;
 	}

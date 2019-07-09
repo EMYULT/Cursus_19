@@ -25,7 +25,7 @@
 # include <time.h>
 # include <sys/xattr.h>
 # include <sys/acl.h>
-
+# include <limits.h>
 /*
 ** Code couleur pour fichiers, dossiers et exec
 */
@@ -74,6 +74,7 @@ struct			s_list_ls
 	char		*grname;
 	char		*date_string;
 	char		perm[12];
+	char		*have_symlink;
 	t_list_ls	*next;
 };
 
@@ -90,7 +91,7 @@ int				length_int_easy(int x);
 void			print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag);
 t_list_ls		*reverse_list(t_list_ls *mylist);
 t_list_ls		*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg);
-void			fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg);
+void			fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg, char *tmp2);
 void			fill_perm_acl(acl_t tmpacl, t_list_ls *tmp,
 				struct stat fs, char *tmp2);
 void			fill_perm_right(t_list_ls *tmp, struct stat fs);
