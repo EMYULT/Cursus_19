@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 11:19:50 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/07/06 11:19:51 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/07/29 13:06:34 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,38 @@ void		fill_perm_acl(acl_t tmpacl, t_list_ls *tmp, struct stat fs, char *tmp2)
 	tmp->perm[11] = '\0';
 }
 
-void		fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg, char *tmp2)
+char		*fill_group(struct stat fs)
+{
+	struct group *g;
+	char	*pwname;
+
+	g = getgrgid(fs.st_gid);
+	if (g && g->gr_name)
+	{
+		pwname = ft_strdup(g->gr_name);
+		return (pwname);
+	}
+	else
+		return (ft_itoa(fs.st_gid));
+}
+
+char		*fill_pwname(struct stat fs)
+{
+	struct  passwd	*p;
+	char			*pw_name_tmp;
+
+
+	p = getpwuid(fs.st_uid);
+	if (p && p->pw_name)
+	{
+		pw_name_tmp = ft_strdup(p->pw_name);
+		return (pw_name_tmp);
+	}
+	else
+		return (ft_itoa(fs.st_uid));
+}
+
+int		fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg, char *tmp2)
 {
 	char buf[NAME_MAX + 1];
 
@@ -60,8 +91,18 @@ void		fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg, char *tmp2)
 	tmp->hardlinks = fs.st_nlink;
 	tmp->size = (long long)fs.st_size;
 	arg->totalsize += fs.st_blocks;
-	tmp->pwname = ft_strdup(getpwuid(fs.st_uid)->pw_name);
-	tmp->grname = ft_strdup(getgrgid(fs.st_gid)->gr_name);
+	//protection ! (print malloc error)
+	if (!(tmp->grname = fill_group(fs)))
+		return(-1);
+	if (!(tmp->pwname = fill_pwname(fs)))
+		return (-1);
+
+	/*
+	if (!(tmp->pwname = getpwuid(fs.st_uid)->pw_name))
+		ft_putstr("pwname NULL");
+	if (!(tmp->grname = ft_strdup(getgrgid(fs.st_gid)->gr_name)))
+		ft_putstr("gr_name NULL");
+	*/
 	tmp->date_string = ft_strdup((ctime(&fs.st_mtime)));
 	if (tmp->perm[0] == 'l')
 	{
@@ -71,9 +112,10 @@ void		fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg, char *tmp2)
 	}
 	else
 		tmp->have_symlink = NULL;
-	if (!tmp->date_string || !tmp->grname || !tmp->pwname)
-		return ;
+	//if (!tmp->date_string || !tmp->grname || !tmp->pwname)
+	//	return ;
 	// Attention ce check est surement mauvais ..
+	return (0);
 }
 
 t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)

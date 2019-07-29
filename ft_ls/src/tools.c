@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/23 17:47:51 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/07/29 13:39:45 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void		display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 
 int			check_my_options(int i, int argc, char **argv, t_arg_ls *arg)
 {
+	i = 0;
 	while (i < argc && argv[i][0] == '-')
 	{
 		if (check_arg(argv[i], arg, 0, 0) != -1)
