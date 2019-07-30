@@ -6,11 +6,22 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 13:51:47 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/07/13 17:58:06 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/07/30 21:13:48 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+
+void		print_filename_color(t_list_ls *mylist)
+{
+	if (mylist->is_dir == 1)
+		ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
+	else if (mylist->is_dir == 666)
+		ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
+	else
+		ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
+
+}
 
 void		print_list(t_list_ls *mylist)
 {
@@ -18,7 +29,7 @@ void		print_list(t_list_ls *mylist)
 		return;
 	while(mylist != NULL)
 	{
-			ft_printf("%s\n", mylist->file_name);
+		print_filename_color(mylist);
 		mylist = mylist->next;
 	}
 }
@@ -89,7 +100,7 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 		if (mylist->have_symlink != NULL)
 			ft_printf("%s -> %s\n", mylist->file_name, mylist->have_symlink);
 		else
-			ft_printf("%s\n", mylist->file_name);
+			print_filename_color(mylist);
 		mylist = mylist->next;
 	}
 }
