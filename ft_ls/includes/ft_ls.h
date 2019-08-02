@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/07/29 13:04:31 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/07/31 11:42:20 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef	struct	s_arg_ls
 	int				is_t;
 	char			*path;
 	int				totalsize;
+	int				file_printed;
 	int				flag_mutiple_folders;
 }				t_arg_ls;
 
@@ -91,7 +92,7 @@ int				length_int_easy(int x);
 void			print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag);
 t_list_ls		*reverse_list(t_list_ls *mylist);
 t_list_ls		*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg);
-//void			fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg, char *tmp2);
+int				fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg, char *tmp2);
 void			fill_perm_acl(acl_t tmpacl, t_list_ls *tmp,
 				struct stat fs, char *tmp2);
 void			fill_perm_right(t_list_ls *tmp, struct stat fs);

@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/07/29 15:46:31 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/07/31 11:13:09 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ void		display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 		else
 			print_full_list(mylist, arg, 1);
 		if (mylist != NULL)
-			ft_printf("\n");
+			arg->file_printed = 1;
 	}
 }
 
 void		display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 {
 	mylist = check_sort(mylist, arg);
+	if (arg->file_printed && mylist)
+		ft_printf("\n");
 	while (mylist != NULL)
 	{
 		check_path(mylist->file_name, arg);
@@ -126,6 +128,7 @@ void		initialize_arg(t_arg_ls *arg)
 	arg->path = "./";
 	arg->totalsize = 0;
 	arg->flag_mutiple_folders = 0;
+	arg->file_printed = 0;
 }
 
 int			check_arg(char *str, t_arg_ls *arg, int i, int j)
@@ -186,7 +189,7 @@ int			check_path(char *str, t_arg_ls *arg)
 
 int			check_point(char *s)
 {
-	int		i;
+	int			i;
 	size_t	len;
 
 	i = 0;

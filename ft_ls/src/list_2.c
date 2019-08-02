@@ -6,11 +6,20 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:53:28 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/06/22 12:53:29 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/08/02 15:01:09 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+
+t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2)
+{
+	if (!p1 || !p2)
+		return (NULL);
+	p1->next = p2->next;
+	p2->next = p1;
+	return (p2);
+}
 
 t_list_ls	*sort_ascii(t_list_ls *mylist)
 {
@@ -97,13 +106,4 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *ar
 	}
 	closedir(d);
 	return (mylist);
-}
-
-t_list_ls	*lst_swap(t_list_ls *p1, t_list_ls *p2)
-{
-	if (!p1 || !p2)
-		return (NULL);
-	p1->next = p2->next;
-	p2->next = p1;
-	return (p2);
 }

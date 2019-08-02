@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 13:51:47 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/07/30 21:13:48 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/02 15:04:19 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void		print_filename_color(t_list_ls *mylist)
 		ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 	else
 		ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
-
 }
 
 void		print_list(t_list_ls *mylist)
