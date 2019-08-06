@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/07/31 11:42:20 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/04 19:06:11 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,11 @@ t_list_ls		*lst_swap(t_list_ls *p1, t_list_ls *p2);
 int				check_point(char *s);
 int				check_path(char *str, t_arg_ls *arg);
 int				check_arg(char *str, t_arg_ls *arg, int i, int j);
-void			initialize_arg(t_arg_ls *arg);
+void			init_arg(t_arg_ls *arg);
 t_list_ls		*check_sort(t_list_ls *mylist, t_arg_ls *arg);
 void			display_my_files(t_list_ls *mylist, t_arg_ls *arg);
 void			display_my_dir(t_list_ls *mylist, t_arg_ls *arg);
-int				check_my_options(int i, int argc, char **argv, t_arg_ls *arg);
+int				check_options(int i, int argc, char **argv, t_arg_ls *arg);
 t_list_ls		*fill_dir(int i, int argc, char **argv);
 t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg);
 

@@ -6,31 +6,15 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/07/31 11:39:30 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/06 18:48:53 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
-{
-	DIR				*d;
-	struct dirent	*dir;
-
-	mylist = NULL;
-	dir = NULL;
-	d = NULL;
-	mylist = push_list(dir, d, mylist, arg);
-	if (mylist != NULL)
-		mylist = sort_ascii(mylist);
-	else
-		return (NULL);
-	return (mylist);
-}
-
 void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 {
-	struct stat	fs;
+	struct stat		fs;
 	char		*tmp;
 
 	tmp = arg->path;
@@ -57,6 +41,35 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 	}
 }
 
+t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
+{
+	DIR				*d;
+	struct dirent	*dir;
+
+	mylist = NULL;
+	dir = NULL;
+	d = NULL;
+	mylist = push_list(dir, d, mylist, arg);
+	if (mylist != NULL)
+		mylist = sort_ascii(mylist);
+	else
+		return (NULL);
+	return (mylist);
+}
+
+void		free_list(t_list_ls *list)
+{
+	t_list_ls	*tmp;
+
+	while (list)
+	{
+		tmp = list->next;
+
+		free(list);
+		list = tmp;
+	}
+}
+
 void		handle_arg(t_arg_ls *arg)
 {
 	t_list_ls		*mylist;
@@ -76,26 +89,29 @@ void		handle_arg(t_arg_ls *arg)
 	}
 	if (arg->is_rr)
 		recursive_dir(arg, mylist);
+	free_list(mylist);
+	//freelist;
 }
 
 int			main(int argc, char **argv)
 {
-	t_arg_ls		arg[1];
+	t_arg_ls		arg;
 	int				i;
 	t_list_ls		*mylistdir;
 	t_list_ls		*mylistfile;
 
 	mylistdir = NULL;
 	mylistfile = NULL;
-	initialize_arg(arg);
-	i = check_my_options(1, argc, argv, arg);
+	init_arg(&arg);
+	i = check_options(1, argc, argv, &arg);
 	if (i == -1)
 		return (1);
 	if (argc - i > 1)
-		arg->flag_mutiple_folders = 1;
+		arg.flag_mutiple_folders = 1;
 	mylistdir = fill_dir(i, argc, argv);
-	mylistfile = fill_file(i, argc, argv, arg);
-	display_my_files(mylistfile, arg);
-	display_my_dir(mylistdir, arg);
+	mylistfile = fill_file(i, argc, argv, &arg);
+	display_my_files(mylistfile, &arg);
+	display_my_dir(mylistdir, &arg);
+	printf("check\n");
 	return (0);
 }

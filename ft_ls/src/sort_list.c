@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:53:28 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/02 15:01:09 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/04 16:11:07 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,57 +53,22 @@ t_list_ls	*sort_time(t_list_ls *mylist)
 	return (mylist);
 }
 
-t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str)
+t_list_ls	*reverse_list(t_list_ls *mylist)
 {
-	t_list_ls		*tmp;
-	struct stat		fs;
+	t_list_ls *prev;
+	t_list_ls *current;
+	t_list_ls *next;
 
-	tmp = malloc(sizeof(t_list_ls));
-	if (tmp)
+	prev = NULL;
+	next = NULL;
+	current = mylist;
+	while (current != NULL)
 	{
-		tmp->file_name = str;
-		if (lstat(str, &fs) < 0)
-			return (NULL);
-		tmp->date = fs.st_mtime;
-		tmp->next = mylistdir;
+		next = current->next;
+		current->next = prev;
+		prev = current;
+		current = next;
 	}
-	else
-		return (NULL);
-	return (tmp);
-}
-
-t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
-{
-	char *tmp;
-	if (arg->is_a == 1)
-	{
-		if (!(d = opendir(arg->path)))
-			return (NULL);
-		while ((dir = readdir(d)) != NULL)
-		{
-			if (dir->d_name[0] == '.')
-			{
-				if (!(tmp = ft_strdup(dir->d_name)))
-					return (NULL);
-				mylist = add_link_front(mylist, tmp, arg);
-			}
-		}
-		closedir(d);
-	}
-	if (!(d = opendir(arg->path)))
-		return (NULL);
-	while ((dir = readdir(d)) != NULL)
-	{
-		if (dir->d_name[0] != '.')
-		{
-			if (!(tmp = ft_strdup(dir->d_name)))
-			{
-				closedir(d);
-				return (NULL);
-			}
-			mylist = add_link_front(mylist, tmp, arg);
-		}
-	}
-	closedir(d);
+	mylist = prev;
 	return (mylist);
 }

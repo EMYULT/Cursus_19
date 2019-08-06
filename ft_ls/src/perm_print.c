@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 13:51:47 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/02 15:04:19 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/04 18:03:59 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,26 +102,6 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 			print_filename_color(mylist);
 		mylist = mylist->next;
 	}
-}
-
-t_list_ls	*reverse_list(t_list_ls *mylist)
-{
-	t_list_ls *prev;
-	t_list_ls *current;
-	t_list_ls *next;
-
-	prev = NULL;
-	next = NULL;
-	current = mylist;
-	while (current != NULL)
-	{
-		next = current->next;
-		current->next = prev;
-		prev = current;
-		current = next;
-	}
-	mylist = prev;
-	return (mylist);
 }
 
 void		fill_perm(t_list_ls *tmp, struct stat fs)

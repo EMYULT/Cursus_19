@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 11:36:01 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/07/31 11:42:19 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/04 19:06:09 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,5 @@ int		fill_others(t_list_ls *tmp, struct stat fs, t_arg_ls *arg, char *tmp2)
 	}
 	else
 		tmp->have_symlink = NULL;
-	//if (!tmp->date_string || !tmp->grname || !tmp->pwname)
-	//	return ;
-	// Attention ce check est surement mauvais ..
 	return (0);
 }
