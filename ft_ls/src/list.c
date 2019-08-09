@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 11:19:50 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/04 19:06:05 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/08 17:53:50 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 	char		*tmp2;
 
 	tmpacl = NULL;
-	tmp = malloc(sizeof(t_list_ls));
+	tmp = ft_memalloc(sizeof(t_list_ls));
 	if (tmp)
 	{
 		tmp->file_name = str;
@@ -31,6 +31,7 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 		fill_perm_right(tmp, fs);
 		fill_perm_acl(tmpacl, tmp, fs, tmp2);
 		fill_others(tmp, fs, arg, tmp2);
+		ft_strdel(&tmp2);
 		tmp->next = mylist;
 	}
 	else
@@ -43,7 +44,7 @@ t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str)
 	t_list_ls		*tmp;
 	struct stat		fs;
 
-	tmp = malloc(sizeof(t_list_ls));
+	tmp = ft_memalloc(sizeof(t_list_ls));
 	if (tmp)
 	{
 		tmp->file_name = str;
@@ -59,14 +60,14 @@ t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str)
 
 t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
 {
-	char *tmp;
-
+	char	*tmp;
+/*
 	if (arg->is_a == 1)
 	{
 		if (!(d = opendir(arg->path)))
 		{
 			ft_putstr_fd("ls: ", 2);
-			ft_putstr_fd(arg->path, 2);
+			//ft_putstr_fd(dir->d_name, 2);
 			ft_putstr_fd(" Permission denied\n", 2);
 			return (NULL);
 		}
@@ -81,16 +82,21 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *ar
 		}
 		closedir(d);
 	}
+	*/
+
+	ft_putstr(arg->path);
+	ft_putstr("\n");
+
 	if (!(d = opendir(arg->path)))
 	{
 		ft_putstr_fd("ls: ", 2);
-		ft_putstr_fd(arg->path, 2);
+		//ft_putstr_fd(dir->d_name, 2);
 		ft_putstr_fd(" Permission denied\n", 2);
 		return (NULL);
 	}
 	while ((dir = readdir(d)) != NULL)
 	{
-		if (dir->d_name[0] != '.')
+		if (dir->d_name[0] != '.' || (dir->d_name[0] == '.' && arg->is_a == 1))
 		{
 			if (!(tmp = ft_strdup(dir->d_name)))
 			{

@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/08/06 18:29:14 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/08 15:19:48 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 				if (!(tmp = ft_strdup(argv[i])))
 					return (NULL);
 				mylistfile = add_link_front(mylistfile, tmp, arg);
-				closedir(d);
 			}
+			else
+				closedir(d);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/06 18:48:53 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/08 17:53:47 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 	}
 }
 
-t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
+t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg)
 {
 	DIR				*d;
 	struct dirent	*dir;
@@ -65,6 +65,18 @@ void		free_list(t_list_ls *list)
 	{
 		tmp = list->next;
 
+		if (list->file_name != NULL)
+			ft_strdel(&list->file_name);
+		if (list->file_name_path != NULL)
+			ft_strdel(&list->file_name_path);
+		if (list->pwname != NULL)
+			ft_strdel(&list->pwname);
+		if (list->grname != NULL)
+			ft_strdel(&list->grname);
+		if (list->date_string != NULL)
+			ft_strdel(&list->date_string);
+		if (list->have_symlink != NULL)
+			ft_strdel(&list->have_symlink);
 		free(list);
 		list = tmp;
 	}
@@ -90,7 +102,6 @@ void		handle_arg(t_arg_ls *arg)
 	if (arg->is_rr)
 		recursive_dir(arg, mylist);
 	free_list(mylist);
-	//freelist;
 }
 
 int			main(int argc, char **argv)
@@ -112,6 +123,5 @@ int			main(int argc, char **argv)
 	mylistfile = fill_file(i, argc, argv, &arg);
 	display_my_files(mylistfile, &arg);
 	display_my_dir(mylistdir, &arg);
-	printf("check\n");
 	return (0);
 }
