@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 11:19:50 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/08 17:53:50 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/11 10:54:21 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,45 +58,34 @@ t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str)
 	return (tmp);
 }
 
+void		permission_denied(char *path)
+{
+	int		i;
+
+	i = ft_strlen(path);
+	ft_putstr_fd("ls: ", 2);
+	if (path[i -1] == '/')
+		i = i - 2;
+	while (i > 0 && path[i - 1] != '/')
+		i--;
+	while (path[i] != '\0' && path[i] != '/')
+		ft_putchar_fd(path[i++], 2);
+	ft_putchar_fd(':', 2);
+	ft_putstr_fd(" Permission denied\n", 2);
+}
+
 t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
 {
 	char	*tmp;
-/*
-	if (arg->is_a == 1)
-	{
-		if (!(d = opendir(arg->path)))
-		{
-			ft_putstr_fd("ls: ", 2);
-			//ft_putstr_fd(dir->d_name, 2);
-			ft_putstr_fd(" Permission denied\n", 2);
-			return (NULL);
-		}
-		while ((dir = readdir(d)) != NULL)
-		{
-			if (dir->d_name[0] == '.')
-			{
-				if (!(tmp = ft_strdup(dir->d_name)))
-					return (NULL);
-				mylist = add_link_front(mylist, tmp, arg);
-			}
-		}
-		closedir(d);
-	}
-	*/
-
-	ft_putstr(arg->path);
-	ft_putstr("\n");
 
 	if (!(d = opendir(arg->path)))
 	{
-		ft_putstr_fd("ls: ", 2);
-		//ft_putstr_fd(dir->d_name, 2);
-		ft_putstr_fd(" Permission denied\n", 2);
+		permission_denied(arg->path);
 		return (NULL);
 	}
 	while ((dir = readdir(d)) != NULL)
 	{
-		if (dir->d_name[0] != '.' || (dir->d_name[0] == '.' && arg->is_a == 1))
+		if (dir->d_name[0] != '.' || (arg->is_a == 1 && dir->d_name[0] == '.'))
 		{
 			if (!(tmp = ft_strdup(dir->d_name)))
 			{

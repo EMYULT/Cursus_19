@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/08 17:53:47 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/11 11:12:27 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ int			main(int argc, char **argv)
 	mylistfile = NULL;
 	init_arg(&arg);
 	i = check_options(1, argc, argv, &arg);
+	if (i == argc)
+		handle_arg(&arg);
 	if (i == -1)
 		return (1);
 	if (argc - i > 1)

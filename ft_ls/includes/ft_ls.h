@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/06 19:08:08 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/11 10:58:50 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void			fill_perm_acl(acl_t tmpacl, t_list_ls *tmp,
 				struct stat fs, char *tmp2);
 void			fill_perm_right(t_list_ls *tmp, struct stat fs);
 void			fill_perm(t_list_ls *tmp, struct stat fs);
+void			permission_denied(char *path);
 
 /*
 ** list_2.c

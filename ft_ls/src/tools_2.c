@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/08/04 17:54:35 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/09 15:58:55 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,5 @@ int			check_options(int i, int argc, char **argv, t_arg_ls *arg)
 		}
 		i++;
 	}
-	if (i == argc)
-		handle_arg(arg);
 	return (i);
 }

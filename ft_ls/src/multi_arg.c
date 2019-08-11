@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/08/08 15:19:48 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/11 11:12:25 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,22 @@ t_list_ls	*fill_dir(int i, int argc, char **argv)
 	DIR			*d;
 	char		*tmp;
 	t_list_ls	*mylistdir;
+	struct	stat	fs;
 
 	mylistdir = NULL;
 	while (i < argc)
 	{
-		if ((d = opendir(argv[i])))
+		if (lstat(argv[i], &fs) == 0)
 		{
-			if (!(tmp = ft_strdup(argv[i])))
-				return (NULL);
-			mylistdir = add_link_front_dir(mylistdir, tmp);
-			closedir(d);
+			if ((d = opendir(argv[i])))
+			{
+				if (!(tmp = ft_strdup(argv[i])))
+					return (NULL);
+				mylistdir = add_link_front_dir(mylistdir, tmp);
+				closedir(d);
+			}
+			else
+				permission_denied(argv[i]);
 		}
 		i++;
 	}
