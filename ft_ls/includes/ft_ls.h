@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/11 10:58:50 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/12 15:30:34 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void			fill_perm_acl(acl_t tmpacl, t_list_ls *tmp,
 				struct stat fs, char *tmp2);
 void			fill_perm_right(t_list_ls *tmp, struct stat fs);
 void			fill_perm(t_list_ls *tmp, struct stat fs);
-void			permission_denied(char *path);
+void			permission_denied(char *path, t_arg_ls *arg, int check_last_arg);
 
 /*
 ** list_2.c
@@ -126,7 +126,7 @@ t_list_ls		*check_sort(t_list_ls *mylist, t_arg_ls *arg);
 void			display_my_files(t_list_ls *mylist, t_arg_ls *arg);
 void			display_my_dir(t_list_ls *mylist, t_arg_ls *arg);
 int				check_options(int i, int argc, char **argv, t_arg_ls *arg);
-t_list_ls		*fill_dir(int i, int argc, char **argv);
+t_list_ls		*fill_dir(int i, int argc, char **argv, t_arg_ls *arg);
 t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg);
 
 /*

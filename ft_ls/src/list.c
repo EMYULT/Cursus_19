@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 11:19:50 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/11 10:54:21 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/12 17:29:10 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,12 @@ t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str)
 	return (tmp);
 }
 
-void		permission_denied(char *path)
+void		permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
 {
 	int		i;
 
+	if (arg->flag_mutiple_folders == 1)
+		ft_printf("%s:\n", path);
 	i = ft_strlen(path);
 	ft_putstr_fd("ls: ", 2);
 	if (path[i -1] == '/')
@@ -72,6 +74,8 @@ void		permission_denied(char *path)
 		ft_putchar_fd(path[i++], 2);
 	ft_putchar_fd(':', 2);
 	ft_putstr_fd(" Permission denied\n", 2);
+	if (arg->flag_mutiple_folders == 1 && check_last_arg == 0)
+		ft_putstr("\n");
 }
 
 t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
@@ -80,7 +84,7 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *ar
 
 	if (!(d = opendir(arg->path)))
 	{
-		permission_denied(arg->path);
+		permission_denied(arg->path, arg, 1);
 		return (NULL);
 	}
 	while ((dir = readdir(d)) != NULL)

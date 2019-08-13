@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/11 11:12:27 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/12 17:04:11 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,17 +113,18 @@ int			main(int argc, char **argv)
 
 	mylistdir = NULL;
 	mylistfile = NULL;
+	i = 0;
 	init_arg(&arg);
 	i = check_options(1, argc, argv, &arg);
-	if (i == argc)
-		handle_arg(&arg);
 	if (i == -1)
 		return (1);
+	if (i == argc)
+		handle_arg(&arg);
 	if (argc - i > 1)
 		arg.flag_mutiple_folders = 1;
-	mylistdir = fill_dir(i, argc, argv);
 	mylistfile = fill_file(i, argc, argv, &arg);
 	display_my_files(mylistfile, &arg);
+	mylistdir = fill_dir(i, argc, argv, &arg);
 	display_my_dir(mylistdir, &arg);
 	return (0);
 }

@@ -6,21 +6,11 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/08/09 15:58:55 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/13 11:21:22 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
-
-t_list_ls	*check_sort(t_list_ls *mylist, t_arg_ls *arg)
-{
-	mylist = sort_ascii(mylist);
-	if (arg->is_t == 1)
-		mylist = sort_time(mylist);
-	if (arg->is_r == 1)
-		mylist = reverse_list(mylist);
-	return (mylist);
-}
 
 int			check_arg(char *str, t_arg_ls *arg, int i, int j)
 {
@@ -57,15 +47,19 @@ int			check_options(int i, int argc, char **argv, t_arg_ls *arg)
 
 	while (i < argc && argv[i][0] == '-')
 	{
+		if (argv[i][1] && argv[i][1] == '-')
+			return (i + 1);
+		if (argv[i][1] == '\0')
+			return (i);
 		if ((option_pointer = check_arg(argv[i], arg, 0, 0)) != -1)
 		{
 			ft_printf("ls: illegal option -- %c\n", argv[i][option_pointer]);
 			ft_putstr("usage: ls [-lraRt]");
 			ft_putstr(" [file ...]\n");
 			return (-1);
-			// else if (return de check_arg option pointeur)
+		// else if (return de check_arg option pointeur)
 		}
-		i++;
+			i++;
 	}
 	return (i);
 }

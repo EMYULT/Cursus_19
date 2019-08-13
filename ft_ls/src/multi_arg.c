@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/08/11 11:12:25 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/12 18:18:54 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 	struct stat	fs;
 	char		*tmp;
 	t_list_ls	*mylistfile;
-	DIR			*d;
 
 	mylistfile = NULL;
 	while (i < argc)
@@ -26,28 +25,29 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 			ft_printf("ls: %s: No such file or directory\n", argv[i]);
 		else
 		{
-			if (!(d = opendir(argv[i])))
+			if (!(S_ISDIR(fs.st_mode)))
 			{
 				if (!(tmp = ft_strdup(argv[i])))
 					return (NULL);
 				mylistfile = add_link_front(mylistfile, tmp, arg);
+				printf("\n\n new link : %s\n\n", tmp);
 			}
-			else
-				closedir(d);
 		}
 		i++;
 	}
 	return (mylistfile);
 }
 
-t_list_ls	*fill_dir(int i, int argc, char **argv)
+t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	DIR			*d;
 	char		*tmp;
 	t_list_ls	*mylistdir;
 	struct	stat	fs;
+	int		check_last_arg;
 
 	mylistdir = NULL;
+	check_last_arg = 0;
 	while (i < argc)
 	{
 		if (lstat(argv[i], &fs) == 0)
@@ -60,11 +60,25 @@ t_list_ls	*fill_dir(int i, int argc, char **argv)
 				closedir(d);
 			}
 			else
-				permission_denied(argv[i]);
+			{
+				if (i + 1 == argc)
+					check_last_arg = 1;
+				permission_denied(argv[i], arg, check_last_arg);
+			}
 		}
 		i++;
 	}
 	return (mylistdir);
+}
+
+t_list_ls	*check_sort(t_list_ls *mylist, t_arg_ls *arg)
+{
+	mylist = sort_ascii(mylist);
+	if (arg->is_t == 1)
+		mylist = sort_time(mylist);
+	if (arg->is_r == 1)
+		mylist = reverse_list(mylist);
+	return (mylist);
 }
 
 void		display_my_files(t_list_ls *mylist, t_arg_ls *arg)
@@ -72,12 +86,11 @@ void		display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 	mylist = check_sort(mylist, arg);
 	if (mylist != NULL)
 	{
+		arg->file_printed = 1;
 		if (arg->is_l != 1)
 			print_list(mylist);
 		else
 			print_full_list(mylist, arg, 1);
-		if (mylist != NULL)
-			arg->file_printed = 1;
 	}
 }
 
