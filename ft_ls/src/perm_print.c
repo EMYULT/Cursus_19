@@ -104,26 +104,26 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 	}
 }
 
-void		fill_perm(t_list_ls *tmp, struct stat fs)
+void		fill_perm(t_list_ls *tmp, struct stat *fs)
 {
-	if (S_ISDIR(fs.st_mode))
+	if (S_ISDIR(fs->st_mode))
 	{
 		tmp->perm[0] = 'd';
 		tmp->is_dir = 1;
 	}
-	else if (S_ISREG(fs.st_mode))
+	else if (S_ISREG(fs->st_mode))
 		tmp->perm[0] = '-';
-	else if (S_ISLNK(fs.st_mode))
+	else if (S_ISLNK(fs->st_mode))
 		tmp->perm[0] = 'l';
-	else if (S_ISCHR(fs.st_mode))
+	else if (S_ISCHR(fs->st_mode))
 		tmp->perm[0] = 'c';
-	else if (S_ISSOCK(fs.st_mode))
+	else if (S_ISSOCK(fs->st_mode))
 		tmp->perm[0] = 's';
-	else if (S_ISFIFO(fs.st_mode))
+	else if (S_ISFIFO(fs->st_mode))
 		tmp->perm[0] = 'p';
-	else if (S_ISDIR(fs.st_mode))
+	else if (S_ISDIR(fs->st_mode))
 		tmp->perm[0] = 'd';
-	else if (S_ISBLK(fs.st_mode))
+	else if (S_ISBLK(fs->st_mode))
 		tmp->perm[0] = 'b';
 	else
 		tmp->perm[0] = '-';
