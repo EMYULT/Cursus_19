@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/12 17:04:11 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/15 19:31:58 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 				arg->path = ft_strjoin(mylist->file_name_path, "/");
 				if (!arg->path)
 					return ;
+				// fction_error_exit
 				ft_printf("\n%s:\n", mylist->file_name_path);
 				arg->totalsize = 0;
 				handle_arg(arg);
@@ -39,6 +40,7 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 		}
 		mylist = mylist->next;
 	}
+	ft_strdel(&tmp);
 }
 
 t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg)
@@ -64,7 +66,6 @@ void		free_list(t_list_ls *list)
 	while (list)
 	{
 		tmp = list->next;
-
 		if (list->file_name != NULL)
 			ft_strdel(&list->file_name);
 		if (list->file_name_path != NULL)
@@ -100,7 +101,10 @@ void		handle_arg(t_arg_ls *arg)
 			print_full_list(mylist, arg, 0);
 	}
 	if (arg->is_rr)
+	{
+		arg->is_in_recu = 1;
 		recursive_dir(arg, mylist);
+	}
 	free_list(mylist);
 }
 

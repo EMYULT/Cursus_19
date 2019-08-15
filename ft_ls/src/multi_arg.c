@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/08/13 17:55:35 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/15 19:32:01 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,19 @@ t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 	{
 		if (lstat(argv[i], &fs) == 0)
 		{
-			if ((d = opendir(argv[i])))
+			if (S_ISDIR(fs.st_mode) && (d = opendir(argv[i])))
 			{
+				closedir(d);
 				if (!(tmp = ft_strdup(argv[i])))
 					return (NULL);
 				mylistdir = add_link_front_dir(mylistdir, tmp);
-				closedir(d);
 			}
 			else
 			{
 				if (i + 1 == argc)
 					check_last_arg = 1;
-				permission_denied(argv[i], arg, check_last_arg);
+				if ((S_ISDIR(fs.st_mode)))
+					permission_denied(argv[i], arg, check_last_arg);
 			}
 		}
 		i++;

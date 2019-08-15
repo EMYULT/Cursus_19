@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/12 15:30:34 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/15 15:12:42 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef	struct	s_arg_ls
 	int				totalsize;
 	int				file_printed;
 	int				flag_mutiple_folders;
+	int				is_in_recu;
 }				t_arg_ls;
 
 /*
@@ -76,6 +77,8 @@ struct			s_list_ls
 	char		*date_string;
 	char		perm[12];
 	char		*have_symlink;
+	int			major;
+	int			minor;
 	t_list_ls	*next;
 };
 

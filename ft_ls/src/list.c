@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 11:19:50 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/13 17:57:55 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/15 16:44:24 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void		permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
 {
 	int		i;
 
-	if (arg->flag_mutiple_folders == 1)
+	if (arg->flag_mutiple_folders == 1 && arg->is_in_recu != 1)
 		ft_printf("%s:\n", path);
 	i = ft_strlen(path);
 	ft_putstr_fd("ls: ", 2);

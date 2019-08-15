@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/08 14:52:54 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/14 17:45:09 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ void		init_arg(t_arg_ls *arg)
 	arg->is_a = 0;
 	arg->is_r = 0;
 	arg->is_t = 0;
-	arg->path = "./";
+	arg->path = ft_strdup("./");
 	arg->totalsize = 0;
 	arg->flag_mutiple_folders = 0;
 	arg->file_printed = 0;
+	arg->is_in_recu = 0;
 }
 
 int			check_path(char *str, t_arg_ls *arg)
@@ -37,6 +38,7 @@ int			check_path(char *str, t_arg_ls *arg)
 		return (0);
 	while (str[i])
 		i++;
+	/*
 	if (str[i - 1] != '/')
 	{
 		if (!(arg->path = (char *)malloc(sizeof(char) * i + 2)))
@@ -50,7 +52,9 @@ int			check_path(char *str, t_arg_ls *arg)
 		arg->path[j + 1] = '\0';
 	}
 	else
-		arg->path = str;
+	*/
+		arg->path = ft_strjoin(str, "/");
+		//free str
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 11:36:01 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/08/12 17:10:12 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/15 19:15:14 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,14 @@ int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
 
 	tmp->date = fs->st_mtime;
 	tmp->hardlinks = fs->st_nlink;
-	tmp->size = (long long)fs->st_size;
+	//if (S_ISBLK(fs->st_mode) || S_ISCHR(fs->st_mode))
+	if (tmp->perm[0] == 'c')
+	{
+		tmp->major = major(fs->st_rdev);
+		tmp->minor = minor(fs->st_rdev);
+	}
+	else
+		tmp->size = (long long)fs->st_size;
 	arg->totalsize += fs->st_blocks;
 	//protection ! (print malloc error)
 	if (!(tmp->grname = fill_group(fs)))
