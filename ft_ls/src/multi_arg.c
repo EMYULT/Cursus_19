@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/08/15 19:32:01 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/16 13:29:54 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	struct stat	fs;
-	char		*tmp;
+	//char		*tmp;
 	t_list_ls	*mylistfile;
 
 	mylistfile = NULL;
@@ -27,9 +27,11 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 		{
 			if (!(S_ISDIR(fs.st_mode)))
 			{
-				if (!(tmp = ft_strdup(argv[i])))
-					return (NULL);
-				mylistfile = add_link_front(mylistfile, tmp, arg);
+				/* verifier si il faut malloc (voir si on peut free argv[i])
+				**if (!(tmp = ft_strdup(argv[i])))
+				**	return (NULL);
+				*/
+				mylistfile = add_link_front(mylistfile, argv[i], arg);
 			}
 		}
 		i++;
@@ -86,6 +88,9 @@ void		display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 	mylist = check_sort(mylist, arg);
 	if (mylist != NULL)
 	{
+		ft_putstr("\n\n");
+		ft_putstr(mylist->file_name);
+		ft_putstr("\n\n");
 		arg->file_printed = 1;
 		if (arg->is_l != 1)
 			print_list(mylist);

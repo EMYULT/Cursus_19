@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/15 19:31:58 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/16 13:15:45 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 		}
 		mylist = mylist->next;
 	}
+	//ft_putstr()
 	ft_strdel(&tmp);
 }
 

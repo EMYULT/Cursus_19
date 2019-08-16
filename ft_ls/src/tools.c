@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/14 17:45:09 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/16 13:17:09 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,6 @@ int			check_path(char *str, t_arg_ls *arg)
 		return (0);
 	while (str[i])
 		i++;
-	/*
-	if (str[i - 1] != '/')
-	{
-		if (!(arg->path = (char *)malloc(sizeof(char) * i + 2)))
-			return (-1);
-		while (j < i)
-		{
-			arg->path[j] = str[j];
-			j++;
-		}
-		arg->path[j] = '/';
-		arg->path[j + 1] = '\0';
-	}
-	else
-	*/
 		arg->path = ft_strjoin(str, "/");
 		//free str
 	return (1);

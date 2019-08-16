@@ -6,14 +6,14 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/15 15:12:42 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/16 13:38:59 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
-# include "../libft/ft_printf/printf.h"
+# include "../libft/includes/libft.h"
 # include <dirent.h>
 # include <sys/types.h>
 # include <sys/stat.h>

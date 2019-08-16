@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 11:19:50 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/15 16:44:24 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/16 13:35:39 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 		tmp->file_name = str;
 		tmp2 = ft_strjoin(arg->path, tmp->file_name);
 		if (lstat(tmp2, &fs) < 0 || !tmp2)
+		{
+			ft_putstr("coucou\n");
+			ft_putstr(tmp2);
 			return (NULL);
+		}
 		fill_perm(tmp, &fs);
 		fill_perm_right(tmp, &fs);
 		fill_perm_acl(tmpacl, tmp, &fs, tmp2);

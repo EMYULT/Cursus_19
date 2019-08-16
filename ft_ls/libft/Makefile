@@ -12,21 +12,25 @@
 
 NAME=libftprintf.a
 
-SRCS=ft_atoi.c ft_atoi.c ft_isalpha.c ft_isprint.c ft_memchr.c ft_memmove.c ft_putstr.c\
-	 ft_strcmp.c ft_strncmp.c ft_strstr.c ft_bzero.c ft_isascii.c ft_memalloc.c\
-	 ft_memcmp.c ft_memset.c ft_strcat.c ft_strcpy.c ft_strlen.c ft_strncpy.c\
-	 ft_tolower.c ft_isalnum.c ft_isdigit.c ft_memccpy.c ft_memcpy.c\
-	 ft_putchar.c ft_strchr.c ft_strdup.c ft_strncat.c ft_strrchr.c\
-	 ft_toupper.c ft_putendl.c ft_putnbr.c ft_strnstr.c ft_putnbr_fd.c\
-	 ft_putchar_fd.c ft_putendl_fd.c ft_putstr_fd.c ft_strclr.c ft_strnew.c\
-	 ft_memalloc.c ft_memdel.c ft_strdel.c ft_strclr.c ft_striter.c ft_strmap.c\
-	 ft_strmapi.c ft_strequ.c ft_strnequ.c ft_strsub.c ft_striteri.c\
-	 ft_strjoin.c ft_strtrim.c ft_itoa.c ft_strsplit.c ft_strlcat.c ft_lstnew.c\
-	 ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c\
-	 ./ft_printf/atoi_itoa.c ./ft_printf/check.c ./ft_printf/display_float.c ./ft_printf/display_i.c ./ft_printf/display_p.c\
-	 ./ft_printf/display_precision_i.c ./ft_printf/display_sc.c ./ft_printf/display_x.c ./ft_printf/display.c\
-	 ./ft_printf/handle_flags.c ./ft_printf/handle_spec.c ./ft_printf/handle_specc.c ./ft_printf/handle_speccc.c\
-	 ./ft_printf/printf.c ./ft_printf/tools.c ./ft_printf/tools_2.c ./ft_printf/atoi_itoa.c ./ft_printf/display_float2.c\
+SRCS=src/ft_atoi.c src/ft_atoi.c src/ft_isalpha.c src/ft_isprint.c src/ft_memchr.c src/ft_memmove.c src/ft_putstr.c\
+	 src/ft_strcmp.c src/ft_strncmp.c src/ft_strstr.c src/ft_bzero.c src/ft_isascii.c src/ft_memalloc.c\
+	 src/ft_memcmp.c src/ft_memset.c src/ft_strcat.c src/ft_strcpy.c src/ft_strlen.c src/ft_strncpy.c\
+	 src/ft_tolower.c src/ft_isalnum.c src/ft_isdigit.c src/ft_memccpy.c src/ft_memcpy.c\
+	 src/ft_putchar.c src/ft_strchr.c src/ft_strdup.c src/ft_strncat.c src/ft_strrchr.c\
+	 src/ft_toupper.c src/ft_putendl.c src/ft_putnbr.c src/ft_strnstr.c src/ft_putnbr_fd.c\
+	 src/ft_putchar_fd.c src/ft_putendl_fd.c src/ft_putstr_fd.c src/ft_strclr.c src/ft_strnew.c\
+	 src/ft_memalloc.c src/ft_memdel.c src/ft_strdel.c src/ft_strclr.c src/ft_striter.c src/ft_strmap.c\
+	 src/ft_strmapi.c src/ft_strequ.c src/ft_strnequ.c src/ft_strsub.c src/ft_striteri.c\
+	 src/ft_strjoin.c src/ft_strtrim.c src/ft_itoa.c src/ft_strsplit.c src/ft_strlcat.c src/ft_lstnew.c\
+	 src/ft_lstdelone.c src/ft_lstdel.c src/ft_lstadd.c src/ft_lstiter.c src/ft_lstmap.c\
+	 src/ft_printf/atoi_itoa.c src/ft_printf/check.c src/ft_printf/display_float.c \
+	 src/ft_printf/display_i.c src/ft_printf/display_p.c\
+	 src/ft_printf/display_precision_i.c src/ft_printf/display_sc.c\
+	  src/ft_printf/display_x.c src/ft_printf/display.c\
+	 src/ft_printf/handle_flags.c src/ft_printf/handle_spec.c \
+	 src/ft_printf/handle_specc.c src/ft_printf/handle_speccc.c\
+	 src/ft_printf/printf.c src/ft_printf/tools.c src/ft_printf/tools_2.c \
+	 src/ft_printf/atoi_itoa.c src/ft_printf/display_float2.c\
 
 O=ft_atoi.o ft_bzero.o ft_isascii.o ft_memalloc.o ft_memcmp.o ft_memset.o\
   ft_strcat.o ft_strcpy.o ft_strlen.o ft_strncpy.o ft_tolower.o ft_isalnum.o\
