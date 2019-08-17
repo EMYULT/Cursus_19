@@ -20,8 +20,7 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 	tmp = arg->path;
 	while (mylist != NULL)
 	{
-		mylist->file_name_path = ft_strjoin(tmp, mylist->file_name);
-		if (!mylist->file_name_path)
+		if (!(mylist->file_name_path = ft_strjoin(tmp, mylist->file_name)))
 			return ;
 		if (lstat(mylist->file_name_path, &fs) < 0)
 			return ;
@@ -29,10 +28,8 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 		{
 			if (check_point(mylist->file_name_path) == 0)
 			{
-				arg->path = ft_strjoin(mylist->file_name_path, "/");
-				if (!arg->path)
+				if (!(arg->path = ft_strjoin(mylist->file_name_path, "/")))
 					return ;
-				// fction_error_exit
 				ft_printf("\n%s:\n", mylist->file_name_path);
 				arg->totalsize = 0;
 				handle_arg(arg);
@@ -40,7 +37,6 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 		}
 		mylist = mylist->next;
 	}
-	//ft_putstr()
 	ft_strdel(&tmp);
 }
 

@@ -27,9 +27,10 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 		tmp2 = ft_strjoin(arg->path, tmp->file_name);
 		if (lstat(tmp2, &fs) < 0 || !tmp2)
 		{
-			ft_putstr("coucou\n");
-			ft_putstr(tmp2);
-			return (NULL);
+			ft_strdel(&tmp2);
+			tmp2 = ft_strdup(tmp->file_name);
+			if (lstat(tmp2, &fs) < 0 || !tmp2)
+				return (NULL);
 		}
 		fill_perm(tmp, &fs);
 		fill_perm_right(tmp, &fs);
@@ -103,7 +104,6 @@ t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *ar
 			mylist = add_link_front(mylist, tmp, arg);
 		}
 	}
-	//free tmp ou ne pas l utilisé
 	closedir(d);
 	return (mylist);
 }

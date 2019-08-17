@@ -15,7 +15,6 @@
 t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	struct stat	fs;
-	//char		*tmp;
 	t_list_ls	*mylistfile;
 
 	mylistfile = NULL;
@@ -26,13 +25,7 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 		else
 		{
 			if (!(S_ISDIR(fs.st_mode)))
-			{
-				/* verifier si il faut malloc (voir si on peut free argv[i])
-				**if (!(tmp = ft_strdup(argv[i])))
-				**	return (NULL);
-				*/
 				mylistfile = add_link_front(mylistfile, argv[i], arg);
-			}
 		}
 		i++;
 	}
@@ -88,9 +81,6 @@ void		display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 	mylist = check_sort(mylist, arg);
 	if (mylist != NULL)
 	{
-		ft_putstr("\n\n");
-		ft_putstr(mylist->file_name);
-		ft_putstr("\n\n");
 		arg->file_printed = 1;
 		if (arg->is_l != 1)
 			print_list(mylist);

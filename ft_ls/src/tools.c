@@ -20,7 +20,8 @@ void		init_arg(t_arg_ls *arg)
 	arg->is_a = 0;
 	arg->is_r = 0;
 	arg->is_t = 0;
-	arg->path = ft_strdup("./");
+	if (!(arg->path = ft_strdup("./")))
+		return ;
 	arg->totalsize = 0;
 	arg->flag_mutiple_folders = 0;
 	arg->file_printed = 0;
@@ -38,8 +39,8 @@ int			check_path(char *str, t_arg_ls *arg)
 		return (0);
 	while (str[i])
 		i++;
-		arg->path = ft_strjoin(str, "/");
-		//free str
+	if (!(arg->path = ft_strjoin(str, "/")))
+		return (-1);
 	return (1);
 }
 

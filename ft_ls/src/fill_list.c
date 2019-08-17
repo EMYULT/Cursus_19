@@ -72,7 +72,6 @@ char		*fill_pwname(struct stat *fs)
 	struct  passwd	*p;
 	char			*pw_name_tmp;
 
-
 	p = getpwuid(fs->st_uid);
 	if (p && p->pw_name)
 	{
@@ -89,7 +88,6 @@ int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
 
 	tmp->date = fs->st_mtime;
 	tmp->hardlinks = fs->st_nlink;
-	//if (S_ISBLK(fs->st_mode) || S_ISCHR(fs->st_mode))
 	if (tmp->perm[0] == 'c')
 	{
 		tmp->major = major(fs->st_rdev);
@@ -98,7 +96,6 @@ int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
 	else
 		tmp->size = (long long)fs->st_size;
 	arg->totalsize += fs->st_blocks;
-	//protection ! (print malloc error)
 	if (!(tmp->grname = fill_group(fs)))
 		return(-1);
 	if (!(tmp->pwname = fill_pwname(fs)))
