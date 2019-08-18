@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 13:51:47 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/15 18:49:01 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/17 15:51:49 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 	int 		big_pw = 0;
 	int 		big_gr = 0;
 	int 		big_size = 0;
-	int			big_size_min = 0;
 	int			big_size_maj = 0;
+	int			have_maj_min = 0;
 	t_list_ls	*tmp = mylist;
 	time_t		actualtime;
 
@@ -85,11 +85,11 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 			big_gr = (int)ft_strlen(tmp->grname);
 		if (tmp->minor && tmp->major)
 		{
-			if (length_int_easy(mylist->minor) != big_size_min)
-				big_size_min = length_int_easy(mylist->minor);
+			have_maj_min = 1;
 			if (length_int_easy(mylist->major) > big_size_maj)
 				big_size_maj = length_int_easy(mylist->major);
-			big_size = big_size_maj + big_size_min;
+			if (length_int_easy(mylist->minor) > big_size)
+				big_size = length_int_easy(mylist->minor);
 		}
 		else if (length_int_easy(tmp->size) > big_size)
 			big_size = length_int_easy(tmp->size);
@@ -100,8 +100,13 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 		ft_printf("%s %*d %-*s  %-*s", mylist->perm, big_hard,
 		mylist->hardlinks, big_pw, mylist->pwname, big_gr,
 		mylist->grname);
-		if (mylist->minor && mylist->major)
+		if (mylist->minor || mylist->major)
 			ft_printf(" %*lld, %*d", big_size_maj, mylist->major, big_size, mylist->minor);
+		else if (have_maj_min)
+		{
+			ft_printf(" %*s", big_size_maj, "i ");
+			ft_printf(" %*lld", big_size, mylist->size);
+		}
 		else
 			ft_printf(" %*lld", big_size, mylist->size);
 		ft_printf(" %s", ft_strsub(mylist->date_string, 4, 3));
