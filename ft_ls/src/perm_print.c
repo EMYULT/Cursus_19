@@ -1,12 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
+/*   perm_print.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/18 15:22:07 by hde-ghel          #+#    #+#             */
+/*   Updated: 2019/08/18 15:51:30 by hde-ghel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   list_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 13:51:47 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/17 15:51:49 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/18 15:21:37 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +95,17 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 			big_pw = (int)ft_strlen(tmp->pwname);
 		if ((int)ft_strlen(tmp->grname) > big_gr)
 			big_gr = (int)ft_strlen(tmp->grname);
-		if (tmp->minor && tmp->major)
+		if (tmp->minor || tmp->major)
 		{
 			have_maj_min = 1;
-			if (length_int_easy(mylist->major) > big_size_maj)
-				big_size_maj = length_int_easy(mylist->major);
-			if (length_int_easy(mylist->minor) > big_size)
-				big_size = length_int_easy(mylist->minor);
+			if (length_int_easy(tmp->major) > big_size_maj)
+				big_size_maj = length_int_easy(tmp->major);
+			if (length_int_easy(tmp->minor) > big_size)
+				big_size = length_int_easy(tmp->minor);
 		}
 		else if (length_int_easy(tmp->size) > big_size)
 			big_size = length_int_easy(tmp->size);
+	//	printf("big_size = %d\n lenght return = %d\n", big_size, length_int_easy(tmp));
 		tmp = tmp->next;
 	}
 	while(mylist != NULL)
@@ -104,7 +117,7 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 			ft_printf(" %*lld, %*d", big_size_maj, mylist->major, big_size, mylist->minor);
 		else if (have_maj_min)
 		{
-			ft_printf(" %*s", big_size_maj, "i ");
+			ft_printf(" %*s", big_size_maj + 1, " ");
 			ft_printf(" %*lld", big_size, mylist->size);
 		}
 		else
