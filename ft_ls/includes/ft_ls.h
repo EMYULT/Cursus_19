@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/06 13:49:09 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 18:53:20 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,11 +148,11 @@ int				fill_date(struct stat *fs, t_list_ls *tmp);
 /*
  ** tools_2
 */
-int		free_struct_arg(t_arg_ls *arg);
-void	free_list(t_list_ls *list);
-void	exit_free(t_list_ls *mylistfile, t_list_ls *mylistdir, t_arg_ls *arg);
-void	init_arg_2(t_arg_lsbig *arg);
-void 	print_all(t_arg_lsbig *arg2, t_list_ls *mylist);
+int				free_struct_arg(t_arg_ls *arg);
+void			free_list(t_list_ls *list);
+void			exit_free(t_list_ls *mylistfile, t_list_ls *mylistdir, t_arg_ls *arg);
+void			init_arg_2(t_arg_lsbig *arg);
+void			print_all(t_arg_lsbig *arg2, t_list_ls *mylist);
 
 
 /*
@@ -160,8 +160,8 @@ void 	print_all(t_arg_lsbig *arg2, t_list_ls *mylist);
 */
 
 int				main(int argc, char **argv);
-void			handle_arg(t_arg_ls *arg);
-void			recursive_dir(t_arg_ls *arg, t_list_ls *mylist);
+int				handle_arg(t_arg_ls *arg);
+int				recursive_dir(t_arg_ls *arg, t_list_ls *mylist);
 t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/06 13:49:19 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 22:00:45 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
+int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 {
 	struct stat	fs;
 	char		*tmp;
@@ -21,23 +21,25 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 	while (mylist != NULL)
 	{
 		if (!(mylist->file_name_path = ft_strjoin(tmp, mylist->file_name)))
-			return ;
+			return (-1);
 		if (lstat(mylist->file_name_path, &fs) < 0)
-			return ;
+			return (-1);
 		if (S_ISDIR(fs.st_mode))
 		{
 			if (check_point(mylist->file_name_path) == 0)
 			{
 				if (!(arg->path = ft_strjoin(mylist->file_name_path, "/")))
-					return ;
+					return (-1);
 				ft_printf("\n%s:\n", mylist->file_name_path);
 				arg->totalsize = 0;
-				handle_arg(arg);
+				handle_arg(arg);// == -1)
+					//return (-1);
 			}
 		}
 		mylist = mylist->next;
 	}
 	ft_strdel(&tmp);
+	return (0);
 }
 
 t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
@@ -53,7 +55,7 @@ t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 	return (mylist);
 }
 
-void		handle_arg(t_arg_ls *arg)
+int		handle_arg(t_arg_ls *arg)
 {
 	t_list_ls		*mylist;
 
@@ -73,9 +75,14 @@ void		handle_arg(t_arg_ls *arg)
 	if (arg->is_rr)
 	{
 		arg->is_in_recu = 1;
-		recursive_dir(arg, mylist);
+		if (recursive_dir(arg, mylist) == -1)
+		{
+			free_list(mylist);
+			return (1);
+		}
 	}
 	free_list(mylist);
+	return (0);
 }
 
 int			main(int argc, char **argv)
@@ -93,7 +100,12 @@ int			main(int argc, char **argv)
 	if ((i = check_options(1, argc, argv, &arg)) == -1)
 		return (free_struct_arg(&arg));
 	if (i == argc)
-		handle_arg(&arg);
+	{
+		i = handle_arg(&arg);
+		if (arg.is_in_recu == 0)
+			free_struct_arg(&arg);
+		return (i);
+	}
 	if (argc - i > 1)
 		arg.flag_mutiple_folders = 1;
 	mylistfile = fill_file(i, argc, argv, &arg);

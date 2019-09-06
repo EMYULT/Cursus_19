@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/06 13:49:11 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 22:00:41 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		free_struct_arg(t_arg_ls *arg)
 {
 	if (arg->path)
 		ft_strdel(&arg->path);
-	return (-1);
+	return (1);
 }
 
 void	free_list(t_list_ls *list)
@@ -45,17 +45,6 @@ void	free_list(t_list_ls *list)
 		free(list);
 		list = tmp;
 	}
-}
-
-void	exit_free(t_list_ls *mylistfile, t_list_ls *mylistdir, t_arg_ls *arg)
-{
-	if (mylistfile)
-		free_list(mylistfile);
-	if (mylistdir)
-		free_list(mylistdir);
-	if (arg)
-		free_struct_arg(arg);
-	exit(1);
 }
 
 int		check_arg(char *str, t_arg_ls *arg, int i, int j)

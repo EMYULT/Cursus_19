@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/04 13:44:48 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 18:41:31 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,21 @@ void	init_arg_2(t_arg_lsbig *arg)
 
 int		check_path(char *str, t_arg_ls *arg)
 {
-	int i;
 	int j;
 
 	j = 0;
-	i = 0;
 	if (!str)
 		return (0);
-	while (str[i])
-		i++;
-	if (!(arg->path = ft_strjoin(str, "/")))
-		return (-1);
+	if (ft_strcmp(str, "/") == 0)
+	{
+		if (!(arg->path = ft_strdup("/")))
+				return (0);
+	}
+	else
+	{
+		if (!(arg->path = ft_strjoin(str, "/")))
+			return (-1);
+	}
 	return (1);
 }
 

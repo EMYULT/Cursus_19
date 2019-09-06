@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 13:51:47 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/06 11:36:12 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 18:41:12 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ void	print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 	t_arg_lsbig arg2;
 
 	init_arg_2(&arg2);
-	if (mylist == NULL)
-		return ;
+	//if (mylist == NULL)
+	//	return ;
 	if (flag == 0)
 	{
 		ft_printf("total %lld\n", arg->totalsize);
