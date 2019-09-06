@@ -84,6 +84,32 @@ char		*fill_pwname(struct stat *fs)
 		return (ft_itoa(fs->st_uid));
 }
 
+int		fill_date(struct stat *fs, t_list_ls *tmp)
+{
+	char	*tmp_date;
+	time_t	actualtime;
+
+	actualtime = time(0);
+	if (!(tmp_date = ft_strdup((ctime(&fs->st_mtime)))))
+		return (-1);
+	if (!(tmp->date_month = ft_strsub(tmp_date, 4, 3)))
+		return (-1);
+	if (!(tmp->date_day = ft_strsub(tmp_date, 8, 2)))
+		return (-1);
+	if (actualtime - tmp->date < 15778800)
+	{
+		if (!(tmp->date_hour_year = ft_strsub(tmp_date, 11, 5)))
+			return (-1);
+	}
+	else
+	{
+		if (!(tmp->date_hour_year = ft_strsub(tmp_date, 19, 5)))
+			return (-1);
+	}
+	ft_strdel(&tmp_date);
+	return (0);
+}
+
 int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
 {
 	char buf[NAME_MAX + 1];
@@ -102,12 +128,14 @@ int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
 		return(-1);
 	if (!(tmp->pwname = fill_pwname(fs)))
 		return (-1);
-	tmp->date_string = ft_strdup((ctime(&fs->st_mtime)));
+	if (fill_date(fs,tmp) == -1)
+		return (-1);
 	if (tmp->perm[0] == 'l')
 	{
 		ft_bzero(buf, NAME_MAX + 1);
 		readlink(tmp2, buf, NAME_MAX);
-		tmp->have_symlink = ft_strdup(buf);
+		if (!(tmp->have_symlink = ft_strdup(buf)))
+			return (-1);
 	}
 	else
 		tmp->have_symlink = NULL;

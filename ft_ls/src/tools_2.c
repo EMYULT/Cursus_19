@@ -34,8 +34,12 @@ void		free_list(t_list_ls *list)
 			ft_strdel(&list->pwname);
 		if (list->grname != NULL)
 			ft_strdel(&list->grname);
-		if (list->date_string != NULL)
-			ft_strdel(&list->date_string);
+		if (list->date_month != NULL)
+			ft_strdel(&list->date_month);
+		if (list->date_day != NULL)
+			ft_strdel(&list->date_day);
+		if (list->date_hour_year != NULL)
+			ft_strdel(&list->date_hour_year);
 		if (list->have_symlink != NULL)
 			ft_strdel(&list->have_symlink);
 		free(list);

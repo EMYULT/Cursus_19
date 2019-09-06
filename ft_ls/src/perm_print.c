@@ -68,9 +68,7 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 	int			big_size_maj = 0;
 	int			have_maj_min = 0;
 	t_list_ls	*tmp = mylist;
-	time_t		actualtime;
 
-	actualtime = time(0);
 	if (mylist == NULL)
 		return;
 	if (flag == 0)
@@ -112,12 +110,9 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 		}
 		else
 			ft_printf(" %*lld", big_size + 1, mylist->size);
-		ft_printf(" %s", ft_strsub(mylist->date_string, 4, 3));
-		ft_printf(" %s", ft_strsub(mylist->date_string, 8, 2));
-		if (actualtime - mylist->date < 15778800)
-			ft_printf(" %s ", ft_strsub(mylist->date_string, 11, 5));
-		else
-			ft_printf("  %s ", ft_strsub(mylist->date_string, 20, 4));
+		ft_printf(" %s", mylist->date_month);
+		ft_printf(" %s", mylist->date_day);
+		ft_printf(" %s ", mylist->date_hour_year);
 		if (mylist->have_symlink != NULL)
 			ft_printf("%s -> %s\n", mylist->file_name, mylist->have_symlink);
 		else

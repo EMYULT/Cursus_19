@@ -74,7 +74,9 @@ struct			s_list_ls
 	long long	size;
 	char		*pwname;
 	char		*grname;
-	char		*date_string;
+	char		*date_month;
+	char		*date_day;
+	char		*date_hour_year;
 	char		perm[12];
 	char		*have_symlink;
 	int			major;
@@ -130,6 +132,7 @@ void			display_my_dir(t_list_ls *mylist, t_arg_ls *arg);
 int				check_options(int i, int argc, char **argv, t_arg_ls *arg);
 t_list_ls		*fill_dir(int i, int argc, char **argv, t_arg_ls *arg);
 t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg);
+int				fill_date(struct stat *fs, t_list_ls *tmp);
 
 /*
  ** tools_2
