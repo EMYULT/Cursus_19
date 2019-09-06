@@ -6,14 +6,13 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/16 13:17:09 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/04 13:44:48 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-
-void		init_arg(t_arg_ls *arg)
+int		init_arg(t_arg_ls *arg)
 {
 	arg->is_l = 0;
 	arg->is_rr = 0;
@@ -21,11 +20,12 @@ void		init_arg(t_arg_ls *arg)
 	arg->is_r = 0;
 	arg->is_t = 0;
 	if (!(arg->path = ft_strdup("./")))
-		return ;
+		return (-1);
 	arg->totalsize = 0;
 	arg->flag_mutiple_folders = 0;
 	arg->file_printed = 0;
 	arg->is_in_recu = 0;
+	return (0);
 }
 
 int			check_path(char *str, t_arg_ls *arg)

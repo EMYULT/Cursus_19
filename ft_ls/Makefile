@@ -6,13 +6,14 @@
 #    By: hde-ghel <hde-ghel@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/17 16:02:33 by hde-ghel          #+#    #+#              #
-#    Updated: 2019/08/11 11:11:41 by hde-ghel         ###   ########.fr        #
+#    Updated: 2019/09/04 13:41:05 by hde-ghel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 CC = gcc
-FLAGS = -fsanitize=address -Wall -Werror -Wextra
+#FLAGS = -fsanitize=address -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra
 LIBFT = $(LIBDIR)libftprintf.a
 SRCDIR = ./src/
 OBJDIR = ./obj/
@@ -61,7 +62,7 @@ clean:
 
 fclean: clean
 	@rm -rf $(NAME)
-	@echo "$(C_CYAN)Deleting libftprintf.a  [$(C_GREEN)✔$(C_CYAN)]"
+	@echo "$(C_CYAN)Deleting ./ft_ls        [$(C_GREEN)✔$(C_CYAN)]"
 	@rm -rf $(LIBFT)
 	@echo "$(C_CYAN)Deleting libft.a        [$(C_GREEN)✔$(C_CYAN)]$(C_RESET)"
 

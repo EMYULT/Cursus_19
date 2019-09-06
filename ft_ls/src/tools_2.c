@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/08/13 18:57:16 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/04 13:21:49 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int			check_arg(char *str, t_arg_ls *arg, int i, int j)
 	{
 		i++;
 		if (str[i] == '-')
-			return ( 1);
+			return (1);
 		while (str[i] == 'l' || str[i] == 'R' || str[i] == 'a' ||
 		str[i] == 'r' || str[i] == 't')
 		{

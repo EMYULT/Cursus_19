@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/08/16 13:15:45 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/04 17:00:02 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,9 @@ t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg)
 	mylist = NULL;
 	dir = NULL;
 	d = NULL;
-	mylist = push_list(dir, d, mylist, arg);
-	if (mylist != NULL)
-		mylist = sort_ascii(mylist);
-	else
+	if (!(mylist = push_list(dir, d, mylist, arg)))
 		return (NULL);
+	mylist = sort_ascii(mylist);
 	return (mylist);
 }
 
@@ -78,6 +76,13 @@ void		free_list(t_list_ls *list)
 		free(list);
 		list = tmp;
 	}
+}
+
+int		free_struct_arg(t_arg_ls *arg)
+{
+	if (arg->path)
+		ft_strdel(&arg->path);
+	return (-1);
 }
 
 void		handle_arg(t_arg_ls *arg)
@@ -115,10 +120,13 @@ int			main(int argc, char **argv)
 	mylistdir = NULL;
 	mylistfile = NULL;
 	i = 0;
-	init_arg(&arg);
-	i = check_options(1, argc, argv, &arg);
-	if (i == -1)
+	if (init_arg(&arg) == -1)
 		return (1);
+	if ((i = check_options(1, argc, argv, &arg)) == -1)
+	{
+		free_struct_arg(&arg);
+		return (1);
+	}
 	if (i == argc)
 		handle_arg(&arg);
 	if (argc - i > 1)
