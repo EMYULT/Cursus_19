@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 11:36:01 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/04 11:36:35 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 11:34:07 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ char		*fill_group(struct stat *fs)
 	g = getgrgid(fs->st_gid);
 	if (g && g->gr_name)
 	{
-		pwname = ft_strdup(g->gr_name);
+		if (!(pwname = ft_strdup(g->gr_name)))
+				return (NULL);
 		return (pwname);
 	}
 	else
@@ -75,7 +76,8 @@ char		*fill_pwname(struct stat *fs)
 	p = getpwuid(fs->st_uid);
 	if (p && p->pw_name)
 	{
-		pw_name_tmp = ft_strdup(p->pw_name);
+		if (!(pw_name_tmp = ft_strdup(p->pw_name)))
+			return (NULL);
 		return (pw_name_tmp);
 	}
 	else

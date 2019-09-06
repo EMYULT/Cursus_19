@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 11:19:50 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/04 17:00:04 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 11:36:15 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,24 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 	char		*tmp2;
 
 	tmpacl = NULL;
-	tmp = ft_memalloc(sizeof(t_list_ls));
-	if (tmp)
-	{
-		tmp->file_name = str;
-		tmp2 = ft_strjoin(arg->path, tmp->file_name);
-		if (lstat(tmp2, &fs) < 0 || !tmp2)
-		{
-			ft_strdel(&tmp2);
-			tmp2 = ft_strdup(tmp->file_name);
-			if (lstat(tmp2, &fs) < 0 || !tmp2)
-				return (NULL);
-		}
-		fill_perm(tmp, &fs);
-		fill_perm_right(tmp, &fs);
-		fill_perm_acl(tmpacl, tmp, &fs, tmp2);
-		fill_others(tmp, &fs, arg, tmp2);
-		ft_strdel(&tmp2);
-		tmp->next = mylist;
-	}
-	else
+	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
 		return (NULL);
+	tmp->file_name = str;
+	tmp2 = ft_strjoin(arg->path, tmp->file_name);
+	if (lstat(tmp2, &fs) < 0 || !tmp2)
+	{
+		ft_strdel(&tmp2);
+		tmp2 = ft_strdup(tmp->file_name);
+		if (lstat(tmp2, &fs) < 0 || !tmp2)
+			return (NULL);
+	}
+	fill_perm(tmp, &fs);
+	fill_perm_right(tmp, &fs);
+	fill_perm_acl(tmpacl, tmp, &fs, tmp2);
+	if (fill_others(tmp, &fs, arg, tmp2) == -1)
+			return (NULL);
+	ft_strdel(&tmp2);
+	tmp->next = mylist;
 	return (tmp);
 }
 

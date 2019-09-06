@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/04 13:44:38 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 13:49:09 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,14 @@ void			display_my_dir(t_list_ls *mylist, t_arg_ls *arg);
 int				check_options(int i, int argc, char **argv, t_arg_ls *arg);
 t_list_ls		*fill_dir(int i, int argc, char **argv, t_arg_ls *arg);
 t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg);
+
+/*
+ ** tools_2
+*/
+int		free_struct_arg(t_arg_ls *arg);
+void	free_list(t_list_ls *list);
+void	exit_free(t_list_ls *mylistfile, t_list_ls *mylistdir, t_arg_ls *arg);
+
 
 /*
 ** ft_ls.c

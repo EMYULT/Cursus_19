@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/04 17:00:02 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 13:49:19 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 	ft_strdel(&tmp);
 }
 
-t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg)
+t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 {
 	DIR				*d;
 	struct dirent	*dir;
@@ -48,41 +48,9 @@ t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg)
 	mylist = NULL;
 	dir = NULL;
 	d = NULL;
-	if (!(mylist = push_list(dir, d, mylist, arg)))
-		return (NULL);
+	mylist = push_list(dir, d, mylist, arg);
 	mylist = sort_ascii(mylist);
 	return (mylist);
-}
-
-void		free_list(t_list_ls *list)
-{
-	t_list_ls	*tmp;
-
-	while (list)
-	{
-		tmp = list->next;
-		if (list->file_name != NULL)
-			ft_strdel(&list->file_name);
-		if (list->file_name_path != NULL)
-			ft_strdel(&list->file_name_path);
-		if (list->pwname != NULL)
-			ft_strdel(&list->pwname);
-		if (list->grname != NULL)
-			ft_strdel(&list->grname);
-		if (list->date_string != NULL)
-			ft_strdel(&list->date_string);
-		if (list->have_symlink != NULL)
-			ft_strdel(&list->have_symlink);
-		free(list);
-		list = tmp;
-	}
-}
-
-int		free_struct_arg(t_arg_ls *arg)
-{
-	if (arg->path)
-		ft_strdel(&arg->path);
-	return (-1);
 }
 
 void		handle_arg(t_arg_ls *arg)
@@ -123,10 +91,7 @@ int			main(int argc, char **argv)
 	if (init_arg(&arg) == -1)
 		return (1);
 	if ((i = check_options(1, argc, argv, &arg)) == -1)
-	{
-		free_struct_arg(&arg);
-		return (1);
-	}
+		return (free_struct_arg(&arg));
 	if (i == argc)
 		handle_arg(&arg);
 	if (argc - i > 1)

@@ -6,13 +6,55 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/04 13:21:49 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/06 13:49:11 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-int			check_arg(char *str, t_arg_ls *arg, int i, int j)
+int		free_struct_arg(t_arg_ls *arg)
+{
+	if (arg->path)
+		ft_strdel(&arg->path);
+	return (-1);
+}
+
+void		free_list(t_list_ls *list)
+{
+	t_list_ls	*tmp;
+
+	while (list)
+	{
+		tmp = list->next;
+		if (list->file_name != NULL)
+			ft_strdel(&list->file_name);
+		if (list->file_name_path != NULL)
+			ft_strdel(&list->file_name_path);
+		if (list->pwname != NULL)
+			ft_strdel(&list->pwname);
+		if (list->grname != NULL)
+			ft_strdel(&list->grname);
+		if (list->date_string != NULL)
+			ft_strdel(&list->date_string);
+		if (list->have_symlink != NULL)
+			ft_strdel(&list->have_symlink);
+		free(list);
+		list = tmp;
+	}
+}
+
+void	exit_free(t_list_ls *mylistfile, t_list_ls *mylistdir, t_arg_ls *arg)
+{
+	if (mylistfile)
+		free_list(mylistfile);
+	if (mylistdir)
+		free_list(mylistdir);
+	if (arg)
+		free_struct_arg(arg);
+	exit(1);
+}
+
+int		check_arg(char *str, t_arg_ls *arg, int i, int j)
 {
 	while (str[j])
 		j++;
@@ -41,7 +83,7 @@ int			check_arg(char *str, t_arg_ls *arg, int i, int j)
 	return ((i == j) ? (-1) : (i));
 }
 
-int			check_options(int i, int argc, char **argv, t_arg_ls *arg)
+int		check_options(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	int		option_pointer;
 
