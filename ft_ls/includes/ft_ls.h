@@ -41,7 +41,7 @@
 # define DEFAULT_COLOR "\033[0;m"
 
 /*
-** Définition de ma structure
+** Définition de mes structures
 */
 
 typedef	struct	s_arg_ls
@@ -57,6 +57,16 @@ typedef	struct	s_arg_ls
 	int				flag_mutiple_folders;
 	int				is_in_recu;
 }				t_arg_ls;
+
+typedef	struct	s_arg_lsbig
+{
+	int 		big_hard;
+	int 		big_pw;
+	int 		big_gr;
+	int 		big_size;
+	int			big_size_maj;
+	int			have_maj_min;
+}				t_arg_lsbig;
 
 /*
 ** Définition d'une liste
@@ -98,10 +108,11 @@ void			print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag);
 t_list_ls		*reverse_list(t_list_ls *mylist);
 t_list_ls		*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg);
 int				fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2);
-void			fill_perm_acl(acl_t tmpacl, t_list_ls *tmp, struct stat *fs, char *tmp2);
+void			fill_acl(acl_t tmpacl, t_list_ls *tmp, struct stat *fs, char *tmp2);
 void			fill_perm_right(t_list_ls *tmp, struct stat *fs);
 void			fill_perm(t_list_ls *tmp, struct stat *fs);
 void			permission_denied(char *path, t_arg_ls *arg, int check_last_arg);
+void			fill_major_minor(t_list_ls *tmp, struct stat *fs);
 
 /*
 ** list_2.c
@@ -110,7 +121,7 @@ void			permission_denied(char *path, t_arg_ls *arg, int check_last_arg);
 t_list_ls		*sort_ascii(t_list_ls *mylist);
 t_list_ls		*sort_time(t_list_ls *mylist);
 t_list_ls		*add_link_front_dir(t_list_ls *mylistdir, char *str);
-t_list_ls		*push_list(struct dirent *dir, DIR *d,
+t_list_ls		*push(struct dirent *dir, DIR *d,
 				t_list_ls *mylist, t_arg_ls *arg);
 t_list_ls		*lst_swap(t_list_ls *p1, t_list_ls *p2);
 
@@ -125,7 +136,7 @@ t_list_ls		*lst_swap(t_list_ls *p1, t_list_ls *p2);
 int				check_point(char *s);
 int				check_path(char *str, t_arg_ls *arg);
 int				check_arg(char *str, t_arg_ls *arg, int i, int j);
-int			init_arg(t_arg_ls *arg);
+int				init_arg(t_arg_ls *arg);
 t_list_ls		*check_sort(t_list_ls *mylist, t_arg_ls *arg);
 void			display_my_files(t_list_ls *mylist, t_arg_ls *arg);
 void			display_my_dir(t_list_ls *mylist, t_arg_ls *arg);
@@ -140,6 +151,8 @@ int				fill_date(struct stat *fs, t_list_ls *tmp);
 int		free_struct_arg(t_arg_ls *arg);
 void	free_list(t_list_ls *list);
 void	exit_free(t_list_ls *mylistfile, t_list_ls *mylistdir, t_arg_ls *arg);
+void	init_arg_2(t_arg_lsbig *arg);
+void 	print_all(t_arg_lsbig *arg2, t_list_ls *mylist);
 
 
 /*

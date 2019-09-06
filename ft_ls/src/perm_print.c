@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-void		print_filename_color(t_list_ls *mylist)
+void	print_filename_color(t_list_ls *mylist)
 {
 	/*
 	if (mylist->is_dir == 1)
@@ -25,91 +25,84 @@ void		print_filename_color(t_list_ls *mylist)
 		//ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
 }
 
-void		print_list(t_list_ls *mylist)
+void	print_list(t_list_ls *mylist)
 {
 	if (mylist == NULL)
-		return;
-	while(mylist != NULL)
+		return ;
+	while (mylist != NULL)
 	{
 		print_filename_color(mylist);
 		mylist = mylist->next;
 	}
 }
 
-int			length_int_easy(int x)
+int		length_int_easy(int x)
 {
-    if (x >= 1000000000)
-		return 10;
-    if (x >= 100000000)
-		return 9;
-    if (x >= 10000000)
-		return 8;
-    if (x >= 1000000)
-		return 7;
-    if (x >= 100000)
-		return 6;
-    if (x >= 10000)
-		return 5;
-    if (x >= 1000)
-		return 4;
-    if (x >= 100)
-		return 3;
-    if (x >= 10)
-		return 2;
-    return 1;
+	if (x >= 1000000000)
+		return (10);
+	if (x >= 100000000)
+		return (9);
+	if (x >= 10000000)
+		return (8);
+	if (x >= 1000000)
+		return (7);
+	if (x >= 100000)
+		return (6);
+	if (x >= 10000)
+		return (5);
+	if (x >= 1000)
+		return (4);
+	if (x >= 100)
+		return (3);
+	if (x >= 10)
+		return (2);
+	return (1);
 }
 
-void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
+void	get_big(t_arg_lsbig *arg2, t_list_ls *mylist)
 {
-	int 		big_hard = 0;
-	int 		big_pw = 0;
-	int 		big_gr = 0;
-	int 		big_size = 0;
-	int			big_size_maj = 0;
-	int			have_maj_min = 0;
-	t_list_ls	*tmp = mylist;
+	t_list_ls *tmp;
 
-	if (mylist == NULL)
-		return;
-	if (flag == 0)
-	{
-		ft_printf("total %lld\n", arg->totalsize);
-		arg->totalsize = 0;
-	}
+	tmp = mylist;
 	while (tmp != NULL)
 	{
-		if (length_int_easy(tmp->hardlinks) > big_hard)
-			big_hard = length_int_easy(tmp->hardlinks);
-		if ((int)ft_strlen(tmp->pwname) > big_pw)
-			big_pw = (int)ft_strlen(tmp->pwname);
-		if ((int)ft_strlen(tmp->grname) > big_gr)
-			big_gr = (int)ft_strlen(tmp->grname);
+		if (length_int_easy(tmp->hardlinks) > arg2->big_hard)
+			arg2->big_hard = length_int_easy(tmp->hardlinks);
+		if ((int)ft_strlen(tmp->pwname) > arg2->big_pw)
+			arg2->big_pw = (int)ft_strlen(tmp->pwname);
+		if ((int)ft_strlen(tmp->grname) > arg2->big_gr)
+			arg2->big_gr = (int)ft_strlen(tmp->grname);
 		if (tmp->perm[0] == 'c' || tmp->perm[0] == 'b')
 		{
-			have_maj_min = 1;
-			if (length_int_easy(tmp->major) > big_size_maj)
-				big_size_maj = length_int_easy(tmp->major);
-			if (length_int_easy(tmp->minor) > big_size)
-				big_size = length_int_easy(tmp->minor);
+			arg2->have_maj_min = 1;
+			if (length_int_easy(tmp->major) > arg2->big_size_maj)
+				arg2->big_size_maj = length_int_easy(tmp->major);
+			if (length_int_easy(tmp->minor) > arg2->big_size)
+				arg2->big_size = length_int_easy(tmp->minor);
 		}
-		else if (length_int_easy(tmp->size) > big_size)
-			big_size = length_int_easy(tmp->size);
+		else if (length_int_easy(tmp->size) > arg2->big_size)
+			arg2->big_size = length_int_easy(tmp->size);
 		tmp = tmp->next;
 	}
-	while(mylist != NULL)
+}
+
+void	print_all(t_arg_lsbig *arg2, t_list_ls *mylist)
+{
+	while (mylist != NULL)
 	{
-		ft_printf("%s %*d %-*s  %-*s", mylist->perm, big_hard,
-		mylist->hardlinks, big_pw, mylist->pwname, big_gr,
+		ft_printf("%s %*d %-*s  %-*s", mylist->perm, arg2->big_hard,
+		mylist->hardlinks, arg2->big_pw, mylist->pwname, arg2->big_gr,
 		mylist->grname);
 		if (mylist->perm[0] == 'c' || mylist->perm[0] == 'b')
-			ft_printf(" %*lld, %*d", big_size_maj + 2, mylist->major, big_size, mylist->minor);
-		else if (have_maj_min)
+			ft_printf(" %*lld, %*d", arg2->big_size_maj + 2,
+			mylist->major, arg2->big_size, mylist->minor);
+		else if (arg2->have_maj_min)
 		{
-			ft_printf(" %*s", big_size_maj + 3, " ");
-			ft_printf(" %*lld", big_size, mylist->size);
+			ft_printf(" %*s", arg2->big_size_maj + 3, " ");
+			ft_printf(" %*lld", arg2->big_size, mylist->size);
 		}
 		else
-			ft_printf(" %*lld", big_size + 1, mylist->size);
+			ft_printf(" %*lld", arg2->big_size + 1, mylist->size);
 		ft_printf(" %s", mylist->date_month);
 		ft_printf(" %s", mylist->date_day);
 		ft_printf(" %s ", mylist->date_hour_year);
@@ -121,7 +114,23 @@ void		print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 	}
 }
 
-void		fill_perm(t_list_ls *tmp, struct stat *fs)
+void	print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
+{
+	t_arg_lsbig arg2;
+
+	init_arg_2(&arg2);
+	if (mylist == NULL)
+		return ;
+	if (flag == 0)
+	{
+		ft_printf("total %lld\n", arg->totalsize);
+		arg->totalsize = 0;
+	}
+	get_big(&arg2, mylist);
+	print_all(&arg2, mylist);
+}
+
+void	fill_perm(t_list_ls *tmp, struct stat *fs)
 {
 	if (S_ISDIR(fs->st_mode))
 	{

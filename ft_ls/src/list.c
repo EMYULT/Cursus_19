@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/06 11:19:50 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/06 11:36:15 by hde-ghel         ###   ########.fr       */
+/*   Created: 2019/09/06 15:22:37 by tjuzen            #+#    #+#             */
+/*   Updated: 2019/09/06 15:22:44 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 	}
 	fill_perm(tmp, &fs);
 	fill_perm_right(tmp, &fs);
-	fill_perm_acl(tmpacl, tmp, &fs, tmp2);
+	fill_acl(tmpacl, tmp, &fs, tmp2);
 	if (fill_others(tmp, &fs, arg, tmp2) == -1)
 			return (NULL);
 	ft_strdel(&tmp2);
@@ -68,7 +68,7 @@ void		permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
 		ft_printf("%s:\n", path);
 	i = ft_strlen(path);
 	ft_putstr_fd("ls: ", 2);
-	if (path[i -1] == '/')
+	if (path[i - 1] == '/')
 		i = i - 2;
 	while (i > 0 && path[i - 1] != '/')
 		i--;
@@ -80,7 +80,7 @@ void		permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
 		ft_putstr("\n");
 }
 
-t_list_ls	*push_list(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
+t_list_ls	*push(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
 {
 	char	*tmp;
 

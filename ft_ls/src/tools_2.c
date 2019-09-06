@@ -19,7 +19,7 @@ int		free_struct_arg(t_arg_ls *arg)
 	return (-1);
 }
 
-void		free_list(t_list_ls *list)
+void	free_list(t_list_ls *list)
 {
 	t_list_ls	*tmp;
 
@@ -62,7 +62,6 @@ int		check_arg(char *str, t_arg_ls *arg, int i, int j)
 {
 	while (str[j])
 		j++;
-	//ls - (in rentre pas dedant)
 	if (str[i] == '-' && str[i + 1])
 	{
 		i++;
@@ -104,7 +103,7 @@ int		check_options(int i, int argc, char **argv, t_arg_ls *arg)
 			ft_putstr(" [file ...]\n");
 			return (-1);
 		}
-			i++;
+		i++;
 	}
 	return (i);
 }

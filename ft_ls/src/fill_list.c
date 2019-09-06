@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-void		fill_perm_right(t_list_ls *tmp, struct stat *fs)
+void	fill_perm_right(t_list_ls *tmp, struct stat *fs)
 {
 	tmp->perm[1] = ((fs->st_mode & S_IRUSR) ? 'r' : '-');
 	tmp->perm[2] = ((fs->st_mode & S_IWUSR) ? 'w' : '-');
@@ -32,7 +32,7 @@ void		fill_perm_right(t_list_ls *tmp, struct stat *fs)
 	tmp->perm[9] = ((fs->st_mode & S_IXOTH) ? 'x' : '-');
 }
 
-void		fill_perm_acl(acl_t tmpacl, t_list_ls *tmp, struct stat *fs, char *tmp2)
+void	fill_acl(acl_t tmpacl, t_list_ls *tmp, struct stat *fs, char *tmp2)
 {
 	if (S_ISUID & fs->st_mode)
 		tmp->perm[3] = (tmp->perm[3] == '-') ? 'S' : 's';
@@ -52,25 +52,25 @@ void		fill_perm_acl(acl_t tmpacl, t_list_ls *tmp, struct stat *fs, char *tmp2)
 	tmp->perm[11] = '\0';
 }
 
-char		*fill_group(struct stat *fs)
+char	*fill_group(struct stat *fs)
 {
-	struct group *g;
-	char	*pwname;
+	struct group	*g;
+	char			*pwname;
 
 	g = getgrgid(fs->st_gid);
 	if (g && g->gr_name)
 	{
 		if (!(pwname = ft_strdup(g->gr_name)))
-				return (NULL);
+			return (NULL);
 		return (pwname);
 	}
 	else
 		return (ft_itoa(fs->st_gid));
 }
 
-char		*fill_pwname(struct stat *fs)
+char	*fill_pwname(struct stat *fs)
 {
-	struct  passwd	*p;
+	struct passwd	*p;
 	char			*pw_name_tmp;
 
 	p = getpwuid(fs->st_uid);
@@ -110,12 +110,8 @@ int		fill_date(struct stat *fs, t_list_ls *tmp)
 	return (0);
 }
 
-int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
+void	fill_major_minor(t_list_ls *tmp, struct stat *fs)
 {
-	char buf[NAME_MAX + 1];
-
-	tmp->date = fs->st_mtime;
-	tmp->hardlinks = fs->st_nlink;
 	if (tmp->perm[0] == 'c' || tmp->perm[0] == 'b')
 	{
 		tmp->major = major(fs->st_rdev);
@@ -123,12 +119,21 @@ int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
 	}
 	else
 		tmp->size = (long long)fs->st_size;
+}
+
+int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
+{
+	char buf[NAME_MAX + 1];
+
+	tmp->date = fs->st_mtime;
+	tmp->hardlinks = fs->st_nlink;
+	fill_major_minor(tmp, fs);
 	arg->totalsize += fs->st_blocks;
 	if (!(tmp->grname = fill_group(fs)))
-		return(-1);
+		return (-1);
 	if (!(tmp->pwname = fill_pwname(fs)))
 		return (-1);
-	if (fill_date(fs,tmp) == -1)
+	if (fill_date(fs, tmp) == -1)
 		return (-1);
 	if (tmp->perm[0] == 'l')
 	{

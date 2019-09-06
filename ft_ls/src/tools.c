@@ -28,7 +28,17 @@ int		init_arg(t_arg_ls *arg)
 	return (0);
 }
 
-int			check_path(char *str, t_arg_ls *arg)
+void	init_arg_2(t_arg_lsbig *arg)
+{
+	arg->big_hard = 0;
+	arg->big_pw = 0;
+	arg->big_gr = 0;
+	arg->big_size = 0;
+	arg->big_size_maj = 0;
+	arg->have_maj_min = 0;
+}
+
+int		check_path(char *str, t_arg_ls *arg)
 {
 	int i;
 	int j;
@@ -44,7 +54,7 @@ int			check_path(char *str, t_arg_ls *arg)
 	return (1);
 }
 
-int			check_point(char *s)
+int		check_point(char *s)
 {
 	int			i;
 	size_t		len;

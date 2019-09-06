@@ -14,7 +14,7 @@
 
 void		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 {
-	struct stat		fs;
+	struct stat	fs;
 	char		*tmp;
 
 	tmp = arg->path;
@@ -48,7 +48,7 @@ t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 	mylist = NULL;
 	dir = NULL;
 	d = NULL;
-	mylist = push_list(dir, d, mylist, arg);
+	mylist = push(dir, d, mylist, arg);
 	mylist = sort_ascii(mylist);
 	return (mylist);
 }

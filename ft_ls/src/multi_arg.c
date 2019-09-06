@@ -37,8 +37,8 @@ t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 	DIR			*d;
 	char		*tmp;
 	t_list_ls	*mylistdir;
-	struct	stat	fs;
-	int		check_last_arg;
+	struct stat	fs;
+	int			check_last_arg;
 
 	mylistdir = NULL;
 	check_last_arg = 0;
