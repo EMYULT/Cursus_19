@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/06 22:00:41 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/07 17:45:20 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		free_struct_arg(t_arg_ls *arg)
 	return (1);
 }
 
-void	free_list(t_list_ls *list)
+int		free_list(t_list_ls *list, int r)
 {
 	t_list_ls	*tmp;
 
@@ -45,6 +45,7 @@ void	free_list(t_list_ls *list)
 		free(list);
 		list = tmp;
 	}
+	return (r);
 }
 
 int		check_arg(char *str, t_arg_ls *arg, int i, int j)

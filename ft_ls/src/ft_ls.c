@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/06 22:00:45 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/08 17:07:16 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,19 @@ int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 		if (!(mylist->file_name_path = ft_strjoin(tmp, mylist->file_name)))
 			return (-1);
 		if (lstat(mylist->file_name_path, &fs) < 0)
-			return (-1);
-		if (S_ISDIR(fs.st_mode))
+			return (0);
+		if (S_ISDIR(fs.st_mode) && ft_strcmp(mylist->file_name, ".") && ft_strcmp(mylist->file_name, ".."))
 		{
-			if (check_point(mylist->file_name_path) == 0)
-			{
 				if (!(arg->path = ft_strjoin(mylist->file_name_path, "/")))
 					return (-1);
 				ft_printf("\n%s:\n", mylist->file_name_path);
 				arg->totalsize = 0;
-				handle_arg(arg);// == -1)
-					//return (-1);
-			}
+				//handle_arg(arg)..;
+				if (handle_arg(arg) == 1)
+				{
+					ft_strdel(&tmp);
+					return (-1);
+				}
 		}
 		mylist = mylist->next;
 	}
@@ -76,13 +77,9 @@ int		handle_arg(t_arg_ls *arg)
 	{
 		arg->is_in_recu = 1;
 		if (recursive_dir(arg, mylist) == -1)
-		{
-			free_list(mylist);
-			return (1);
-		}
+			return (free_list(mylist, 1));
 	}
-	free_list(mylist);
-	return (0);
+	return (free_list(mylist, 0));
 }
 
 int			main(int argc, char **argv)
@@ -102,7 +99,7 @@ int			main(int argc, char **argv)
 	if (i == argc)
 	{
 		i = handle_arg(&arg);
-		if (arg.is_in_recu == 0)
+		if (arg.is_rr == 0)
 			free_struct_arg(&arg);
 		return (i);
 	}

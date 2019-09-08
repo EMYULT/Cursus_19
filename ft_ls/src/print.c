@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 13:51:47 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/06 18:41:12 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/08 19:08:13 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 void	print_filename_color(t_list_ls *mylist)
 {
-	/*
 	if (mylist->is_dir == 1)
 		ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
 	else if (mylist->is_dir == 666)
 		ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 	else
-	*/
-		ft_printf("%s\n", mylist->file_name);
-		//ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
+		ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
+		//ft_printf("%s\n", mylist->file_name);
 }
 
 void	print_list(t_list_ls *mylist)
@@ -95,7 +93,7 @@ void	print_all(t_arg_lsbig *arg2, t_list_ls *mylist)
 		mylist->grname);
 		if (mylist->perm[0] == 'c' || mylist->perm[0] == 'b')
 			ft_printf(" %*lld, %*d", arg2->big_size_maj + 2,
-			mylist->major, arg2->big_size, mylist->minor);
+				mylist->major, arg2->big_size, mylist->minor);
 		else if (arg2->have_maj_min)
 		{
 			ft_printf(" %*s", arg2->big_size_maj + 3, " ");

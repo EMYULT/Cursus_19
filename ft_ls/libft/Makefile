@@ -6,7 +6,7 @@
 #    By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/29 20:16:09 by tjuzen            #+#    #+#              #
-#    Updated: 2018/11/09 16:55:52 by tjuzen           ###   ########.fr        #
+#    Updated: 2019/09/07 18:40:03 by hde-ghel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRCS=src/ft_atoi.c src/ft_atoi.c src/ft_isalpha.c src/ft_isprint.c src/ft_memchr
 	 src/ft_printf/handle_specc.c src/ft_printf/handle_speccc.c\
 	 src/ft_printf/printf.c src/ft_printf/tools.c src/ft_printf/tools_2.c \
 	 src/ft_printf/atoi_itoa.c src/ft_printf/display_float2.c\
+	 src/ft_strjoin_free.c
 
 O=ft_atoi.o ft_bzero.o ft_isascii.o ft_memalloc.o ft_memcmp.o ft_memset.o\
   ft_strcat.o ft_strcpy.o ft_strlen.o ft_strncpy.o ft_tolower.o ft_isalnum.o\
@@ -45,7 +46,7 @@ O=ft_atoi.o ft_bzero.o ft_isascii.o ft_memalloc.o ft_memcmp.o ft_memset.o\
   ft_lstmap.o atoi_itoa.o check.o display_float.o display_i.o display_p.o\
   display_precision_i.o display_sc.o display_x.o display.o\
   handle_flags.o handle_spec.o handle_specc.o handle_speccc.o\
-  printf.o tools.o tools_2.o display_float2.o
+  printf.o tools.o tools_2.o display_float2.o ft_strjoin_free.o
 
 FLAGS= -Wall -Wextra -Werror
 

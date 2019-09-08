@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 11:15:33 by tjuzen            #+#    #+#             */
-/*   Updated: 2018/11/22 10:46:21 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/09/07 18:44:40 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int				ft_printf(const char *format, ...);
+char			*ft_strjoin_free(char *s1, char *s2, size_t i);
 
 #endif

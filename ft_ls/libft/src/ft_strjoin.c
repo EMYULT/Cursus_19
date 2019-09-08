@@ -6,10 +6,11 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/19 14:44:41 by tjuzen            #+#    #+#             */
-/*   Updated: 2018/11/22 10:45:51 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/09/07 18:41:28 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/libft.h"
 #include "../includes/libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)

@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/06 18:41:31 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/08 17:07:10 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ int		check_path(char *str, t_arg_ls *arg)
 	return (1);
 }
 
+/*
+ * a supprimer apres le tests
+**
 int		check_point(char *s)
 {
 	int			i;
@@ -80,3 +83,4 @@ int		check_point(char *s)
 	}
 	return (0);
 }
+*/

@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 11:36:01 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/06 11:34:07 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/08 16:46:09 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,24 +87,19 @@ char	*fill_pwname(struct stat *fs)
 int		fill_date(struct stat *fs, t_list_ls *tmp)
 {
 	char	*tmp_date;
-	time_t	actualtime;
 
-	actualtime = time(0);
 	if (!(tmp_date = ft_strdup((ctime(&fs->st_mtime)))))
 		return (-1);
-	if (!(tmp->date_month = ft_strsub(tmp_date, 4, 3)))
-		return (-1);
-	if (!(tmp->date_day = ft_strsub(tmp_date, 8, 2)))
-		return (-1);
-	if (actualtime - tmp->date < 15778800)
-	{
-		if (!(tmp->date_hour_year = ft_strsub(tmp_date, 11, 5)))
-			return (-1);
-	}
+	tmp->date_month = ft_strsub(tmp_date, 4, 3);
+	tmp->date_day = ft_strsub(tmp_date, 8, 2);
+	if (time(0) - tmp->date < 15778800)
+		tmp->date_hour_year = ft_strsub(tmp_date, 11, 5);
 	else
+		tmp->date_hour_year = ft_strsub(tmp_date, 19, 5);
+	if (!tmp->date_month || !tmp->date_day || !tmp->date_hour_year)
 	{
-		if (!(tmp->date_hour_year = ft_strsub(tmp_date, 19, 5)))
-			return (-1);
+		ft_strdel(&tmp_date);
+		return (-1);
 	}
 	ft_strdel(&tmp_date);
 	return (0);
