@@ -20,7 +20,6 @@ void	print_filename_color(t_list_ls *mylist)
 		ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 	else
 		ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
-		//ft_printf("%s\n", mylist->file_name);
 }
 
 void	print_list(t_list_ls *mylist)
@@ -117,8 +116,8 @@ void	print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag)
 	t_arg_lsbig arg2;
 
 	init_arg_2(&arg2);
-	//if (mylist == NULL)
-	//	return ;
+	if (mylist == NULL)
+		return ;
 	if (flag == 0)
 	{
 		ft_printf("total %lld\n", arg->totalsize);

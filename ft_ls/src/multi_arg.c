@@ -12,20 +12,63 @@
 
 #include "../includes/ft_ls.h"
 
+t_list_ls *add_no_file(t_list_ls *mylist, char *str)
+{
+	t_list_ls	*tmp;
+
+	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
+		return (NULL);
+	if (!(tmp->file_name = ft_strdup(str)))
+		return (NULL);
+	tmp->next = mylist;
+	return (tmp);
+}
+
+void		no_file(char **argv, int i, int argc)
+{
+	t_list_ls	*mylistfile;
+	t_list_ls	*tmp;
+	struct stat	fs;
+
+	mylistfile = NULL;
+	while (i < argc)
+	{
+		if (lstat(argv[i], &fs) < 0)
+			mylistfile = add_no_file(mylistfile, argv[i]);
+		i++;
+	}
+	mylistfile = sort_ascii(mylistfile);
+	tmp = mylistfile;
+	while (tmp != NULL)
+	{
+		ft_printf("ls: %s: No such file or directory\n", tmp->file_name);
+		tmp = tmp->next;
+	}
+	while (mylistfile)
+	{
+		tmp = mylistfile->next;
+		ft_strdel(&mylistfile->file_name);
+		free(mylistfile);
+		mylistfile = tmp;
+	}
+}
+
 t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	struct stat	fs;
 	t_list_ls	*mylistfile;
 
 	mylistfile = NULL;
+	no_file(argv, i, argc);
 	while (i < argc)
 	{
-		if (lstat(argv[i], &fs) < 0)
-			ft_printf("ls: %s: No such file or directory\n", argv[i]);
-		else
+		if (lstat(argv[i], &fs) == 0)
 		{
-			if (!(S_ISDIR(fs.st_mode)))
+			if (S_ISREG(fs.st_mode))
 				mylistfile = add_link_front(mylistfile, argv[i], arg);
+			if (S_ISLNK(fs.st_mode))
+				if (arg->is_l == 1)
+					mylistfile = add_link_front(mylistfile, argv[i], arg);
 		}
 		i++;
 	}
@@ -35,7 +78,6 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	DIR			*d;
-	char		*tmp;
 	t_list_ls	*mylistdir;
 	struct stat	fs;
 	int			check_last_arg;
@@ -49,9 +91,12 @@ t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 			if (S_ISDIR(fs.st_mode) && (d = opendir(argv[i])))
 			{
 				closedir(d);
-				if (!(tmp = ft_strdup(argv[i])))
-					return (NULL);
-				mylistdir = add_link_front_dir(mylistdir, tmp);
+				mylistdir = add_link_front_dir(mylistdir, argv[i]);
+			}
+			else if (S_ISLNK(fs.st_mode))
+			{
+				if (arg->is_l != 1)
+					mylistdir = add_link_front_dir(mylistdir, argv[i]);
 			}
 			else
 			{
@@ -79,6 +124,8 @@ t_list_ls	*check_sort(t_list_ls *mylist, t_arg_ls *arg)
 void		display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 {
 	mylist = check_sort(mylist, arg);
+	if (arg->file_printed && mylist)
+		ft_printf("\n");
 	if (mylist != NULL)
 	{
 		arg->file_printed = 1;

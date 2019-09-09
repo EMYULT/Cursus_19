@@ -15,11 +15,9 @@
 t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 {
 	t_list_ls	*tmp;
-	acl_t		tmpacl;
 	struct stat	fs;
 	char		*tmp2;
 
-	tmpacl = NULL;
 	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
 		return (NULL);
 	tmp->file_name = str;
@@ -27,13 +25,14 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 	if (lstat(tmp2, &fs) < 0 || !tmp2)
 	{
 		ft_strdel(&tmp2);
-		tmp2 = ft_strdup(tmp->file_name);
-		if (lstat(tmp2, &fs) < 0 || !tmp2)
+		if (!(tmp2 = ft_strdup(tmp->file_name)))
 			return (NULL);
+		if (lstat(tmp2, &fs) < 0)
+			return (mylist);
 	}
 	fill_perm(tmp, &fs);
 	fill_perm_right(tmp, &fs);
-	fill_acl(tmpacl, tmp, &fs, tmp2);
+	fill_acl(tmp, &fs, tmp2);
 	if (fill_others(tmp, &fs, arg, tmp2) == -1)
 			return (NULL);
 	ft_strdel(&tmp2);

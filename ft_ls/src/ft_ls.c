@@ -30,7 +30,6 @@ int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 					return (-1);
 				ft_printf("\n%s:\n", mylist->file_name_path);
 				arg->totalsize = 0;
-				//handle_arg(arg)..;
 				if (handle_arg(arg) == 1)
 				{
 					ft_strdel(&tmp);

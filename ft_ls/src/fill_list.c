@@ -32,8 +32,11 @@ void	fill_perm_right(t_list_ls *tmp, struct stat *fs)
 	tmp->perm[9] = ((fs->st_mode & S_IXOTH) ? 'x' : '-');
 }
 
-void	fill_acl(acl_t tmpacl, t_list_ls *tmp, struct stat *fs, char *tmp2)
+void	fill_acl(t_list_ls *tmp, struct stat *fs, char *tmp2)
 {
+	acl_t		tmpacl;
+
+	tmpacl = NULL;
 	if (S_ISUID & fs->st_mode)
 		tmp->perm[3] = (tmp->perm[3] == '-') ? 'S' : 's';
 	if (S_ISGID & fs->st_mode)
