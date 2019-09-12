@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 11:36:01 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/11 18:07:34 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/12 11:36:48 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int		fill_date(struct stat *fs, t_list_ls *tmp)
 		return (-1);
 	tmp->date_month = ft_strsub(tmp_date, 4, 3);
 	tmp->date_day = ft_strsub(tmp_date, 8, 2);
-	if (age <= 15552000 && age > -15552000)
+	if (age < 15552000 && age > -15552000)
 		tmp->date_hour_year = ft_strsub(tmp_date, 11, 5);
 	else
 		tmp->date_hour_year = ft_strsub(tmp_date, 19, 5);

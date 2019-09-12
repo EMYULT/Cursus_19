@@ -128,6 +128,20 @@ else
     echo "$Green TEST ${i} '$TEST' OK !$Color_Off"
 fi
 
+#test09
+TEST="-lrt"
+let "i++"
+A=$(ls -1 $TEST ../../../ > /Users/hde-ghel/Desktop/test_result/${i}_ls.txt 2>&1)
+B=$(./ft_ls $TEST ../../../ > /Users/hde-ghel/Desktop/test_result/${i}_ft_ls.txt 2>&1)
+DIFF=$(diff /Users/hde-ghel/Desktop/test_result/${i}_ls.txt /Users/hde-ghel/Desktop/test_result/${i}_ft_ls.txt)
+if [ "$DIFF" != "" ]
+then
+    echo "$Red TEST ${i} '$TEST' FAIL !$Color_Off"
+#echo "diff |$DIFF{}|"
+else
+    echo "$Green TEST ${i} '$TEST' OK !$Color_Off"
+fi
+
 #test10
 TEST="-lrtR"
 let "i++"

@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/08 17:07:10 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/12 13:21:01 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,30 +57,3 @@ int		check_path(char *str, t_arg_ls *arg)
 	}
 	return (1);
 }
-
-/*
- * a supprimer apres le tests
-**
-int		check_point(char *s)
-{
-	int			i;
-	size_t		len;
-
-	i = 0;
-	len = ft_strlen(s);
-	len--;
-	while (s[len] != '/' && s[len] != '.')
-		len--;
-	while (s[len] != '/' && s[len] == '.')
-	{
-		i++;
-		len--;
-	}
-	if (i == 1 || i == 2)
-	{
-		if ((ft_strlen(s)) - 3 <= len)
-			return (1);
-	}
-	return (0);
-}
-*/

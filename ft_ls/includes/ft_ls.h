@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/09 20:28:46 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/12 14:05:44 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef	struct	s_arg_ls
 	int				file_printed;
 	int				flag_mutiple_folders;
 	int				is_in_recu;
+	int				empty_dir;
 }				t_arg_ls;
 
 typedef	struct	s_arg_lsbig
@@ -122,8 +123,7 @@ void			fill_major_minor(t_list_ls *tmp, struct stat *fs);
 t_list_ls		*sort_ascii(t_list_ls *mylist);
 t_list_ls		*sort_time(t_list_ls *mylist);
 t_list_ls		*add_link_front_dir(t_list_ls *mylistdir, char *str);
-t_list_ls		*push(struct dirent *dir, DIR *d,
-				t_list_ls *mylist, t_arg_ls *arg);
+t_list_ls		*push(t_list_ls *mylist, t_arg_ls *arg);
 t_list_ls		*lst_swap(t_list_ls *p1, t_list_ls *p2);
 
 /*
@@ -163,6 +163,6 @@ void			print_all(t_arg_lsbig *arg2, t_list_ls *mylist);
 int				main(int argc, char **argv);
 int				handle_arg(t_arg_ls *arg);
 int				recursive_dir(t_arg_ls *arg, t_list_ls *mylist);
-t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg, DIR *d, struct dirent *dir);
+t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg);
 
 #endif

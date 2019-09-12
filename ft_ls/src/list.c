@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 15:22:37 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/09 20:34:12 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/12 14:13:06 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
 		return (NULL);
 	tmp->file_name = str;
-	tmp2 = ft_strjoin(arg->path, tmp->file_name);
+	if(!(tmp2 = ft_strjoin(arg->path, tmp->file_name)))
+		return (NULL);
 	if (lstat(tmp2, &fs) < 0 || !tmp2)
 	{
 		ft_strdel(&tmp2);
@@ -79,10 +80,18 @@ void		permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
 		ft_putstr("\n");
 }
 
-t_list_ls	*push(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
+t_list_ls	*push(t_list_ls *mylist, t_arg_ls *arg)
 {
 	char	*tmp;
+	DIR		*d;
+	struct dirent	*dir;
 
+	arg->empty_dir = 0;
+	if (!(d = opendir(arg->path)))
+	{
+			ft_putstr(RED"\n\ngrosse teub \n\n");
+			return (NULL);
+	}
 	while ((dir = readdir(d)) != NULL)
 	{
 		if (dir->d_name[0] != '.' || (arg->is_a == 1 && dir->d_name[0] == '.'))
@@ -92,9 +101,15 @@ t_list_ls	*push(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
 				closedir(d);
 				return (NULL);
 			}
-			mylist = add_link_front(mylist, tmp, arg);
+			if (!(mylist = add_link_front(mylist, tmp, arg)))
+				{
+					ft_putstr(RED"\n\ngrosse teub \n\n");
+					return (NULL);
+				}
 		}
 	}
+	if (mylist == NULL)
+		arg->empty_dir = 1;
 	closedir(d);
 	return (mylist);
 }
