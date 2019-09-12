@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 11:36:01 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/08 16:46:09 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/11 18:07:34 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,18 @@ char	*fill_pwname(struct stat *fs)
 
 int		fill_date(struct stat *fs, t_list_ls *tmp)
 {
-	char	*tmp_date;
+	char		*tmp_date;
+	ssize_t		actual_time;
+	int			age;
 
-	if (!(tmp_date = ft_strdup((ctime(&fs->st_mtime)))))
+	actual_time = fs->st_mtime;
+	age = time(0) - actual_time;
+
+	if (!(tmp_date = ft_strdup((ctime((const long *)&actual_time)))))
 		return (-1);
 	tmp->date_month = ft_strsub(tmp_date, 4, 3);
 	tmp->date_day = ft_strsub(tmp_date, 8, 2);
-	if (time(0) - tmp->date < 15778800)
+	if (age <= 15552000 && age > -15552000)
 		tmp->date_hour_year = ft_strsub(tmp_date, 11, 5);
 	else
 		tmp->date_hour_year = ft_strsub(tmp_date, 19, 5);

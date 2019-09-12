@@ -13,6 +13,7 @@ White='\033[0;37m'        # White
 i=1
 y=0
 
+rm -rf ~/Desktop/test_result/*.txt
 #test1
 TEST="'ls'"
 A=$(ls > /Users/hde-ghel/Desktop/test_result/${i}_ls.txt 2>&1)

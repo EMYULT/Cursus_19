@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/07 16:53:15 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/09 20:28:46 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,6 @@ void			print_all(t_arg_lsbig *arg2, t_list_ls *mylist);
 int				main(int argc, char **argv);
 int				handle_arg(t_arg_ls *arg);
 int				recursive_dir(t_arg_ls *arg, t_list_ls *mylist);
-t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg);
+t_list_ls		*params(t_list_ls *mylist, t_arg_ls *arg, DIR *d, struct dirent *dir);
 
 #endif

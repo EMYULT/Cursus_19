@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/08 17:07:16 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/11 20:13:36 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,9 @@ int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 	return (0);
 }
 
-t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
+t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg, DIR *d, struct dirent *dir)
 {
-	DIR				*d;
-	struct dirent	*dir;
-
 	mylist = NULL;
-	dir = NULL;
-	d = NULL;
 	mylist = push(dir, d, mylist, arg);
 	mylist = sort_ascii(mylist);
 	return (mylist);
@@ -58,9 +53,18 @@ t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 int		handle_arg(t_arg_ls *arg)
 {
 	t_list_ls		*mylist;
+	DIR				*d;
+	struct dirent	*dir;
 
 	mylist = NULL;
-	mylist = params(mylist, arg);
+	dir = NULL;
+	d = NULL;
+	if (!(d = opendir(arg->path)))
+		permission_denied(arg->path, arg, 1);
+	else
+	{
+		mylist = params(mylist, arg, d, dir);
+	}
 	if (mylist != NULL)
 	{
 		if (arg->is_t == 1)
@@ -71,12 +75,12 @@ int		handle_arg(t_arg_ls *arg)
 			print_list(mylist);
 		else
 			print_full_list(mylist, arg, 0);
-	}
-	if (arg->is_rr)
-	{
-		arg->is_in_recu = 1;
-		if (recursive_dir(arg, mylist) == -1)
-			return (free_list(mylist, 1));
+		if (arg->is_rr)
+		{
+			arg->is_in_recu = 1;
+			if (recursive_dir(arg, mylist) == -1)
+				return (free_list(mylist, 1));
+		}
 	}
 	return (free_list(mylist, 0));
 }

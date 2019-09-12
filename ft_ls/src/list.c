@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 15:22:37 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/07 17:01:46 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/09 20:34:12 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,6 @@ t_list_ls	*push(struct dirent *dir, DIR *d, t_list_ls *mylist, t_arg_ls *arg)
 {
 	char	*tmp;
 
-	if (!(d = opendir(arg->path)))
-	{
-		permission_denied(arg->path, arg, 1);
-		return (NULL);
-	}
 	while ((dir = readdir(d)) != NULL)
 	{
 		if (dir->d_name[0] != '.' || (arg->is_a == 1 && dir->d_name[0] == '.'))
