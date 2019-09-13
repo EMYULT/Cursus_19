@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/12 14:15:12 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/13 02:00:54 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,12 @@ int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 
 t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 {
-	mylist = push(mylist, arg);
+	DIR		*d;
+	struct	dirent *dir;
+
+	d = NULL;
+	dir = NULL;
+	mylist = push(mylist, arg, d, dir);
 	mylist = sort_ascii(mylist);
 	return (mylist);
 }
@@ -52,20 +57,11 @@ t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 int		handle_arg(t_arg_ls *arg)
 {
 	t_list_ls		*mylist;
-	DIR				*d;
 
 	mylist = NULL;
-	d = NULL;
-
-	if ((d = opendir(arg->path)))
-	{
-		closedir(d);
-		mylist = params(mylist, arg);
-		if ((mylist == NULL && (arg->empty_dir == 0)))
-			return (1);
-	}
-	else
-		permission_denied(arg->path, arg, 1);
+	mylist = params(mylist, arg);
+	if ((mylist == NULL && (arg->malloc_error == 1)))
+		return (1);
 	if (mylist != NULL)
 	{
 		if (arg->is_t == 1)
@@ -86,50 +82,12 @@ int		handle_arg(t_arg_ls *arg)
 	return (free_list(mylist, 0));
 }
 
-/*
-int		handle_arg(t_arg_ls *arg)
-{
-	t_list_ls		*mylist;
-	DIR				*d;
-	struct dirent	*dir;
-
-	mylist = NULL;
-	dir = NULL;
-	d = NULL;
-	if (!(d = opendir(arg->path)))
-		permission_denied(arg->path, arg, 1);
-	else
-	{
-		if(!(mylist = params(mylist, arg, d, dir)))
-			return (1);
-	}
-	if (mylist != NULL)
-	{
-		if (arg->is_t == 1)
-			mylist = sort_time(mylist);
-		if (arg->is_r == 1)
-			mylist = reverse_list(mylist);
-		if (arg->is_l != 1)
-			print_list(mylist);
-		else
-			print_full_list(mylist, arg, 0);
-		if (arg->is_rr)
-		{
-			arg->is_in_recu = 1;
-			if (recursive_dir(arg, mylist) == -1)
-				return (free_list(mylist, 1));
-		}
-	}
-	return (free_list(mylist, 0));
-}
-*/
-
 int			main(int argc, char **argv)
 {
 	t_arg_ls		arg;
-	int				i;
 	t_list_ls		*mylistdir;
 	t_list_ls		*mylistfile;
+	int				i;
 
 	mylistdir = NULL;
 	mylistfile = NULL;

@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/12 13:52:06 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/13 02:00:56 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		no_file(char **argv, int i, int argc)
 	while (i < argc)
 	{
 		if (lstat(argv[i], &fs) < 0)
-			mylistfile = add_no_file(mylistfile, argv[i]);
+			mylistfile = add_no_file(mylistfile, argv[i]);  // protection malloc
 		i++;
 	}
 	mylistfile = sort_ascii(mylistfile);
@@ -136,7 +136,7 @@ void		display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 	}
 }
 
-void		display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
+int			display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 {
 	mylist = check_sort(mylist, arg);
 	if (arg->file_printed && mylist)
@@ -144,12 +144,15 @@ void		display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 	while (mylist != NULL)
 	{
 		check_path(mylist->file_name, arg);
+		//if (!(check_path(mylist->file_name, arg)))
+		//	return (-1);
 		if (arg->flag_mutiple_folders == 1)
 			ft_printf("%s:\n", mylist->file_name);
 		if (handle_arg(arg) == 1)
-				return ;
+				return (-1);
 		if (mylist->next)
 			ft_printf("\n");
 		mylist = mylist->next;
 	}
+	return (0);
 }

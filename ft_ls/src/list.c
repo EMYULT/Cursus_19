@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 15:22:37 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/12 14:13:06 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/13 01:18:57 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,27 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 {
 	t_list_ls	*tmp;
 	struct stat	fs;
-	char		*tmp2;
+	char		*full_path;
 
 	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
 		return (NULL);
 	tmp->file_name = str;
-	if(!(tmp2 = ft_strjoin(arg->path, tmp->file_name)))
+	if (!(full_path = ft_strjoin(arg->path, tmp->file_name)))
 		return (NULL);
-	if (lstat(tmp2, &fs) < 0 || !tmp2)
+	if (lstat(full_path, &fs) < 0 || !full_path)
 	{
-		ft_strdel(&tmp2);
-		if (!(tmp2 = ft_strdup(tmp->file_name)))
+		ft_strdel(&full_path);
+		if (!(full_path = ft_strdup(tmp->file_name)))
 			return (NULL);
-		if (lstat(tmp2, &fs) < 0)
+		if (lstat(full_path, &fs) < 0)
 			return (mylist);
 	}
 	fill_perm(tmp, &fs);
 	fill_perm_right(tmp, &fs);
-	fill_acl(tmp, &fs, tmp2);
-	if (fill_others(tmp, &fs, arg, tmp2) == -1)
+	fill_acl(tmp, &fs, full_path);
+	if (fill_others(tmp, &fs, arg, full_path) == -1)
 			return (NULL);
-	ft_strdel(&tmp2);
+	ft_strdel(&full_path);
 	tmp->next = mylist;
 	return (tmp);
 }
@@ -60,7 +60,7 @@ t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str)
 	return (tmp);
 }
 
-void		permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
+int			permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
 {
 	int		i;
 
@@ -78,38 +78,35 @@ void		permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
 	ft_putstr_fd(" Permission denied\n", 2);
 	if (arg->flag_mutiple_folders == 1 && check_last_arg == 0)
 		ft_putstr("\n");
+	return (1);
 }
 
-t_list_ls	*push(t_list_ls *mylist, t_arg_ls *arg)
+
+t_list_ls	*push(t_list_ls *mylist, t_arg_ls *arg, DIR *d, struct dirent *dir)
 {
 	char	*tmp;
-	DIR		*d;
-	struct dirent	*dir;
 
-	arg->empty_dir = 0;
-	if (!(d = opendir(arg->path)))
-	{
-			ft_putstr(RED"\n\ngrosse teub \n\n");
+	arg->malloc_error = 0;
+	if (!(d = opendir(arg->path)) && permission_denied(arg->path, arg, 1))
 			return (NULL);
-	}
 	while ((dir = readdir(d)) != NULL)
 	{
 		if (dir->d_name[0] != '.' || (arg->is_a == 1 && dir->d_name[0] == '.'))
 		{
 			if (!(tmp = ft_strdup(dir->d_name)))
 			{
+				arg->malloc_error = 1;
 				closedir(d);
 				return (NULL);
 			}
 			if (!(mylist = add_link_front(mylist, tmp, arg)))
 				{
-					ft_putstr(RED"\n\ngrosse teub \n\n");
+					arg->malloc_error = 1;
+					closedir(d);
 					return (NULL);
 				}
 		}
 	}
-	if (mylist == NULL)
-		arg->empty_dir = 1;
 	closedir(d);
 	return (mylist);
 }

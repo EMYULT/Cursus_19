@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/12 13:21:01 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/13 18:32:28 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int		init_arg(t_arg_ls *arg)
 	arg->is_a = 0;
 	arg->is_r = 0;
 	arg->is_t = 0;
+	arg->is_n = 0;
 	if (!(arg->path = ft_strdup("./")))
 		return (-1);
 	arg->totalsize = 0;
@@ -48,12 +49,12 @@ int		check_path(char *str, t_arg_ls *arg)
 	if (ft_strcmp(str, "/") == 0)
 	{
 		if (!(arg->path = ft_strdup("/")))
-				return (0);
+				return (-1);
 	}
 	else
 	{
 		if (!(arg->path = ft_strjoin(str, "/")))
 			return (-1);
 	}
-	return (1);
+	return (0);
 }

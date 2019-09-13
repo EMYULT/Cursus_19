@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/12 14:05:44 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/13 18:29:38 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,13 @@ typedef	struct	s_arg_ls
 	int				is_a;
 	int				is_r;
 	int				is_t;
+	int				is_n;
 	char			*path;
 	int				totalsize;
 	int				file_printed;
 	int				flag_mutiple_folders;
 	int				is_in_recu;
-	int				empty_dir;
+	int				malloc_error;
 }				t_arg_ls;
 
 typedef	struct	s_arg_lsbig
@@ -113,7 +114,7 @@ int				fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2);
 void			fill_acl(t_list_ls *tmp, struct stat *fs, char *tmp2);
 void			fill_perm_right(t_list_ls *tmp, struct stat *fs);
 void			fill_perm(t_list_ls *tmp, struct stat *fs);
-void			permission_denied(char *path, t_arg_ls *arg, int check_last_arg);
+int				permission_denied(char *path, t_arg_ls *arg, int check_last_arg);
 void			fill_major_minor(t_list_ls *tmp, struct stat *fs);
 
 /*
@@ -123,7 +124,8 @@ void			fill_major_minor(t_list_ls *tmp, struct stat *fs);
 t_list_ls		*sort_ascii(t_list_ls *mylist);
 t_list_ls		*sort_time(t_list_ls *mylist);
 t_list_ls		*add_link_front_dir(t_list_ls *mylistdir, char *str);
-t_list_ls		*push(t_list_ls *mylist, t_arg_ls *arg);
+t_list_ls		*push(t_list_ls *mylist, t_arg_ls *arg, DIR *d,
+					struct dirent *dir);
 t_list_ls		*lst_swap(t_list_ls *p1, t_list_ls *p2);
 
 /*
@@ -140,7 +142,7 @@ int				check_arg(char *str, t_arg_ls *arg, int i, int j);
 int				init_arg(t_arg_ls *arg);
 t_list_ls		*check_sort(t_list_ls *mylist, t_arg_ls *arg);
 void			display_my_files(t_list_ls *mylist, t_arg_ls *arg);
-void			display_my_dir(t_list_ls *mylist, t_arg_ls *arg);
+int				display_my_dir(t_list_ls *mylist, t_arg_ls *arg);
 int				check_options(int i, int argc, char **argv, t_arg_ls *arg);
 t_list_ls		*fill_dir(int i, int argc, char **argv, t_arg_ls *arg);
 t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg);

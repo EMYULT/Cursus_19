@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 11:36:01 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/12 11:36:48 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/13 18:32:26 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	fill_acl(t_list_ls *tmp, struct stat *fs, char *tmp2)
 		tmp->perm[10] = '@';
 	else if ((tmpacl = acl_get_link_np(tmp2, ACL_TYPE_EXTENDED)))
 	{
-		acl_free(tmpacl);
+		acl_free((void *)tmpacl);
 		tmp->perm[10] = '+';
 	}
 	else
@@ -55,13 +55,13 @@ void	fill_acl(t_list_ls *tmp, struct stat *fs, char *tmp2)
 	tmp->perm[11] = '\0';
 }
 
-char	*fill_group(struct stat *fs)
+char	*fill_group(struct stat *fs, t_arg_ls *arg)
 {
 	struct group	*g;
 	char			*pwname;
 
 	g = getgrgid(fs->st_gid);
-	if (g && g->gr_name)
+	if (g && g->gr_name && arg->is_n == 0)
 	{
 		if (!(pwname = ft_strdup(g->gr_name)))
 			return (NULL);
@@ -71,13 +71,13 @@ char	*fill_group(struct stat *fs)
 		return (ft_itoa(fs->st_gid));
 }
 
-char	*fill_pwname(struct stat *fs)
+char	*fill_pwname(struct stat *fs, t_arg_ls *arg)
 {
 	struct passwd	*p;
 	char			*pw_name_tmp;
 
 	p = getpwuid(fs->st_uid);
-	if (p && p->pw_name)
+	if (p && p->pw_name && arg->is_n == 0)
 	{
 		if (!(pw_name_tmp = ft_strdup(p->pw_name)))
 			return (NULL);
@@ -90,26 +90,18 @@ char	*fill_pwname(struct stat *fs)
 int		fill_date(struct stat *fs, t_list_ls *tmp)
 {
 	char		*tmp_date;
-	ssize_t		actual_time;
 	int			age;
 
-	actual_time = fs->st_mtime;
-	age = time(0) - actual_time;
-
-	if (!(tmp_date = ft_strdup((ctime((const long *)&actual_time)))))
-		return (-1);
+	age = time(0) - fs->st_mtime;
+	tmp_date = ctime(&fs->st_mtime);
 	tmp->date_month = ft_strsub(tmp_date, 4, 3);
 	tmp->date_day = ft_strsub(tmp_date, 8, 2);
-	if (age < 15552000 && age > -15552000)
-		tmp->date_hour_year = ft_strsub(tmp_date, 11, 5);
+	if (age > 15724800 || age < 0)
+		tmp->date_hour_year = ft_strsub(tmp_date, 19, 5);  // Année
 	else
-		tmp->date_hour_year = ft_strsub(tmp_date, 19, 5);
+		tmp->date_hour_year = ft_strsub(tmp_date, 11, 5);  //jour mois
 	if (!tmp->date_month || !tmp->date_day || !tmp->date_hour_year)
-	{
-		ft_strdel(&tmp_date);
 		return (-1);
-	}
-	ft_strdel(&tmp_date);
 	return (0);
 }
 
@@ -132,9 +124,9 @@ int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
 	tmp->hardlinks = fs->st_nlink;
 	fill_major_minor(tmp, fs);
 	arg->totalsize += fs->st_blocks;
-	if (!(tmp->grname = fill_group(fs)))
+	if (!(tmp->grname = fill_group(fs, arg)))
 		return (-1);
-	if (!(tmp->pwname = fill_pwname(fs)))
+	if (!(tmp->pwname = fill_pwname(fs, arg)))
 		return (-1);
 	if (fill_date(fs, tmp) == -1)
 		return (-1);
