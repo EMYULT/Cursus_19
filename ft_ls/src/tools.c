@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/14 15:09:19 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/14 18:19:23 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int		init_arg(t_arg_ls *arg)
 	arg->flag_mutiple_folders = 0;
 	arg->file_printed = 0;
 	arg->is_in_recu = 0;
+	arg->malloc_error = 0;
 	return (0);
 }
 
