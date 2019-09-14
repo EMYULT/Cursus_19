@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/14 16:02:59 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:16:17 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int		free_list(t_list_ls *list, int r)
 			ft_strdel(&list->date_day);
 		if (list->date_hour_year != NULL)
 			ft_strdel(&list->date_hour_year);
-		//if (list->have_symlink != NULL)
-		//	ft_strdel(&list->have_symlink);
+		if (list->have_symlink != NULL)
+			ft_strdel(&list->have_symlink);
 		free(list);
 		list = tmp;
 	}

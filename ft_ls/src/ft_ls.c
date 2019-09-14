@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/14 16:03:21 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:40:29 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ int			free_all(t_list_ls *list_dir, t_list_ls *list_file, t_arg_ls *arg)
 {
 	free_list(list_file, 0);
 	free_list_dir(list_dir, 0);
-	return (free_struct_arg(arg));
+	if (arg->is_rr == 0)
+		free_struct_arg(arg);
+	return (1);
 
 }
 

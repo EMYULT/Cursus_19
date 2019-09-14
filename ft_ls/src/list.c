@@ -6,11 +6,29 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 15:22:37 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/13 01:18:57 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:40:31 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+
+t_list_ls	*init_list(void)
+{
+	t_list_ls	*tmp;
+	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
+		return (NULL);
+
+		tmp->file_name = NULL;
+		tmp->file_name_path = NULL;
+		tmp->have_symlink = NULL;
+		tmp->no_file = NULL;
+		tmp->pwname = NULL;
+		tmp->grname = NULL;
+		tmp->date_month = NULL;
+		tmp->date_day = NULL;
+		tmp->date_hour_year = NULL;
+	return (tmp);
+}
 
 t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 {
@@ -18,7 +36,7 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 	struct stat	fs;
 	char		*full_path;
 
-	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
+	if (!(tmp = init_list()))
 		return (NULL);
 	tmp->file_name = str;
 	if (!(full_path = ft_strjoin(arg->path, tmp->file_name)))
