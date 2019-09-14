@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 11:36:01 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/13 18:32:26 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/14 15:01:39 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int		fill_date(struct stat *fs, t_list_ls *tmp)
 	char		*tmp_date;
 	int			age;
 
+	tmp->date = fs->st_mtime;
 	age = time(0) - fs->st_mtime;
 	tmp_date = ctime(&fs->st_mtime);
 	tmp->date_month = ft_strsub(tmp_date, 4, 3);
@@ -120,7 +121,6 @@ int		fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2)
 {
 	char buf[NAME_MAX + 1];
 
-	tmp->date = fs->st_mtime;
 	tmp->hardlinks = fs->st_nlink;
 	fill_major_minor(tmp, fs);
 	arg->totalsize += fs->st_blocks;

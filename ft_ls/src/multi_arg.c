@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/13 02:00:56 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:04:07 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_list_ls *add_no_file(t_list_ls *mylist, char *str)
 	return (tmp);
 }
 
-void		no_file(char **argv, int i, int argc)
+void		no_file(char **argv, int i, int argc) //in function
 {
 	t_list_ls	*mylistfile;
 	t_list_ls	*tmp;
@@ -59,7 +59,7 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 	t_list_ls	*mylistfile;
 
 	mylistfile = NULL;
-	no_file(argv, i, argc);
+	no_file(argv, i, argc);  ///protection malloc
 	while (i < argc)
 	{
 		if (lstat(argv[i], &fs) == 0)
@@ -143,9 +143,9 @@ int			display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 		ft_printf("\n");
 	while (mylist != NULL)
 	{
-		check_path(mylist->file_name, arg);
-		//if (!(check_path(mylist->file_name, arg)))
-		//	return (-1);
+		//check_path(mylist->file_name, arg);
+		if (check_path(mylist->file_name, arg) == -1)
+			return (-1);
 		if (arg->flag_mutiple_folders == 1)
 			ft_printf("%s:\n", mylist->file_name);
 		if (handle_arg(arg) == 1)

@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/13 02:00:54 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/14 16:03:21 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,14 @@ int		handle_arg(t_arg_ls *arg)
 	return (free_list(mylist, 0));
 }
 
+int			free_all(t_list_ls *list_dir, t_list_ls *list_file, t_arg_ls *arg)
+{
+	free_list(list_file, 0);
+	free_list_dir(list_dir, 0);
+	return (free_struct_arg(arg));
+
+}
+
 int			main(int argc, char **argv)
 {
 	t_arg_ls		arg;
@@ -108,6 +116,8 @@ int			main(int argc, char **argv)
 	mylistfile = fill_file(i, argc, argv, &arg);
 	display_my_files(mylistfile, &arg);
 	mylistdir = fill_dir(i, argc, argv, &arg);
-	display_my_dir(mylistdir, &arg);
+	if (display_my_dir(mylistdir, &arg) == -1)
+		return (free_all(mylistdir, mylistfile, &arg));
+	free_all(mylistdir, mylistfile, &arg);
 	return (0);
 }

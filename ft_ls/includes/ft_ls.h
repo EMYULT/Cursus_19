@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/13 18:29:38 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/14 15:57:59 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ int				fill_date(struct stat *fs, t_list_ls *tmp);
 */
 int				free_struct_arg(t_arg_ls *arg);
 int				free_list(t_list_ls *list, int r);
+int				free_list_dir(t_list_ls *list, int r);
 void			exit_free(t_list_ls *mylistfile, t_list_ls *mylistdir, t_arg_ls *arg);
 void			init_arg_2(t_arg_lsbig *arg);
 void			print_all(t_arg_lsbig *arg2, t_list_ls *mylist);
