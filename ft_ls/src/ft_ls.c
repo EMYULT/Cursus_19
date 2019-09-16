@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/15 18:37:14 by hde-ghel         ###   ########.fr       */
+/*   Created: 2019/09/16 15:21:56 by hde-ghel          #+#    #+#             */
+/*   Updated: 2019/09/16 15:22:14 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ int			main(int argc, char **argv)
 	t_list_ls		*mylistfile;
 	int				i;
 
-	//mylistdir = NULL;
-	//mylistfile = NULL;
+	mylistdir = NULL;
+	mylistfile = NULL;
 	i = 0;
 	if (init_arg(&arg) == -1)
 		return (1);
