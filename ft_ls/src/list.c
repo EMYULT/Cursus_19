@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 15:22:37 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/14 18:34:38 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/15 18:22:08 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,15 @@ t_list_ls	*init_list(void)
 	t_list_ls	*tmp;
 	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
 		return (NULL);
-
-		tmp->file_name = NULL;
-		tmp->file_name_path = NULL;
-		tmp->have_symlink = NULL;
-		tmp->no_file = NULL;
-		tmp->pwname = NULL;
-		tmp->grname = NULL;
-		tmp->date_month = NULL;
-		tmp->date_day = NULL;
-		tmp->date_hour_year = NULL;
+	tmp->file_name = NULL;
+	tmp->file_name_path = NULL;
+	tmp->have_symlink = NULL;
+	tmp->no_file = NULL;
+	tmp->pwname = NULL;
+	tmp->grname = NULL;
+	tmp->date_month = NULL;
+	tmp->date_day = NULL;
+	tmp->date_hour_year = NULL;
 	return (tmp);
 }
 

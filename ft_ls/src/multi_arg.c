@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/14 18:35:46 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/15 18:47:59 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ int			display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 		ft_printf("\n");
 	while (mylist != NULL)
 	{
-		//check_path(mylist->file_name, arg);
 		if (check_path(mylist->file_name, arg) == -1)
 			return (-1);
 		if (arg->flag_mutiple_folders == 1)

@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:01 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/14 18:20:44 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/15 18:37:14 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int		handle_arg(t_arg_ls *arg)
 
 int			free_all(t_list_ls *list_dir, t_list_ls *list_file, t_arg_ls *arg)
 {
-	free_list(list_file, 0);
+	free_list_file(list_file, 0);
 	free_list_dir(list_dir, 0);
 	if (arg->is_rr == 0)
 		free_struct_arg(arg);
@@ -99,8 +99,8 @@ int			main(int argc, char **argv)
 	t_list_ls		*mylistfile;
 	int				i;
 
-	mylistdir = NULL;
-	mylistfile = NULL;
+	//mylistdir = NULL;
+	//mylistfile = NULL;
 	i = 0;
 	if (init_arg(&arg) == -1)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/14 18:20:27 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/15 18:33:36 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,33 @@ int		free_list_dir(t_list_ls *list, int r)
 	while (list)
 	{
 		tmp = list->next;
+		free(list);
+		list = tmp;
+	}
+	return (r);
+}
+
+int		free_list_file(t_list_ls *list, int r)
+{
+	t_list_ls	*tmp;
+
+	while (list)
+	{
+		tmp = list->next;
+		if (list->file_name_path != NULL)
+			ft_strdel(&list->file_name_path);
+		if (list->pwname != NULL)
+			ft_strdel(&list->pwname);
+		if (list->grname != NULL)
+			ft_strdel(&list->grname);
+		if (list->date_month != NULL)
+			ft_strdel(&list->date_month);
+		if (list->date_day != NULL)
+			ft_strdel(&list->date_day);
+		if (list->date_hour_year != NULL)
+			ft_strdel(&list->date_hour_year);
+		if (list->have_symlink != NULL)
+			ft_strdel(&list->have_symlink);
 		free(list);
 		list = tmp;
 	}
@@ -107,7 +134,7 @@ int		check_options(int i, int argc, char **argv, t_arg_ls *arg)
 		if ((option_pointer = check_arg(argv[i], arg, 0, 0)) != -1)
 		{
 			ft_printf("ls: illegal option -- %c\n", argv[i][option_pointer]);
-			ft_putstr("usage: ls [-lraRt]");
+			ft_putstr("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1]");
 			ft_putstr(" [file ...]\n");
 			return (-1);
 		}
