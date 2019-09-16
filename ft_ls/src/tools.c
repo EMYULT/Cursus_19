@@ -48,7 +48,8 @@ int		check_path(char *str, t_arg_ls *arg)
 	if (!str)
 		return (0);
 	if (arg->path)
-		if (arg->flag_mutiple_folders == 0 || ft_strcmp(arg->path, "./") == 0 || (arg->flag_mutiple_folders && arg->is_rr == 0))
+		if (arg->flag_mutiple_folders == 0 || ft_strcmp(arg->path, "./") == 0
+		|| (arg->flag_mutiple_folders && arg->is_rr == 0))
 			ft_strdel(&arg->path);
 	if (ft_strcmp(str, "/") == 0)
 	{

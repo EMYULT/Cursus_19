@@ -114,8 +114,12 @@ int			main(int argc, char **argv)
 	}
 	if (argc - i > 1)
 		arg.flag_mutiple_folders = 1;
-	mylistfile = fill_file(i, argc, argv, &arg);
-	mylistfile = display_my_files(mylistfile, &arg);
+	if ((mylistfile = fill_file(i, argc, argv, &arg)) == NULL
+	&& arg.malloc_error == 1)
+		return (free_all(mylistdir, mylistfile, &arg));
+	if ((mylistfile = display_my_files(mylistfile, &arg)) == NULL
+	&& arg.malloc_error == 1)
+		return (free_all(mylistdir, mylistfile, &arg));
 	mylistdir = fill_dir(i, argc, argv, &arg);
 	if ((mylistdir = display_my_dir(mylistdir, &arg)) == NULL)
 		return (free_all(mylistdir, mylistfile, &arg));

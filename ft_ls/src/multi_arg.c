@@ -59,6 +59,12 @@ int		no_file(char **argv, int i, int argc) //in function
 	return (count);
 }
 
+t_list_ls *file_error(t_arg_ls *arg)
+{
+	arg->malloc_error = 1;
+	return (NULL);
+}
+
 t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	struct stat	fs;
@@ -67,20 +73,23 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 	int diff = i;
 
 	mylistfile = NULL;
-	count = no_file(argv, i, argc);  ///protection malloc
+	if ((count = no_file(argv, i, argc)) == -1)
+		return (NULL);
 	while (i < argc)
 	{
 		if (lstat(argv[i], &fs) == 0)
 		{
 			if (S_ISREG(fs.st_mode))
 			{
-				mylistfile = add_link_front(mylistfile, argv[i], arg);
+				if (!(mylistfile = add_link_front(mylistfile, argv[i], arg)))
+					return file_error(arg);
 				count++;
 			}
 			if (S_ISLNK(fs.st_mode))
 				if (arg->is_l == 1)
 				{
-					mylistfile = add_link_front(mylistfile, argv[i], arg);
+					if (!(mylistfile = add_link_front(mylistfile, argv[i], arg)))
+						return (NULL);
 					count++;
 				}
 		}
@@ -142,6 +151,8 @@ t_list_ls		*display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 {
 	t_list_ls *tmp;
 
+	if (!mylist)
+		return (NULL);
 	tmp = mylist;
 	tmp = check_sort(tmp, arg);
 	if (arg->file_printed && tmp)
