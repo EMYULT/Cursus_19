@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/16 15:23:17 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/16 21:20:17 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_list_ls *add_no_file(t_list_ls *mylist, char *str)
 	return (tmp);
 }
 
-int		no_file(char **argv, int i, int argc) //in function
+int		no_file(char **argv, int i, int argc)
 {
 	t_list_ls	*mylistfile;
 	t_list_ls	*tmp;
@@ -59,7 +59,7 @@ int		no_file(char **argv, int i, int argc) //in function
 	return (count);
 }
 
-t_list_ls *file_error(t_arg_ls *arg)
+t_list_ls *malloc_error(t_arg_ls *arg)
 {
 	arg->malloc_error = 1;
 	return (NULL);
@@ -69,12 +69,12 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	struct stat	fs;
 	t_list_ls	*mylistfile;
-	int count;
+	int count = 0;
 	int diff = i;
 
 	mylistfile = NULL;
 	if ((count = no_file(argv, i, argc)) == -1)
-		return (NULL);
+		return (malloc_error(arg));
 	while (i < argc)
 	{
 		if (lstat(argv[i], &fs) == 0)
@@ -82,14 +82,14 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 			if (S_ISREG(fs.st_mode))
 			{
 				if (!(mylistfile = add_link_front(mylistfile, argv[i], arg)))
-					return file_error(arg);
+					return (malloc_error(arg));
 				count++;
 			}
 			if (S_ISLNK(fs.st_mode))
 				if (arg->is_l == 1)
 				{
 					if (!(mylistfile = add_link_front(mylistfile, argv[i], arg)))
-						return (NULL);
+						return (malloc_error(arg));
 					count++;
 				}
 		}
@@ -117,12 +117,14 @@ t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 			if (S_ISDIR(fs.st_mode) && (d = opendir(argv[i])))
 			{
 				closedir(d);
-				mylistdir = add_link_front_dir(mylistdir, argv[i]);
+				if(!(mylistdir = add_link_front_dir(mylistdir, argv[i])))
+					return (malloc_error(arg));
 			}
 			else if (S_ISLNK(fs.st_mode))
 			{
 				if (arg->is_l != 1)
-					mylistdir = add_link_front_dir(mylistdir, argv[i]);
+					if (!(mylistdir = add_link_front_dir(mylistdir, argv[i])))
+						return (malloc_error(arg));
 			}
 			else
 			{

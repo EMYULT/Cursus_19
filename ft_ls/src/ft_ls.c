@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 15:21:56 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/16 15:22:14 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/16 21:20:20 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int			free_all(t_list_ls *list_dir, t_list_ls *list_file, t_arg_ls *arg)
 	if (arg->is_rr == 0)
 		free_struct_arg(arg);
 	return (1);
-
 }
 
 int			main(int argc, char **argv)
@@ -114,14 +113,13 @@ int			main(int argc, char **argv)
 	}
 	if (argc - i > 1)
 		arg.flag_mutiple_folders = 1;
-	if ((mylistfile = fill_file(i, argc, argv, &arg)) == NULL
-	&& arg.malloc_error == 1)
+	if (!(mylistfile = fill_file(i, argc, argv, &arg)) && arg.malloc_error)
 		return (free_all(mylistdir, mylistfile, &arg));
-	if ((mylistfile = display_my_files(mylistfile, &arg)) == NULL
-	&& arg.malloc_error == 1)
+	mylistfile = display_my_files(mylistfile, &arg);
+	//mylistdir = fill_dir(i, argc, argv, &arg);
+	if (!(mylistdir = fill_dir(i, argc, argv, &arg)) && arg.malloc_error)
 		return (free_all(mylistdir, mylistfile, &arg));
-	mylistdir = fill_dir(i, argc, argv, &arg);
-	if ((mylistdir = display_my_dir(mylistdir, &arg)) == NULL)
+	if (!(mylistdir = display_my_dir(mylistdir, &arg)) && arg.malloc_error)
 		return (free_all(mylistdir, mylistfile, &arg));
 	free_all(mylistdir, mylistfile, &arg);
 	return (0);
