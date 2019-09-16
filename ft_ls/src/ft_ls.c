@@ -84,7 +84,6 @@ int		handle_arg(t_arg_ls *arg)
 
 int			free_all(t_list_ls *list_dir, t_list_ls *list_file, t_arg_ls *arg)
 {
-	free_list_file(list_file, 0);
 	free_list_dir(list_dir, 0);
 	if (arg->is_rr == 0)
 		free_struct_arg(arg);
@@ -116,9 +115,9 @@ int			main(int argc, char **argv)
 	if (argc - i > 1)
 		arg.flag_mutiple_folders = 1;
 	mylistfile = fill_file(i, argc, argv, &arg);
-	display_my_files(mylistfile, &arg);
+	mylistfile = display_my_files(mylistfile, &arg);
 	mylistdir = fill_dir(i, argc, argv, &arg);
-	if (display_my_dir(mylistdir, &arg) == -1)
+	if ((mylistdir = display_my_dir(mylistdir, &arg)) == NULL)
 		return (free_all(mylistdir, mylistfile, &arg));
 	free_all(mylistdir, mylistfile, &arg);
 	return (0);

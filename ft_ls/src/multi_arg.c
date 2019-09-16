@@ -72,6 +72,7 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 		}
 		i++;
 	}
+	arg->totalsize = 0;
 	return (mylistfile);
 }
 
@@ -121,37 +122,46 @@ t_list_ls	*check_sort(t_list_ls *mylist, t_arg_ls *arg)
 	return (mylist);
 }
 
-void		display_my_files(t_list_ls *mylist, t_arg_ls *arg)
+t_list_ls		*display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 {
-	mylist = check_sort(mylist, arg);
-	if (arg->file_printed && mylist)
+	t_list_ls *tmp;
+
+	tmp = mylist;
+	tmp = check_sort(tmp, arg);
+	if (arg->file_printed && tmp)
 		ft_printf("\n");
-	if (mylist != NULL)
+	if (tmp != NULL)
 	{
 		arg->file_printed = 1;
 		if (arg->is_l != 1)
-			print_list(mylist);
+			print_list(tmp);
 		else
-			print_full_list(mylist, arg, 1);
+			print_full_list(tmp, arg, 1);
 	}
+	free_list_file(tmp, 0);
+	return (mylist);
 }
 
-int			display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
+t_list_ls			*display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 {
 	mylist = check_sort(mylist, arg);
-	if (arg->file_printed && mylist)
+	t_list_ls *tmp;
+
+	tmp = mylist;
+
+	if (arg->file_printed && tmp)
 		ft_printf("\n");
-	while (mylist != NULL)
+	while (tmp != NULL)
 	{
-		if (check_path(mylist->file_name, arg) == -1)
-			return (-1);
+		if (check_path(tmp->file_name, arg) == -1)
+			return (NULL);
 		if (arg->flag_mutiple_folders == 1)
-			ft_printf("%s:\n", mylist->file_name);
+			ft_printf("%s:\n", tmp->file_name);
 		if (handle_arg(arg) == 1)
-				return (-1);
-		if (mylist->next)
+				return (NULL);
+		if (tmp->next)
 			ft_printf("\n");
-		mylist = mylist->next;
+		tmp = tmp->next;
 	}
-	return (0);
+	return (mylist);
 }

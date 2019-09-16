@@ -47,8 +47,9 @@ int		check_path(char *str, t_arg_ls *arg)
 	j = 0;
 	if (!str)
 		return (0);
-	if (arg->flag_mutiple_folders == 0 || ft_strcmp(arg->path, "./") == 0)
-		ft_strdel(&arg->path);
+	if (arg->path)
+		if (arg->flag_mutiple_folders == 0 || ft_strcmp(arg->path, "./") == 0)
+			ft_strdel(&arg->path);
 	if (ft_strcmp(str, "/") == 0)
 	{
 		if (!(arg->path = ft_strdup("/")))

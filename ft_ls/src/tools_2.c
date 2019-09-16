@@ -22,7 +22,6 @@ int		free_struct_arg(t_arg_ls *arg)
 int		free_list_dir(t_list_ls *list, int r)
 {
 	t_list_ls	*tmp;
-
 	while (list)
 	{
 		tmp = list->next;
