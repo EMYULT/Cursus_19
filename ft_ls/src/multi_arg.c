@@ -24,17 +24,22 @@ t_list_ls *add_no_file(t_list_ls *mylist, char *str)
 	return (tmp);
 }
 
-void		no_file(char **argv, int i, int argc) //in function
+int		no_file(char **argv, int i, int argc) //in function
 {
 	t_list_ls	*mylistfile;
 	t_list_ls	*tmp;
 	struct stat	fs;
+	int count = 0;
 
 	mylistfile = NULL;
 	while (i < argc)
 	{
 		if (lstat(argv[i], &fs) < 0)
-			mylistfile = add_no_file(mylistfile, argv[i]);  // protection malloc
+		{
+			if (!(mylistfile = add_no_file(mylistfile, argv[i])))
+				return (-1);
+			count++;
+		}
 		i++;
 	}
 	mylistfile = sort_ascii(mylistfile);
@@ -51,27 +56,38 @@ void		no_file(char **argv, int i, int argc) //in function
 		free(mylistfile);
 		mylistfile = tmp;
 	}
+	return (count);
 }
 
 t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	struct stat	fs;
 	t_list_ls	*mylistfile;
+	int count;
+	int diff = i;
 
 	mylistfile = NULL;
-	no_file(argv, i, argc);  ///protection malloc
+	count = no_file(argv, i, argc);  ///protection malloc
 	while (i < argc)
 	{
 		if (lstat(argv[i], &fs) == 0)
 		{
 			if (S_ISREG(fs.st_mode))
+			{
 				mylistfile = add_link_front(mylistfile, argv[i], arg);
+				count++;
+			}
 			if (S_ISLNK(fs.st_mode))
 				if (arg->is_l == 1)
+				{
 					mylistfile = add_link_front(mylistfile, argv[i], arg);
+					count++;
+				}
 		}
 		i++;
 	}
+	if (i - diff == count)
+		ft_strdel(&arg->path);
 	arg->totalsize = 0;
 	return (mylistfile);
 }

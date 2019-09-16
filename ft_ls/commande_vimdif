@@ -1,0 +1,1 @@
+vimdiff <(ls -1la ~ 2>&1) <(/Users/tjuzen/Desktop/Cursus_19/ft_ls/ft_ls -la ~ 2>&1)
