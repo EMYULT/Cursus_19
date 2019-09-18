@@ -100,7 +100,7 @@ int			multi_arg(int i, int argc, char **argv, t_arg_ls *arg)
 	if (!(mylistfile = fill_file(i, argc, argv, arg)) && arg->malloc_error)
 		return (free_all(mylistdir, arg));
 	mylistfile = display_my_files(mylistfile, arg);
-	if (!(mylistdir = fill_dir(i, argc, argv, arg)) && arg->malloc_error)
+	if (!(mylistdir = fill_dir(i - 1, argc, argv, arg)) && arg->malloc_error)
 		return (free_all(mylistdir, arg));
 	if (!(mylistdir = display_my_dir(mylistdir, arg)) && arg->malloc_error)
 		return (free_all(mylistdir, arg));

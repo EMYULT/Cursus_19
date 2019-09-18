@@ -78,10 +78,14 @@ t_list_ls	*add_link_front_dir(t_list_ls *mylistdir, char *str)
 	return (tmp);
 }
 
-int			permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
+int			permission_denied(char *path, t_arg_ls *arg, int argc, int count_i)
 {
 	int		i;
+	int		check_last_arg;
 
+	check_last_arg = 0;
+	if (count_i + 1 == argc)
+		check_last_arg = 1;
 	if (arg->flag_mutiple_folders == 1 && arg->is_in_recu != 1)
 		ft_printf("%s:\n", path);
 	i = ft_strlen(path);
@@ -104,7 +108,7 @@ t_list_ls	*push(t_list_ls *mylist, t_arg_ls *arg, DIR *d, struct dirent *dir)
 	char	*tmp;
 
 	arg->malloc_error = 0;
-	if (!(d = opendir(arg->path)) && permission_denied(arg->path, arg, 1))
+	if (!(d = opendir(arg->path)) && permission_denied(arg->path, arg, 1, -10))
 		return (NULL);
 	while ((dir = readdir(d)) != NULL)
 	{

@@ -26,6 +26,7 @@
 # include <sys/xattr.h>
 # include <sys/acl.h>
 # include <limits.h>
+
 /*
 ** Code couleur pour fichiers, dossiers et exec
 */
@@ -58,14 +59,15 @@ typedef	struct	s_arg_ls
 	int				flag_mutiple_folders;
 	int				is_in_recu;
 	int				malloc_error;
+	int				count;
 }				t_arg_ls;
 
 typedef	struct	s_arg_lsbig
 {
-	int 		big_hard;
-	int 		big_pw;
-	int 		big_gr;
-	int 		big_size;
+	int			big_hard;
+	int			big_pw;
+	int			big_gr;
+	int			big_size;
 	int			big_size_maj;
 	int			have_maj_min;
 }				t_arg_lsbig;
@@ -98,10 +100,6 @@ struct			s_list_ls
 };
 
 /*
-** Prototypes listes
-*/
-
-/*
 ** list.c
 */
 
@@ -110,19 +108,23 @@ int				length_int_easy(int x);
 void			print_full_list(t_list_ls *mylist, t_arg_ls *arg, int flag);
 t_list_ls		*reverse_list(t_list_ls *mylist);
 t_list_ls		*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg);
-int				fill_others(t_list_ls *tmp, struct stat *fs, t_arg_ls *arg, char *tmp2);
+int				fill_others(t_list_ls *tmp, struct stat *fs,
+				t_arg_ls *arg, char *tmp2);
 void			fill_acl(t_list_ls *tmp, struct stat *fs, char *tmp2);
 void			fill_perm_right(t_list_ls *tmp, struct stat *fs);
 void			fill_perm(t_list_ls *tmp, struct stat *fs);
-int				permission_denied(char *path, t_arg_ls *arg, int check_last_arg);
+int				permission_denied(char *path, t_arg_ls *arg,
+				int argc, int count_i);
 void			fill_major_minor(t_list_ls *tmp, struct stat *fs);
 
 /*
 **list_2.c
 */
+
 int				no_file(char **argv, int i, int argc);
 t_list_ls		*check_sort(t_list_ls *mylist, t_arg_ls *arg);
 t_list_ls		*malloc_error(t_arg_ls *arg);
+void			print_delete(t_list_ls *mylistfile);
 
 /*
 ** sort_list.c
@@ -134,10 +136,6 @@ t_list_ls		*add_link_front_dir(t_list_ls *mylistdir, char *str);
 t_list_ls		*push(t_list_ls *mylist, t_arg_ls *arg, DIR *d,
 					struct dirent *dir);
 t_list_ls		*lst_swap(t_list_ls *p1, t_list_ls *p2);
-
-/*
-** Prototypes ft_ls
-*/
 
 /*
 ** tools.c
@@ -158,14 +156,16 @@ int				fill_date(struct stat *fs, t_list_ls *tmp);
 /*
  ** tools_2
 */
+
 int				free_struct_arg(t_arg_ls *arg, int ret);
 int				free_list(t_list_ls *list, int r);
 int				free_list_dir(t_list_ls *list, int r);
 int				free_list_file(t_list_ls *list, int r);
-void			exit_free(t_list_ls *mylistfile, t_list_ls *mylistdir, t_arg_ls *arg);
+void			exit_free(t_list_ls *mylistfile,
+				t_list_ls *mylistdir, t_arg_ls *arg);
 void			init_arg_2(t_arg_lsbig *arg);
 void			print_all(t_arg_lsbig *arg2, t_list_ls *mylist);
-
+t_list_ls		*check_mode(struct stat fs, int i, char **argv);
 
 /*
 ** ft_ls.c

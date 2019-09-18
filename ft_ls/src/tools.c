@@ -37,6 +37,7 @@ int		init_arg(t_arg_ls *arg)
 	arg->file_printed = 0;
 	arg->is_in_recu = 0;
 	arg->malloc_error = 0;
+	arg->count = 0;
 	return (0);
 }
 

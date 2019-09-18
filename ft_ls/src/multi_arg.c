@@ -12,19 +12,13 @@
 
 #include "../includes/ft_ls.h"
 
-t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
+t_list_ls		*count_diff(int i, int argc, char **argv, t_arg_ls *arg)
 {
-	struct stat	fs;
 	t_list_ls	*mylistfile;
-	int			count;
-	int			diff;
+	struct stat	fs;
 
-	count = 0;
-	diff = i;
 	mylistfile = NULL;
-	if ((count = no_file(argv, i, argc)) == -1)
-		return (malloc_error(arg));
-	while (i < argc)
+	while (++i < argc)
 	{
 		if (lstat(argv[i], &fs) == 0)
 		{
@@ -32,7 +26,7 @@ t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 			{
 				if (!(mylistfile = add_link_front(mylistfile, argv[i], arg)))
 					return (malloc_error(arg));
-				count++;
+				arg->count++;
 			}
 			if (S_ISLNK(fs.st_mode))
 				if (arg->is_l == 1)
@@ -40,12 +34,23 @@ t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 					if (!(mylistfile = add_link_front(mylistfile,
 							argv[i], arg)))
 						return (malloc_error(arg));
-					count++;
+					arg->count++;
 				}
 		}
-		i++;
 	}
-	if (i - diff == count)
+	return (mylistfile);
+}
+
+t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
+{
+	t_list_ls	*mylistfile;
+	int			diff;
+
+	diff = i;
+	if ((arg->count = no_file(argv, i, argc)) == -1)
+		return (malloc_error(arg));
+	mylistfile = count_diff(i - 1, argc, argv, arg);
+	if (i - diff == arg->count)
 		ft_strdel(&arg->path);
 	arg->totalsize = 0;
 	return (mylistfile);
@@ -56,11 +61,9 @@ t_list_ls		*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 	DIR			*d;
 	t_list_ls	*mylistdir;
 	struct stat	fs;
-	int			check_last_arg;
 
 	mylistdir = NULL;
-	check_last_arg = 0;
-	while (i < argc)
+	while (++i < argc)
 	{
 		if (lstat(argv[i], &fs) == 0)
 		{
@@ -70,21 +73,14 @@ t_list_ls		*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 				if (!(mylistdir = add_link_front_dir(mylistdir, argv[i])))
 					return (malloc_error(arg));
 			}
-			else if (S_ISLNK(fs.st_mode))
+			else if (S_ISLNK(fs.st_mode) && arg->is_l != 1)
 			{
-				if (arg->is_l != 1)
-					if (!(mylistdir = add_link_front_dir(mylistdir, argv[i])))
-						return (malloc_error(arg));
+				if (!(mylistdir = add_link_front_dir(mylistdir, argv[i])))
+					return (malloc_error(arg));
 			}
-			else
-			{
-				if (i + 1 == argc)
-					check_last_arg = 1;
-				if ((S_ISDIR(fs.st_mode)))
-					permission_denied(argv[i], arg, check_last_arg);
-			}
+			else if ((S_ISDIR(fs.st_mode)))
+				permission_denied(argv[i], arg, argc, i);
 		}
-		i++;
 	}
 	return (mylistdir);
 }

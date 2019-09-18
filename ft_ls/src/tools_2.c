@@ -88,6 +88,25 @@ int		free_list(t_list_ls *list, int r)
 	return (r);
 }
 
+void	check_check(t_arg_ls *arg, char stri)
+{
+	if (stri == 'l')
+		arg->is_l = 1;
+	if (stri == 'R')
+		arg->is_rr = 1;
+	if (stri == 'a')
+		arg->is_a = 1;
+	if (stri == 'r')
+		arg->is_r = 1;
+	if (stri == 't')
+		arg->is_t = 1;
+	if (stri == 'n')
+	{
+		arg->is_l = 1;
+		arg->is_n = 1;
+	}
+}
+
 int		check_arg(char *str, t_arg_ls *arg, int i, int j)
 {
 	while (str[j])
@@ -100,21 +119,7 @@ int		check_arg(char *str, t_arg_ls *arg, int i, int j)
 		while (str[i] == 'l' || str[i] == 'R' || str[i] == 'a' ||
 		str[i] == 'r' || str[i] == 't' || str[i] == 'n')
 		{
-			if (str[i] == 'l')
-				arg->is_l = 1;
-			if (str[i] == 'R')
-				arg->is_rr = 1;
-			if (str[i] == 'a')
-				arg->is_a = 1;
-			if (str[i] == 'r')
-				arg->is_r = 1;
-			if (str[i] == 't')
-				arg->is_t = 1;
-			if (str[i] == 'n')
-			{
-				arg->is_l = 1;
-				arg->is_n = 1;
-			}
+			check_check(arg, str[i]);
 			i++;
 		}
 	}

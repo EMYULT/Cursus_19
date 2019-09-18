@@ -40,10 +40,29 @@ t_list_ls	*add_no_file(t_list_ls *mylist, char *str)
 	return (tmp);
 }
 
+void		print_delete(t_list_ls *mylistfile)
+{
+	t_list_ls	*tmp;
+
+	mylistfile = sort_ascii(mylistfile);
+	tmp = mylistfile;
+	while (tmp != NULL)
+	{
+		ft_printf("ls: %s: No such file or directory\n", tmp->file_name);
+		tmp = tmp->next;
+	}
+	while (mylistfile)
+	{
+		tmp = mylistfile->next;
+		ft_strdel(&mylistfile->file_name);
+		free(mylistfile);
+		mylistfile = tmp;
+	}
+}
+
 int			no_file(char **argv, int i, int argc)
 {
 	t_list_ls	*mylistfile;
-	t_list_ls	*tmp;
 	struct stat	fs;
 	int			count;
 
@@ -59,19 +78,6 @@ int			no_file(char **argv, int i, int argc)
 		}
 		i++;
 	}
-	mylistfile = sort_ascii(mylistfile);
-	tmp = mylistfile;
-	while (tmp != NULL)
-	{
-		ft_printf("ls: %s: No such file or directory\n", tmp->file_name);
-		tmp = tmp->next;
-	}
-	while (mylistfile)
-	{
-		tmp = mylistfile->next;
-		ft_strdel(&mylistfile->file_name);
-		free(mylistfile);
-		mylistfile = tmp;
-	}
+	print_delete(mylistfile);
 	return (count);
 }
