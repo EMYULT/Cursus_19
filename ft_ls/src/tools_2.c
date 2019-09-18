@@ -6,17 +6,17 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/15 18:33:36 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/17 20:48:21 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-int		free_struct_arg(t_arg_ls *arg)
+int		free_struct_arg(t_arg_ls *arg, int ret)
 {
 	if (arg->path)
 		ft_strdel(&arg->path);
-	return (1);
+	return (ret);
 }
 
 int		free_list_dir(t_list_ls *list, int r)

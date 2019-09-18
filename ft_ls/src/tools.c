@@ -6,11 +6,21 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/16 15:20:09 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/17 20:54:49 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+
+int		ft_strdel_int(char **as)
+{
+	if (as && *as)
+	{
+		free(*as);
+		*as = NULL;
+	}
+	return (-1);
+}
 
 int		init_arg(t_arg_ls *arg)
 {

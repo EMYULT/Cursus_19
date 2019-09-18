@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 15:21:56 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/16 21:20:20 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/17 21:34:27 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,15 @@ int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 			return (-1);
 		if (lstat(mylist->file_name_path, &fs) < 0)
 			return (0);
-		if (S_ISDIR(fs.st_mode) && ft_strcmp(mylist->file_name, ".") && ft_strcmp(mylist->file_name, ".."))
+		if (S_ISDIR(fs.st_mode) && ft_strcmp(mylist->file_name, ".") &&
+				ft_strcmp(mylist->file_name, ".."))
 		{
 				if (!(arg->path = ft_strjoin(mylist->file_name_path, "/")))
 					return (-1);
 				ft_printf("\n%s:\n", mylist->file_name_path);
 				arg->totalsize = 0;
 				if (handle_arg(arg) == 1)
-				{
-					ft_strdel(&tmp);
-					return (-1);
-				}
+					return (ft_strdel_int(&tmp));
 		}
 		mylist = mylist->next;
 	}
@@ -86,7 +84,7 @@ int			free_all(t_list_ls *list_dir, t_list_ls *list_file, t_arg_ls *arg)
 {
 	free_list_dir(list_dir, 0);
 	if (arg->is_rr == 0)
-		free_struct_arg(arg);
+		free_struct_arg(arg, 1);
 	return (1);
 }
 
@@ -103,12 +101,12 @@ int			main(int argc, char **argv)
 	if (init_arg(&arg) == -1)
 		return (1);
 	if ((i = check_options(1, argc, argv, &arg)) == -1)
-		return (free_struct_arg(&arg));
+		return (free_struct_arg(&arg, 1));
 	if (i == argc)
 	{
 		i = handle_arg(&arg);
 		if (arg.is_rr == 0)
-			free_struct_arg(&arg);
+			free_struct_arg(&arg, 1);
 		return (i);
 	}
 	if (argc - i > 1)
@@ -116,7 +114,6 @@ int			main(int argc, char **argv)
 	if (!(mylistfile = fill_file(i, argc, argv, &arg)) && arg.malloc_error)
 		return (free_all(mylistdir, mylistfile, &arg));
 	mylistfile = display_my_files(mylistfile, &arg);
-	//mylistdir = fill_dir(i, argc, argv, &arg);
 	if (!(mylistdir = fill_dir(i, argc, argv, &arg)) && arg.malloc_error)
 		return (free_all(mylistdir, mylistfile, &arg));
 	if (!(mylistdir = display_my_dir(mylistdir, &arg)) && arg.malloc_error)

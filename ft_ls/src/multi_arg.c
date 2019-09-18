@@ -6,64 +6,11 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/16 21:20:17 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/17 20:54:51 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
-
-t_list_ls *add_no_file(t_list_ls *mylist, char *str)
-{
-	t_list_ls	*tmp;
-
-	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
-		return (NULL);
-	if (!(tmp->file_name = ft_strdup(str)))
-		return (NULL);
-	tmp->next = mylist;
-	return (tmp);
-}
-
-int		no_file(char **argv, int i, int argc)
-{
-	t_list_ls	*mylistfile;
-	t_list_ls	*tmp;
-	struct stat	fs;
-	int count = 0;
-
-	mylistfile = NULL;
-	while (i < argc)
-	{
-		if (lstat(argv[i], &fs) < 0)
-		{
-			if (!(mylistfile = add_no_file(mylistfile, argv[i])))
-				return (-1);
-			count++;
-		}
-		i++;
-	}
-	mylistfile = sort_ascii(mylistfile);
-	tmp = mylistfile;
-	while (tmp != NULL)
-	{
-		ft_printf("ls: %s: No such file or directory\n", tmp->file_name);
-		tmp = tmp->next;
-	}
-	while (mylistfile)
-	{
-		tmp = mylistfile->next;
-		ft_strdel(&mylistfile->file_name);
-		free(mylistfile);
-		mylistfile = tmp;
-	}
-	return (count);
-}
-
-t_list_ls *malloc_error(t_arg_ls *arg)
-{
-	arg->malloc_error = 1;
-	return (NULL);
-}
 
 t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 {
@@ -86,7 +33,7 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 				count++;
 			}
 			if (S_ISLNK(fs.st_mode))
-				if (arg->is_l == 1)
+				if (arg->is_l == 1) // pas de braquet ?? faut prendre les link dans les fichiers ??
 				{
 					if (!(mylistfile = add_link_front(mylistfile, argv[i], arg)))
 						return (malloc_error(arg));
@@ -139,15 +86,6 @@ t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 	return (mylistdir);
 }
 
-t_list_ls	*check_sort(t_list_ls *mylist, t_arg_ls *arg)
-{
-	mylist = sort_ascii(mylist);
-	if (arg->is_t == 1)
-		mylist = sort_time(mylist);
-	if (arg->is_r == 1)
-		mylist = reverse_list(mylist);
-	return (mylist);
-}
 
 t_list_ls		*display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 {
@@ -173,11 +111,10 @@ t_list_ls		*display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 
 t_list_ls			*display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 {
-	mylist = check_sort(mylist, arg);
 	t_list_ls *tmp;
 
 	tmp = mylist;
-
+	mylist = check_sort(mylist, arg);
 	if (arg->file_printed && tmp)
 		ft_printf("\n");
 	while (tmp != NULL)

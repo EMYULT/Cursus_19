@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/16 14:47:51 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/17 20:54:21 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,14 @@ int				permission_denied(char *path, t_arg_ls *arg, int check_last_arg);
 void			fill_major_minor(t_list_ls *tmp, struct stat *fs);
 
 /*
-** list_2.c
+**list_2.c
+*/
+int				no_file(char **argv, int i, int argc);
+t_list_ls		*check_sort(t_list_ls *mylist, t_arg_ls *arg);
+t_list_ls		*malloc_error(t_arg_ls *arg);
+
+/*
+** sort_list.c
 */
 
 t_list_ls		*sort_ascii(t_list_ls *mylist);
@@ -136,11 +143,11 @@ t_list_ls		*lst_swap(t_list_ls *p1, t_list_ls *p2);
 ** tools.c
 */
 
+int				ft_strdel_int(char **as);
 int				check_point(char *s);
 int				check_path(char *str, t_arg_ls *arg);
 int				check_arg(char *str, t_arg_ls *arg, int i, int j);
 int				init_arg(t_arg_ls *arg);
-t_list_ls		*check_sort(t_list_ls *mylist, t_arg_ls *arg);
 t_list_ls		*display_my_files(t_list_ls *mylist, t_arg_ls *arg);
 t_list_ls		*display_my_dir(t_list_ls *mylist, t_arg_ls *arg);
 int				check_options(int i, int argc, char **argv, t_arg_ls *arg);
@@ -151,7 +158,7 @@ int				fill_date(struct stat *fs, t_list_ls *tmp);
 /*
  ** tools_2
 */
-int				free_struct_arg(t_arg_ls *arg);
+int				free_struct_arg(t_arg_ls *arg, int ret);
 int				free_list(t_list_ls *list, int r);
 int				free_list_dir(t_list_ls *list, int r);
 int				free_list_file(t_list_ls *list, int r);
