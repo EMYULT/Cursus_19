@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 12:02:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/17 20:54:21 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/18 19:24:23 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef	struct	s_arg_ls
 	int				totalsize;
 	int				file_printed;
 	int				flag_mutiple_folders;
+	int				perm_denied;
 	int				is_in_recu;
 	int				malloc_error;
 	int				count;

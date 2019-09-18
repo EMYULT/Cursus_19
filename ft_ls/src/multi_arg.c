@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/18 14:11:27 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/18 19:38:58 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ t_list_ls		*display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 
 	mylist = check_sort(mylist, arg);
 	tmp = mylist;
-	if (arg->file_printed && tmp)
+	if (arg->file_printed && tmp && arg->perm_denied == 0)
 		ft_printf("\n");
 	while (tmp != NULL)
 	{

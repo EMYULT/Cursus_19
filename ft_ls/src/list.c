@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:53:28 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/18 13:53:52 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/18 19:39:00 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,11 @@ int			permission_denied(char *path, t_arg_ls *arg, int argc, int count_i)
 		ft_putchar_fd(path[i++], 2);
 	ft_putchar_fd(':', 2);
 	ft_putstr_fd(" Permission denied\n", 2);
-	arg->count++;
 	if (arg->flag_mutiple_folders == 1 && check_last_arg == 0)
+	{
+		arg->perm_denied = 1;
 		ft_putstr("\n");
+	}
 	return (1);
 }
 

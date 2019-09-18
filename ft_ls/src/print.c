@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/06 13:51:47 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/18 14:09:26 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/18 16:08:46 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 void	print_filename_color(t_list_ls *mylist)
 {
+	/*
 	if (mylist->is_dir == 1)
 		ft_printf(CYAN"%s\n"DEFAULT_COLOR, mylist->file_name);
 	else if (mylist->is_dir == 666)
 		ft_printf(RED"%s\n"DEFAULT_COLOR, mylist->file_name);
 	else
 		ft_printf(DEFAULT_COLOR"%s\n"DEFAULT_COLOR, mylist->file_name);
+		*/
+		ft_printf("%s\n", mylist->file_name);
 }
 
 void	print_list(t_list_ls *mylist)
