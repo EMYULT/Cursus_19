@@ -108,7 +108,7 @@ t_list_ls	*push(t_list_ls *mylist, t_arg_ls *arg, DIR *d, struct dirent *dir)
 	char	*tmp;
 
 	arg->malloc_error = 0;
-	if (!(d = opendir(arg->path)) && permission_denied(arg->path, arg, 1, -10))
+	if (!(d = opendir(arg->path)) && permission_denied(arg->path, arg, 1, 0))
 		return (NULL);
 	while ((dir = readdir(d)) != NULL)
 	{
