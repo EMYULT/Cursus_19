@@ -27,12 +27,12 @@ int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 		if (S_ISDIR(fs.st_mode) && ft_strcmp(mylist->file_name, ".") &&
 				ft_strcmp(mylist->file_name, ".."))
 		{
-				if (!(arg->path = ft_strjoin(mylist->file_name_path, "/")))
-					return (-1);
-				ft_printf("\n%s:\n", mylist->file_name_path);
-				arg->totalsize = 0;
-				if (handle_arg(arg) == 1)
-					return (ft_strdel_int(&tmp));
+			if (!(arg->path = ft_strjoin(mylist->file_name_path, "/")))
+				return (-1);
+			ft_printf("\n%s:\n", mylist->file_name_path);
+			arg->totalsize = 0;
+			if (handle_arg(arg) == 1)
+				return (ft_strdel_int(&tmp));
 		}
 		mylist = mylist->next;
 	}
@@ -42,8 +42,8 @@ int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 
 t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 {
-	DIR		*d;
-	struct	dirent *dir;
+	DIR				*d;
+	struct dirent	*dir;
 
 	d = NULL;
 	dir = NULL;
@@ -88,15 +88,31 @@ int			free_all(t_list_ls *list_dir, t_list_ls *list_file, t_arg_ls *arg)
 	return (1);
 }
 
-int			main(int argc, char **argv)
+int			fill_display(int i, int argc, char **argv, t_arg_ls *arg)
 {
-	t_arg_ls		arg;
 	t_list_ls		*mylistdir;
 	t_list_ls		*mylistfile;
-	int				i;
 
 	mylistdir = NULL;
 	mylistfile = NULL;
+	if (argc - i > 1)
+		arg->flag_mutiple_folders = 1;
+	if (!(mylistfile = fill_file(i, argc, argv, arg)) && arg->malloc_error)
+		return (free_all(mylistdir, mylistfile, arg));
+	mylistfile = display_my_files(mylistfile, arg);
+	if (!(mylistdir = fill_dir(i, argc, argv, arg)) && arg->malloc_error)
+		return (free_all(mylistdir, mylistfile, arg));
+	if (!(mylistdir = display_my_dir(mylistdir, arg)) && arg->malloc_error)
+		return (free_all(mylistdir, mylistfile, arg));
+	free_all(mylistdir, mylistfile, arg);
+	return (1);
+}
+
+int			main(int argc, char **argv)
+{
+	t_arg_ls		arg;
+	int				i;
+
 	i = 0;
 	if (init_arg(&arg) == -1)
 		return (1);
@@ -109,15 +125,5 @@ int			main(int argc, char **argv)
 			free_struct_arg(&arg, 1);
 		return (i);
 	}
-	if (argc - i > 1)
-		arg.flag_mutiple_folders = 1;
-	if (!(mylistfile = fill_file(i, argc, argv, &arg)) && arg.malloc_error)
-		return (free_all(mylistdir, mylistfile, &arg));
-	mylistfile = display_my_files(mylistfile, &arg);
-	if (!(mylistdir = fill_dir(i, argc, argv, &arg)) && arg.malloc_error)
-		return (free_all(mylistdir, mylistfile, &arg));
-	if (!(mylistdir = display_my_dir(mylistdir, &arg)) && arg.malloc_error)
-		return (free_all(mylistdir, mylistfile, &arg));
-	free_all(mylistdir, mylistfile, &arg);
-	return (0);
+	return (fill_display(i, argc, argv, &arg));
 }
