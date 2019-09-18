@@ -6,16 +6,16 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 15:21:56 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/17 21:34:27 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/18 14:01:54 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
+int			recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
 {
-	struct stat	fs;
-	char		*tmp;
+	struct stat		fs;
+	char			*tmp;
 
 	tmp = arg->path;
 	while (mylist != NULL)
@@ -52,7 +52,7 @@ t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 	return (mylist);
 }
 
-int		handle_arg(t_arg_ls *arg)
+int			handle_arg(t_arg_ls *arg)
 {
 	t_list_ls		*mylist;
 
@@ -80,7 +80,7 @@ int		handle_arg(t_arg_ls *arg)
 	return (free_list(mylist, 0));
 }
 
-int			free_all(t_list_ls *list_dir, t_list_ls *list_file, t_arg_ls *arg)
+int			free_all(t_list_ls *list_dir, t_arg_ls *arg)
 {
 	free_list_dir(list_dir, 0);
 	if (arg->is_rr == 0)
@@ -88,7 +88,7 @@ int			free_all(t_list_ls *list_dir, t_list_ls *list_file, t_arg_ls *arg)
 	return (1);
 }
 
-int			fill_display(int i, int argc, char **argv, t_arg_ls *arg)
+int			multi_arg(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	t_list_ls		*mylistdir;
 	t_list_ls		*mylistfile;
@@ -98,14 +98,14 @@ int			fill_display(int i, int argc, char **argv, t_arg_ls *arg)
 	if (argc - i > 1)
 		arg->flag_mutiple_folders = 1;
 	if (!(mylistfile = fill_file(i, argc, argv, arg)) && arg->malloc_error)
-		return (free_all(mylistdir, mylistfile, arg));
+		return (free_all(mylistdir, arg));
 	mylistfile = display_my_files(mylistfile, arg);
 	if (!(mylistdir = fill_dir(i, argc, argv, arg)) && arg->malloc_error)
-		return (free_all(mylistdir, mylistfile, arg));
+		return (free_all(mylistdir, arg));
 	if (!(mylistdir = display_my_dir(mylistdir, arg)) && arg->malloc_error)
-		return (free_all(mylistdir, mylistfile, arg));
-	free_all(mylistdir, mylistfile, arg);
-	return (1);
+		return (free_all(mylistdir, arg));
+	free_all(mylistdir, arg);
+	return (0);
 }
 
 int			main(int argc, char **argv)
@@ -125,5 +125,5 @@ int			main(int argc, char **argv)
 			free_struct_arg(&arg, 1);
 		return (i);
 	}
-	return (fill_display(i, argc, argv, &arg));
+	return (multi_arg(i, argc, argv, &arg));
 }

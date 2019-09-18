@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:39:27 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/17 20:48:21 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/18 14:11:05 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int		free_struct_arg(t_arg_ls *arg, int ret)
 int		free_list_dir(t_list_ls *list, int r)
 {
 	t_list_ls	*tmp;
+
 	while (list)
 	{
 		tmp = list->next;

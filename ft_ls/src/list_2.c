@@ -6,13 +6,13 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/17 20:35:53 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/17 20:55:05 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/18 13:39:06 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-t_list_ls *malloc_error(t_arg_ls *arg)
+t_list_ls	*malloc_error(t_arg_ls *arg)
 {
 	arg->malloc_error = 1;
 	return (NULL);
@@ -28,7 +28,7 @@ t_list_ls	*check_sort(t_list_ls *mylist, t_arg_ls *arg)
 	return (mylist);
 }
 
-t_list_ls *add_no_file(t_list_ls *mylist, char *str)
+t_list_ls	*add_no_file(t_list_ls *mylist, char *str)
 {
 	t_list_ls	*tmp;
 
@@ -40,13 +40,14 @@ t_list_ls *add_no_file(t_list_ls *mylist, char *str)
 	return (tmp);
 }
 
-int		no_file(char **argv, int i, int argc)
+int			no_file(char **argv, int i, int argc)
 {
 	t_list_ls	*mylistfile;
 	t_list_ls	*tmp;
 	struct stat	fs;
-	int count = 0;
+	int			count;
 
+	count = 0;
 	mylistfile = NULL;
 	while (i < argc)
 	{

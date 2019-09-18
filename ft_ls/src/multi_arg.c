@@ -6,19 +6,21 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:10:14 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/17 20:54:51 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/18 14:11:27 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
+t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	struct stat	fs;
 	t_list_ls	*mylistfile;
-	int count = 0;
-	int diff = i;
+	int			count;
+	int			diff;
 
+	count = 0;
+	diff = i;
 	mylistfile = NULL;
 	if ((count = no_file(argv, i, argc)) == -1)
 		return (malloc_error(arg));
@@ -33,9 +35,10 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 				count++;
 			}
 			if (S_ISLNK(fs.st_mode))
-				if (arg->is_l == 1) // pas de braquet ?? faut prendre les link dans les fichiers ??
+				if (arg->is_l == 1)
 				{
-					if (!(mylistfile = add_link_front(mylistfile, argv[i], arg)))
+					if (!(mylistfile = add_link_front(mylistfile,
+							argv[i], arg)))
 						return (malloc_error(arg));
 					count++;
 				}
@@ -48,7 +51,7 @@ t_list_ls	*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 	return (mylistfile);
 }
 
-t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
+t_list_ls		*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 {
 	DIR			*d;
 	t_list_ls	*mylistdir;
@@ -64,7 +67,7 @@ t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 			if (S_ISDIR(fs.st_mode) && (d = opendir(argv[i])))
 			{
 				closedir(d);
-				if(!(mylistdir = add_link_front_dir(mylistdir, argv[i])))
+				if (!(mylistdir = add_link_front_dir(mylistdir, argv[i])))
 					return (malloc_error(arg));
 			}
 			else if (S_ISLNK(fs.st_mode))
@@ -85,7 +88,6 @@ t_list_ls	*fill_dir(int i, int argc, char **argv, t_arg_ls *arg)
 	}
 	return (mylistdir);
 }
-
 
 t_list_ls		*display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 {
@@ -109,12 +111,12 @@ t_list_ls		*display_my_files(t_list_ls *mylist, t_arg_ls *arg)
 	return (mylist);
 }
 
-t_list_ls			*display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
+t_list_ls		*display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 {
 	t_list_ls *tmp;
 
-	tmp = mylist;
 	mylist = check_sort(mylist, arg);
+	tmp = mylist;
 	if (arg->file_printed && tmp)
 		ft_printf("\n");
 	while (tmp != NULL)
@@ -124,7 +126,7 @@ t_list_ls			*display_my_dir(t_list_ls *mylist, t_arg_ls *arg)
 		if (arg->flag_mutiple_folders == 1)
 			ft_printf("%s:\n", tmp->file_name);
 		if (handle_arg(arg) == 1)
-				return (NULL);
+			return (NULL);
 		if (tmp->next)
 			ft_printf("\n");
 		tmp = tmp->next;

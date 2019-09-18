@@ -6,7 +6,7 @@
 /*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 12:55:14 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/17 20:54:49 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/18 14:09:05 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		check_path(char *str, t_arg_ls *arg)
 	if (ft_strcmp(str, "/") == 0)
 	{
 		if (!(arg->path = ft_strdup("/")))
-				return (-1);
+			return (-1);
 	}
 	else
 	{

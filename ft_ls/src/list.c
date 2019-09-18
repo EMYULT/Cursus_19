@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.c                                             :+:      :+:    :+:   */
+/*   list_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/06 15:22:37 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/09/15 18:22:08 by hde-ghel         ###   ########.fr       */
+/*   Created: 2019/09/18 13:53:28 by hde-ghel          #+#    #+#             */
+/*   Updated: 2019/09/18 13:53:52 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 t_list_ls	*init_list(void)
 {
 	t_list_ls	*tmp;
+
 	if (!(tmp = ft_memalloc(sizeof(t_list_ls))))
 		return (NULL);
 	tmp->file_name = NULL;
@@ -52,7 +53,7 @@ t_list_ls	*add_link_front(t_list_ls *mylist, char *str, t_arg_ls *arg)
 	fill_perm_right(tmp, &fs);
 	fill_acl(tmp, &fs, full_path);
 	if (fill_others(tmp, &fs, arg, full_path) == -1)
-			return (NULL);
+		return (NULL);
 	ft_strdel(&full_path);
 	tmp->next = mylist;
 	return (tmp);
@@ -98,14 +99,13 @@ int			permission_denied(char *path, t_arg_ls *arg, int check_last_arg)
 	return (1);
 }
 
-
 t_list_ls	*push(t_list_ls *mylist, t_arg_ls *arg, DIR *d, struct dirent *dir)
 {
 	char	*tmp;
 
 	arg->malloc_error = 0;
 	if (!(d = opendir(arg->path)) && permission_denied(arg->path, arg, 1))
-			return (NULL);
+		return (NULL);
 	while ((dir = readdir(d)) != NULL)
 	{
 		if (dir->d_name[0] != '.' || (arg->is_a == 1 && dir->d_name[0] == '.'))
@@ -117,11 +117,11 @@ t_list_ls	*push(t_list_ls *mylist, t_arg_ls *arg, DIR *d, struct dirent *dir)
 				return (NULL);
 			}
 			if (!(mylist = add_link_front(mylist, tmp, arg)))
-				{
-					arg->malloc_error = 1;
-					closedir(d);
-					return (NULL);
-				}
+			{
+				arg->malloc_error = 1;
+				closedir(d);
+				return (NULL);
+			}
 		}
 	}
 	closedir(d);
