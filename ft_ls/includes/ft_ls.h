@@ -121,7 +121,7 @@ void			fill_major_minor(t_list_ls *tmp, struct stat *fs);
 **list_2.c
 */
 
-int				no_file(char **argv, int i, int argc);
+int				no_file(char **argv, int i, int argc, t_arg_ls *arg);
 t_list_ls		*check_sort(t_list_ls *mylist, t_arg_ls *arg);
 t_list_ls		*malloc_error(t_arg_ls *arg);
 void			print_delete(t_list_ls *mylistfile);

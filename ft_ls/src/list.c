@@ -98,6 +98,7 @@ int			permission_denied(char *path, t_arg_ls *arg, int argc, int count_i)
 		ft_putchar_fd(path[i++], 2);
 	ft_putchar_fd(':', 2);
 	ft_putstr_fd(" Permission denied\n", 2);
+	arg->count++;
 	if (arg->flag_mutiple_folders == 1 && check_last_arg == 0)
 		ft_putstr("\n");
 	return (1);

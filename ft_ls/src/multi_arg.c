@@ -47,10 +47,11 @@ t_list_ls		*fill_file(int i, int argc, char **argv, t_arg_ls *arg)
 	int			diff;
 
 	diff = i;
-	if ((arg->count = no_file(argv, i, argc)) == -1)
+	arg->count = 0;
+	if ((no_file(argv, i, argc, arg)) == -1)
 		return (malloc_error(arg));
 	mylistfile = count_diff(i - 1, argc, argv, arg);
-	if (i - diff == arg->count)
+	if (argc - diff == arg->count)
 		ft_strdel(&arg->path);
 	arg->totalsize = 0;
 	return (mylistfile);

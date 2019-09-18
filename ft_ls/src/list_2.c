@@ -60,13 +60,11 @@ void		print_delete(t_list_ls *mylistfile)
 	}
 }
 
-int			no_file(char **argv, int i, int argc)
+int			no_file(char **argv, int i, int argc, t_arg_ls *arg)
 {
 	t_list_ls	*mylistfile;
 	struct stat	fs;
-	int			count;
 
-	count = 0;
 	mylistfile = NULL;
 	while (i < argc)
 	{
@@ -74,10 +72,10 @@ int			no_file(char **argv, int i, int argc)
 		{
 			if (!(mylistfile = add_no_file(mylistfile, argv[i])))
 				return (-1);
-			count++;
+			arg->count++;
 		}
 		i++;
 	}
 	print_delete(mylistfile);
-	return (count);
+	return (i);
 }
