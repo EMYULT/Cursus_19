@@ -12,34 +12,6 @@
 
 #include "../includes/ft_ls.h"
 
-int			recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
-{
-	struct stat		fs;
-	char			*tmp;
-
-	tmp = arg->path;
-	while (mylist != NULL)
-	{
-		if (!(mylist->file_name_path = ft_strjoin(tmp, mylist->file_name)))
-			return (-1);
-		if (lstat(mylist->file_name_path, &fs) < 0)
-			return (0);
-		if (S_ISDIR(fs.st_mode) && ft_strcmp(mylist->file_name, ".") &&
-				ft_strcmp(mylist->file_name, ".."))
-		{
-			if (!(arg->path = ft_strjoin(mylist->file_name_path, "/")))
-				return (-1);
-			ft_printf("\n%s:\n", mylist->file_name_path);
-			arg->totalsize = 0;
-			if (handle_arg(arg) == 1)
-				return (ft_strdel_int(&tmp));
-		}
-		mylist = mylist->next;
-	}
-	ft_strdel(&tmp);
-	return (0);
-}
-
 t_list_ls	*params(t_list_ls *mylist, t_arg_ls *arg)
 {
 	DIR				*d;
@@ -78,14 +50,6 @@ int			handle_arg(t_arg_ls *arg)
 			return (free_list(mylist, 1));
 	}
 	return (free_list(mylist, 0));
-}
-
-int			free_all(t_list_ls *list_dir, t_arg_ls *arg)
-{
-	free_list_dir(list_dir, 0);
-	if (arg->is_rr == 0)
-		free_struct_arg(arg, 1);
-	return (1);
 }
 
 int			multi_arg(int i, int argc, char **argv, t_arg_ls *arg)

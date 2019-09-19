@@ -12,6 +12,14 @@
 
 #include "../includes/ft_ls.h"
 
+int		free_all(t_list_ls *list_dir, t_arg_ls *arg)
+{
+	free_list_dir(list_dir, 0);
+	if (arg->is_rr == 0)
+		free_struct_arg(arg, 1);
+	return (1);
+}
+
 int		ft_strdel_int(char **as)
 {
 	if (as && *as)

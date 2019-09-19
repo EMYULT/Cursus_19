@@ -19,75 +19,6 @@ int		free_struct_arg(t_arg_ls *arg, int ret)
 	return (ret);
 }
 
-int		free_list_dir(t_list_ls *list, int r)
-{
-	t_list_ls	*tmp;
-
-	while (list)
-	{
-		tmp = list->next;
-		free(list);
-		list = tmp;
-	}
-	return (r);
-}
-
-int		free_list_file(t_list_ls *list, int r)
-{
-	t_list_ls	*tmp;
-
-	while (list)
-	{
-		tmp = list->next;
-		if (list->file_name_path != NULL)
-			ft_strdel(&list->file_name_path);
-		if (list->pwname != NULL)
-			ft_strdel(&list->pwname);
-		if (list->grname != NULL)
-			ft_strdel(&list->grname);
-		if (list->date_month != NULL)
-			ft_strdel(&list->date_month);
-		if (list->date_day != NULL)
-			ft_strdel(&list->date_day);
-		if (list->date_hour_year != NULL)
-			ft_strdel(&list->date_hour_year);
-		if (list->have_symlink != NULL)
-			ft_strdel(&list->have_symlink);
-		free(list);
-		list = tmp;
-	}
-	return (r);
-}
-
-int		free_list(t_list_ls *list, int r)
-{
-	t_list_ls	*tmp;
-
-	while (list)
-	{
-		tmp = list->next;
-		if (list->file_name != NULL)
-			ft_strdel(&list->file_name);
-		if (list->file_name_path != NULL)
-			ft_strdel(&list->file_name_path);
-		if (list->pwname != NULL)
-			ft_strdel(&list->pwname);
-		if (list->grname != NULL)
-			ft_strdel(&list->grname);
-		if (list->date_month != NULL)
-			ft_strdel(&list->date_month);
-		if (list->date_day != NULL)
-			ft_strdel(&list->date_day);
-		if (list->date_hour_year != NULL)
-			ft_strdel(&list->date_hour_year);
-		if (list->have_symlink != NULL)
-			ft_strdel(&list->have_symlink);
-		free(list);
-		list = tmp;
-	}
-	return (r);
-}
-
 void	check_check(t_arg_ls *arg, char stri)
 {
 	if (stri == 'l')
@@ -146,4 +77,32 @@ int		check_options(int i, int argc, char **argv, t_arg_ls *arg)
 		i++;
 	}
 	return (i);
+}
+
+int		recursive_dir(t_arg_ls *arg, t_list_ls *mylist)
+{
+	struct stat		fs;
+	char			*tmp;
+
+	tmp = arg->path;
+	while (mylist != NULL)
+	{
+		if (!(mylist->file_name_path = ft_strjoin(tmp, mylist->file_name)))
+			return (-1);
+		if (lstat(mylist->file_name_path, &fs) < 0)
+			return (0);
+		if (S_ISDIR(fs.st_mode) && ft_strcmp(mylist->file_name, ".") &&
+				ft_strcmp(mylist->file_name, ".."))
+		{
+			if (!(arg->path = ft_strjoin(mylist->file_name_path, "/")))
+				return (-1);
+			ft_printf("\n%s:\n", mylist->file_name_path);
+			arg->totalsize = 0;
+			if (handle_arg(arg) == 1)
+				return (ft_strdel_int(&tmp));
+		}
+		mylist = mylist->next;
+	}
+	ft_strdel(&tmp);
+	return (0);
 }
