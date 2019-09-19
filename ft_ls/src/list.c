@@ -6,7 +6,7 @@
 /*   By: hde-ghel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:53:28 by hde-ghel          #+#    #+#             */
-/*   Updated: 2019/09/18 19:39:00 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/09/19 11:41:54 by hde-ghel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,9 @@ int			permission_denied(char *path, t_arg_ls *arg, int argc, int count_i)
 	check_last_arg = 0;
 	if (count_i + 1 == argc)
 		check_last_arg = 1;
+	if (arg->flag_mutiple_folders && arg->file_printed &&
+			arg->is_in_recu != 1 && arg->perm_denied != 1)
+		ft_putstr("\n");
 	if (arg->flag_mutiple_folders == 1 && arg->is_in_recu != 1)
 		ft_printf("%s:\n", path);
 	i = ft_strlen(path);
@@ -98,11 +101,9 @@ int			permission_denied(char *path, t_arg_ls *arg, int argc, int count_i)
 		ft_putchar_fd(path[i++], 2);
 	ft_putchar_fd(':', 2);
 	ft_putstr_fd(" Permission denied\n", 2);
+	arg->perm_denied = 1;
 	if (arg->flag_mutiple_folders == 1 && check_last_arg == 0)
-	{
-		arg->perm_denied = 1;
 		ft_putstr("\n");
-	}
 	return (1);
 }
 
