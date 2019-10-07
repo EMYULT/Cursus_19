@@ -1,2 +1,3 @@
-# Cursus_19
-Mes projets
+# ft_ls
+
+Recoding the unix command : ls. 
